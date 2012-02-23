@@ -1,0 +1,94 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fiveamsolutions.plc</groupId>
+    <artifactId>plc-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Portable Legal Consent Parent POM</name>
+    <description>The base POM for all PLC modules.</description>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.source>1.6</java.source>
+        <java.target>1.6</java.target>
+    </properties>
+
+    <scm>
+        <connection>scm:git:https://fisheye.5amsolutions.com/git/plc.git</connection>
+        <developerConnection>scm:git:https://fisheye.5amsolutions.com/git/plc.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>Jira</system>
+        <url>https://jira.5amsolutions.com/browse/PLC</url>
+    </issueManagement>
+
+    <developers>
+        <developer>
+            <email>aevansel@5amsolutions.com</email>
+            <id>aevansel</id>
+            <name>Abraham Evans-EL</name>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>5AM-Releases</id>
+            <name>5AM Releases</name>
+            <url>http://nexus.5amsolutions.com/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>5AM-Snapshots</id>
+            <name>5AM Snapshots</name>
+            <url>http://nexus.5amsolutions.com/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!-- Repositories to pull dependencies from -->
+    <repositories>
+        <repository>
+            <id>5AM-Releases</id>
+            <url>http://nexus.5amsolutions.com/nexus/content/repositories/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>5AM-Snapshots</id>
+            <url>http://nexus.5amsolutions.com/nexus/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>5AM-Releases</id>
+            <url>http://nexus.5amsolutions.com/nexus/content/repositories/releases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>5AM-Snapshots</id>
+            <url>http://nexus.5amsolutions.com/nexus/content/repositories/snapshots</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
