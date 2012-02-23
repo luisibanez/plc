@@ -17,6 +17,9 @@
         <cobertura.check.haltOnFailure>true</cobertura.check.haltOnFailure>
         <cobertura.totalBranchRate>92</cobertura.totalBranchRate>
         <cobertura.totalLineRate>92</cobertura.totalLineRate>
+        
+        <plc.server.home>${user.home}/dev/app_servers/apache-tomcat-7.0.23</plc.server.home>
+        <plc.webapp.name>legalconsent</plc.webapp.name>
     </properties>
 
     <scm>
@@ -130,6 +133,26 @@
                         </check>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.cargo</groupId>
+                    <artifactId>cargo-maven2-plugin</artifactId>
+                    <version>1.1.4</version>
+                    <configuration>
+                        <wait>false</wait>
+                        <container>
+                            <containerId>tomcat7x</containerId>
+                            <type>installed</type>
+                            <home>${plc.server.home}</home>
+                        </container>
+                        <configuration>
+                          <type>existing</type>
+                          <home>${plc.server.home}</home>
+                          <properties>
+                              <cargo.tomcat.manager.url>https://localhost:8080/manager</cargo.tomcat.manager.url>
+                          </properties>
+                        </configuration>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -211,7 +234,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.8</version>
                 <configuration>
-                    <configLocation>5amCheckstyle-5.xml</configLocation>
+                    <configLocation>../plc-parent/src/main/resources/checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
             <plugin>
@@ -263,11 +286,5 @@
     </reporting>
 
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>
