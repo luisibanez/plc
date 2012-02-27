@@ -18,8 +18,16 @@
         <cobertura.totalBranchRate>92</cobertura.totalBranchRate>
         <cobertura.totalLineRate>92</cobertura.totalLineRate>
         
+        <logger.debug>false</logger.debug>
+        <logger.level>WARN</logger.level>
+        <logger.file>logs/plc.log</logger.file>
+        
         <plc.server.home>${user.home}/dev/app_servers/apache-tomcat-7.0.23</plc.server.home>
         <plc.webapp.name>legalconsent</plc.webapp.name>
+        
+        
+        <plc.db.jpaPersistenceUnitName>plc-db</plc.db.jpaPersistenceUnitName>
+        <plc.db.jpaPersistenceProvider>org.hibernate.ejb.HibernatePersistence</plc.db.jpaPersistenceProvider>
     </properties>
 
     <scm>
@@ -286,5 +294,10 @@
     </reporting>
 
     <dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
     </dependencies>
 </project>
