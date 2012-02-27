@@ -7,19 +7,21 @@
 
     <description>Portable Legal Consent</description>
     
-    <servlet>
-        <servlet-name>plc</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/spring/servlet-context.xml</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>        
+    <!-- Filters -->
+    <filter>
+        <filter-name>guice</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>guice</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
  
-    <servlet-mapping>
-        <servlet-name>plc</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-    
+    <!-- Security roles -->
+    <security-role>
+        <description>Portable Legal Consent User</description>
+        <role-name>plcuser</role-name>
+    </security-role>
 </web-app>

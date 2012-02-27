@@ -1,0 +1,29 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <plc.server.home>/opt/apache-tomcat-7.0.25</plc.server.home>
+                <logger.level>INFO</logger.level>
+            </properties>
+        </profile>
+        <profile>
+            <id>quick</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <cobertura.check.haltOnFailure>false</cobertura.check.haltOnFailure>
+                <skipTests>true</skipTests>
+                <checkstyle.skip>true</checkstyle.skip>
+                <pmd.skip>true</pmd.skip>
+                <cpd.skip>true</cpd.skip>
+            </properties>
+        </profile>
+    </profiles>
+</settings>

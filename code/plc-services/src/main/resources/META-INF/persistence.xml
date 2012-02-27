@@ -10,5 +10,16 @@
         </description>
 
         <provider>${plc.db.jpaPersistenceProvider}</provider>
+        
+        <properties>
+            <property name="hibernate.dialect" value="${plc.db.dialect}"/>
+            <property name="hibernate.connection.driver_class" value="${plc.db.jdbcDriver}"/>
+            <property name="hibernate.connection.username" value="${plc.db.username}"/>
+            <property name="hibernate.connection.password" value="${plc.db.password}"/>
+            <property name="hibernate.connection.url" value="${plc.db.jdbcUrl}"/>
+            <property name="hibernate.show_sql" value="${plc.db.showSql}"/>
+            <property name="hibernate.transaction.flush_before_completion" value="true"/>
+            <property name="hibernate.current_session_context_class" value="thread"/>
+        </properties>
     </persistence-unit>
 </persistence>
