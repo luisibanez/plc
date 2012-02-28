@@ -15,8 +15,8 @@
         <java.source>1.6</java.source>
         <java.target>1.6</java.target>
         <cobertura.check.haltOnFailure>true</cobertura.check.haltOnFailure>
-        <cobertura.totalBranchRate>0</cobertura.totalBranchRate>
-        <cobertura.totalLineRate>0</cobertura.totalLineRate>
+        <cobertura.totalLineRate>96</cobertura.totalLineRate>
+        <cobertura.totalBranchRate>87</cobertura.totalBranchRate>
         
         <logger.debug>false</logger.debug>
         <logger.level>WARN</logger.level>
@@ -230,6 +230,9 @@
                         <totalLineRate>${cobertura.totalLineRate}</totalLineRate>
                     </check>
                     <instrumentation>
+                        <excludes>
+                            <exclude>**/inject/*</exclude>
+                        </excludes>
                     </instrumentation>
                 </configuration>
             </plugin>
@@ -295,12 +298,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.9</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.3.1</version>
+                <version>2.11</version>
             </plugin>
         </plugins>
     </reporting>
@@ -310,6 +308,18 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+           <version>3.1</version>
+        </dependency>
+        
+        <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.4</version>
+          <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

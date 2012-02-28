@@ -17,6 +17,13 @@
     
     <properties>
         <hibernate.version>4.0.0.Final</hibernate.version>
+        
+        <plc.testdb.dialect>org.hibernate.dialect.HSQLDialect</plc.testdb.dialect>
+        <plc.testdb.jdbcDriver>org.hsqldb.jdbcDriver</plc.testdb.jdbcDriver>
+        <plc.testdb.jdbcUrl>jdbc:hsqldb:mem:testdb</plc.testdb.jdbcUrl>
+        <plc.testdb.username>sa</plc.testdb.username>
+        <plc.testdb.password></plc.testdb.password>
+        <plc.testdb.showSql>false</plc.testdb.showSql>
     </properties>
     
     <build>
@@ -70,10 +77,9 @@
         </dependency>
         
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.2.6</version>
         </dependency>
     </dependencies>
 </project>
