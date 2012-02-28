@@ -33,23 +33,22 @@ package com.fiveamsolutions.plc.services.dao;
 import org.junit.Before;
 
 import com.fiveamsolutions.plc.services.data.PLCEntity;
-import com.fiveamsolutions.plc.services.data.PatientData;
+import com.fiveamsolutions.plc.services.data.PatientAccount;
 
 /**
- * Tests the Patient Data DAO.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
-    private PatientDataJPADao testDao;
+public class PatientAccountDaoTest extends AbstractPLCJPADaoTest {
+    private PatientAccountJPADao testDao;
+
 
     /**
      * Prepare test data.
      */
     @Before
     public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
+        testDao = new PatientAccountJPADao(getEntityManager());
     }
 
     /**
@@ -57,7 +56,7 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected PatientDataJPADao getTestDao() {
+    protected  PatientAccountJPADao getTestDao() {
         return testDao;
     }
 
@@ -66,8 +65,8 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
+    protected PatientAccount getTestEntity() {
+        return TestPLCEntityFactory.createPatientAccount();
     }
 
     /**
@@ -75,8 +74,8 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
      */
     @Override
     protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
+        PatientAccount pa = (PatientAccount) testEntity;
+        pa.setEmail("change@example.com");
     }
 
 }

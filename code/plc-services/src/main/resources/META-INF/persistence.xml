@@ -11,6 +11,9 @@
 
         <provider>${plc.db.jpaPersistenceProvider}</provider>
         
+        <class>com.fiveamsolutions.plc.services.data.PatientData</class>
+        <class>com.fiveamsolutions.plc.services.data.PatientAccount</class>
+        
         <properties>
             <property name="hibernate.dialect" value="${plc.db.dialect}"/>
             <property name="hibernate.connection.driver_class" value="${plc.db.jdbcDriver}"/>

@@ -28,55 +28,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.services.inject;
 
-import org.junit.Before;
-
-import com.fiveamsolutions.plc.services.data.PLCEntity;
-import com.fiveamsolutions.plc.services.data.PatientData;
+import com.google.inject.Inject;
+import com.google.inject.persist.PersistService;
 
 /**
- * Tests the Patient Data DAO.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
-    private PatientDataJPADao testDao;
+public class PersistentServiceInitializer {
 
     /**
-     * Prepare test data.
+     * Class constructor whose only purpose is to start the persistent service.
+     * @param service persistent service
      */
-    @Before
-    public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientDataJPADao getTestDao() {
-        return testDao;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
+    @Inject
+    public PersistentServiceInitializer(PersistService service) {
+        service.start();
     }
 
 }

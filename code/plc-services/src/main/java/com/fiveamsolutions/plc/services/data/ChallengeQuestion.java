@@ -28,55 +28,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.services.data;
 
-import org.junit.Before;
-
-import com.fiveamsolutions.plc.services.data.PLCEntity;
-import com.fiveamsolutions.plc.services.data.PatientData;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
- * Tests the Patient Data DAO.
+ * Represents a challenge question.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
-    private PatientDataJPADao testDao;
+@Embeddable
+public class ChallengeQuestion {
+    private String question;
+    private String answer;
 
     /**
-     * Prepare test data.
+     * @return the question
      */
-    @Before
-    public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
+    @Column(name = "question", nullable = false)
+    public String getQuestion() {
+        return question;
     }
 
     /**
-     * {@inheritDoc}
+     * @param question the question to set
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientDataJPADao getTestDao() {
-        return testDao;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the answer
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
+    @Column(name = "answer", nullable = false)
+    public String getAnswer() {
+        return answer;
     }
 
     /**
-     * {@inheritDoc}
+     * @param answer the answer to set
      */
-    @Override
-    protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
-
 }

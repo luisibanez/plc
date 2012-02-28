@@ -39,17 +39,6 @@ import java.io.Serializable;
 public interface PLCEntity extends Serializable {
 
     /**
-     * Minimum length for the username field.
-     */
-    int USERNAME_MIN_LENGTH = 6;
-
-    /**
-     * Maximum length for the username field.
-     */
-    int USERNAME_MAX_LENGTH = 20;
-
-
-    /**
      * @return the entity ID
      */
     Long getId();

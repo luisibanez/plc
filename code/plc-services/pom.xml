@@ -7,17 +7,18 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../plc-parent</relativePath>
     </parent>
-    
+
     <groupId>com.fiveamsolutions.plc</groupId>
     <artifactId>plc-services</artifactId>
     <packaging>jar</packaging>
     <url>../plc-services/target/site</url>
-    
+
     <name>plc-services</name>
-    
+
     <properties>
         <hibernate.version>4.0.0.Final</hibernate.version>
-        
+        <postgresql.version>9.0-801.jdbc4</postgresql.version>
+        <plc.schema.file>plc-schema.ddl</plc.schema.file>
         <plc.testdb.dialect>org.hibernate.dialect.HSQLDialect</plc.testdb.dialect>
         <plc.testdb.jdbcDriver>org.hsqldb.jdbcDriver</plc.testdb.jdbcDriver>
         <plc.testdb.jdbcUrl>jdbc:hsqldb:mem:testdb</plc.testdb.jdbcUrl>
@@ -25,9 +26,78 @@
         <plc.testdb.password></plc.testdb.password>
         <plc.testdb.showSql>false</plc.testdb.showSql>
     </properties>
-    
+
     <build>
         <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>hibernate3-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <components>
+                        <component>
+                            <name>hbm2ddl</name>
+                            <implementation>jpaconfiguration</implementation>
+                        </component>
+                    </components>
+                    <componentProperties>
+                        <persistenceunit>plc-db</persistenceunit>
+                        <drop>false</drop>
+                        <create>true</create>
+                        <export>false</export>
+                        <format>true</format>
+                        <outputfilename>${plc.schema.file}</outputfilename>
+                        <console>true</console>
+                        <jdk5>true</jdk5>
+                        <ejb3>true</ejb3>
+                    </componentProperties>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>${postgresql.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-annotations</artifactId>
+                        <version>3.5.6-Final</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-validator</artifactId>
+                        <version>4.2.0.Final</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-core</artifactId>
+                        <version>3.5.1-Final</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-plugin</artifactId>
+                <version>1.9.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <changeLogFile>src/main/db/db-changelog.xml</changeLogFile>
+                    <driver>${plc.db.jdbcDriver}</driver>
+                    <url>${plc.db.jdbcUrl}</url>
+                    <username>${plc.db.username}</username>
+                    <password>${plc.db.password}</password>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                </configuration>
+            </plugin>
+        </plugins>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -38,7 +108,7 @@
             </resource>
         </resources>
     </build>
-    
+
     <dependencies>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -60,12 +130,12 @@
             <artifactId>guice-persist</artifactId>
             <version>${guice.version}</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-multibindings</artifactId>
             <version>${guice.version}</version>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-assistedinject</artifactId>
             <version>${guice.version}</version>
@@ -75,11 +145,18 @@
             <artifactId>guice</artifactId>
             <version>${guice.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>

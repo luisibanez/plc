@@ -30,53 +30,51 @@
  */
 package com.fiveamsolutions.plc.services.dao;
 
-import org.junit.Before;
+import java.util.Date;
 
-import com.fiveamsolutions.plc.services.data.PLCEntity;
+import org.apache.commons.lang3.RandomStringUtils;
+
+import com.fiveamsolutions.plc.services.data.ChallengeQuestion;
+import com.fiveamsolutions.plc.services.data.PatientAccount;
 import com.fiveamsolutions.plc.services.data.PatientData;
 
 /**
- * Tests the Patient Data DAO.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
-    private PatientDataJPADao testDao;
+public class TestPLCEntityFactory {
+    private static final int PASSWORD_LENGTH = 20;
+    private static final int USERNAME_LENGTH = 20;
 
     /**
-     * Prepare test data.
+     * Creates a patient data entity for testing.
+     * @return the patient data entity
      */
-    @Before
-    public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
+    public static PatientData createPatientData() {
+        PatientData pd = new PatientData();
+        pd.setFirstName("firstName");
+        pd.setBirthName("birthName");
+        pd.setBirthCountry("birthCountry");
+        pd.setBirthPlace("birthPlace");
+        pd.setBirthDate(new Date());
+        return pd;
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a patient account entity for testing.
+     * @return the patient account entity
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientDataJPADao getTestDao() {
-        return testDao;
-    }
+    public static PatientAccount createPatientAccount() {
+        PatientAccount pa = new PatientAccount();
+        pa.setEmail("test@example.com");
+        pa.setPassword(RandomStringUtils.random(PASSWORD_LENGTH));
+        pa.setUsername(RandomStringUtils.random(USERNAME_LENGTH));
+        pa.setPatientData(createPatientData());
 
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
+        ChallengeQuestion challenge = new ChallengeQuestion();
+        challenge.setQuestion("Mother's Maiden Name");
+        challenge.setAnswer("Foo");
+        pa.getChallengeQuestions().add(challenge);
+        return pa;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
-    }
-
 }

@@ -30,53 +30,24 @@
  */
 package com.fiveamsolutions.plc.services.dao;
 
-import org.junit.Before;
+import javax.persistence.EntityManager;
 
-import com.fiveamsolutions.plc.services.data.PLCEntity;
-import com.fiveamsolutions.plc.services.data.PatientData;
+import com.fiveamsolutions.plc.services.data.PatientAccount;
+import com.google.inject.Inject;
 
 /**
- * Tests the Patient Data DAO.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
-    private PatientDataJPADao testDao;
+public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> implements PatientAccountDao {
 
     /**
-     * Prepare test data.
+     * Class constructor.
+     * @param em the entity manager
      */
-    @Before
-    public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientDataJPADao getTestDao() {
-        return testDao;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
+    @Inject
+    PatientAccountJPADao(EntityManager em) {
+        super(em);
     }
 
 }

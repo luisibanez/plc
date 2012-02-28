@@ -33,12 +33,12 @@ package com.fiveamsolutions.plc.services.inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fiveamsolutions.plc.services.dao.JPADaoModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
 /**
- *
  * Common guice module that provides injection for objects used across the entire application.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -63,8 +63,7 @@ public class GuiceInjectorHolder {
      */
     private static synchronized void createInjector() {
         final List<Module> modules = new ArrayList<Module>();
+        modules.add(new JPADaoModule());
         injector = Guice.createInjector(modules);
     }
-
-
 }

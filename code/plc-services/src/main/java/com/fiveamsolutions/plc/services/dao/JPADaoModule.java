@@ -30,53 +30,25 @@
  */
 package com.fiveamsolutions.plc.services.dao;
 
-import org.junit.Before;
-
-import com.fiveamsolutions.plc.services.data.PLCEntity;
-import com.fiveamsolutions.plc.services.data.PatientData;
+import com.fiveamsolutions.plc.services.inject.PersistentServiceInitializer;
+import com.google.inject.AbstractModule;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
 /**
- * Tests the Patient Data DAO.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
-    private PatientDataJPADao testDao;
-
-    /**
-     * Prepare test data.
-     */
-    @Before
-    public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientDataJPADao getTestDao() {
-        return testDao;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
-    }
+public class JPADaoModule extends AbstractModule {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
+    protected void configure() {
+        install(new JpaPersistModule("plc-db"));
+        bind(PatientDataDao.class).to(PatientDataJPADao.class);
+        bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
+        bind(PersistentServiceInitializer.class).asEagerSingleton();
     }
 
 }

@@ -50,19 +50,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity(name = "patient_data")
 public class PatientData  implements PLCEntity {
     private static final long serialVersionUID = 1L;
-    private static final int USERNAME_MIN_LENGTH = 6;
-    private static final int USERNAME_MAX_LENGTH = 20;
+
     private static final int NAME_MAX_LENGTH = 50;
     private static final int PLACE_OF_BIRTH_MAX_LENGTH = 100;
 
     private Long id;
-    private String email;
-    private String username;
     private String firstName;
     private String birthName;
     private String birthPlace;
     private String birthCountry;
     private Date birthDate;
+
 
     /**
      * {@inheritDoc}
@@ -81,44 +79,15 @@ public class PatientData  implements PLCEntity {
         this.id = id;
     }
 
-    /**
-     * @return the email
-     */
-    @NotEmpty
-    @Column(name = "email", nullable = false)
-    public String getEmail() {
-        return email;
-    }
 
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
-    /**
-     * @return the username
-     */
-    @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH)
-    @Column(name = "username", nullable = false, unique = true, updatable = false)
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     /**
      * @return the firstName
      */
     @NotEmpty
     @Length(max = NAME_MAX_LENGTH)
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, updatable = false)
     public String getFirstName() {
         return firstName;
     }
@@ -135,7 +104,7 @@ public class PatientData  implements PLCEntity {
      */
     @NotEmpty
     @Length(max = NAME_MAX_LENGTH)
-    @Column(name = "birth_name", nullable = false)
+    @Column(name = "birth_name", nullable = false, updatable = false)
     public String getBirthName() {
         return birthName;
     }
@@ -152,7 +121,7 @@ public class PatientData  implements PLCEntity {
      */
     @NotEmpty
     @Length(max = PLACE_OF_BIRTH_MAX_LENGTH)
-    @Column(name = "birth_place", nullable = false)
+    @Column(name = "birth_place", nullable = false, updatable = false)
     public String getBirthPlace() {
         return birthPlace;
     }
@@ -169,7 +138,7 @@ public class PatientData  implements PLCEntity {
      */
     @NotEmpty
     @Length(max = PLACE_OF_BIRTH_MAX_LENGTH)
-    @Column(name = "birth_country", nullable = false)
+    @Column(name = "birth_country", nullable = false, updatable = false)
     public String getBirthCountry() {
         return birthCountry;
     }
@@ -184,7 +153,7 @@ public class PatientData  implements PLCEntity {
     /**
      * @return the birthDate
      */
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = false, updatable = false)
     @Temporal(TemporalType.DATE)
     public Date getBirthDate() {
         return birthDate;
