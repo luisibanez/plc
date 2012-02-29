@@ -28,48 +28,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.data;
+package com.fiveamsolutions.plc.dao;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import com.fiveamsolutions.plc.inject.PersistentServiceInitializer;
+import com.google.inject.AbstractModule;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
 /**
- * Represents a challenge question.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-@Embeddable
-public class ChallengeQuestion {
-    private String question;
-    private String answer;
+public class JPADaoModule extends AbstractModule {
 
     /**
-     * @return the question
+     * {@inheritDoc}
      */
-    @Column(name = "question", nullable = false)
-    public String getQuestion() {
-        return question;
+    @Override
+    protected void configure() {
+        install(new JpaPersistModule("plc-db"));
+        bind(PatientDataDao.class).to(PatientDataJPADao.class);
+        bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
+        bind(PersistentServiceInitializer.class).asEagerSingleton();
     }
 
-    /**
-     * @param question the question to set
-     */
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    /**
-     * @return the answer
-     */
-    @Column(name = "answer", nullable = false)
-    public String getAnswer() {
-        return answer;
-    }
-
-    /**
-     * @param answer the answer to set
-     */
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
 }

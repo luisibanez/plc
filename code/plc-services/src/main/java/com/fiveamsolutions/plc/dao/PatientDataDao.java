@@ -28,9 +28,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.dao;
 
-import com.fiveamsolutions.plc.services.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientData;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>

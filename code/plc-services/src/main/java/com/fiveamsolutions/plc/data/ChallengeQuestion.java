@@ -28,54 +28,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.data;
 
-import org.junit.Before;
-
-import com.fiveamsolutions.plc.services.data.PLCEntity;
-import com.fiveamsolutions.plc.services.data.PatientAccount;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * Represents a challenge question.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class PatientAccountDaoTest extends AbstractPLCJPADaoTest {
-    private PatientAccountJPADao testDao;
-
+@Embeddable
+public class ChallengeQuestion {
+    private String question;
+    private String answer;
 
     /**
-     * Prepare test data.
+     * @return the question
      */
-    @Before
-    public void prepareTestData() {
-        testDao = new PatientAccountJPADao(getEntityManager());
+    @Column(name = "question", nullable = false)
+    public String getQuestion() {
+        return question;
     }
 
     /**
-     * {@inheritDoc}
+     * @param question the question to set
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected  PatientAccountJPADao getTestDao() {
-        return testDao;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the answer
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientAccount getTestEntity() {
-        return TestPLCEntityFactory.createPatientAccount();
+    @Column(name = "answer", nullable = false)
+    public String getAnswer() {
+        return answer;
     }
 
     /**
-     * {@inheritDoc}
+     * @param answer the answer to set
      */
-    @Override
-    protected void changeTestEntity(PLCEntity testEntity) {
-        PatientAccount pa = (PatientAccount) testEntity;
-        pa.setEmail("change@example.com");
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
-
 }

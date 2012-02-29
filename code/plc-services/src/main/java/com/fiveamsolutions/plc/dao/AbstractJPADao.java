@@ -28,25 +28,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.dao;
 
 import javax.persistence.EntityManager;
 
-import com.fiveamsolutions.plc.services.data.PatientData;
 import com.google.inject.Inject;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * Base JPA dao that provides common functionality.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class PatientDataJPADao extends AbstractPLCEntityDao<PatientData> implements PatientDataDao {
+public class AbstractJPADao {
+
+    private final EntityManager entityManager;
 
     /**
      * Class constructor.
      * @param em the entity manager
      */
     @Inject
-    PatientDataJPADao(EntityManager em) {
-        super(em);
+    protected AbstractJPADao(EntityManager em) {
+        this.entityManager = em;
+    }
+
+    /**
+     * @return the entity manager
+     */
+    protected EntityManager getEntityManager() {
+        return entityManager;
     }
 }

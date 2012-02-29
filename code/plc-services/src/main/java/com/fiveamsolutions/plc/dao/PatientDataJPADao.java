@@ -28,19 +28,25 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.data;
+package com.fiveamsolutions.plc.dao;
 
-import java.io.Serializable;
+import javax.persistence.EntityManager;
+
+import com.fiveamsolutions.plc.data.PatientData;
+import com.google.inject.Inject;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public interface PLCEntity extends Serializable {
+public class PatientDataJPADao extends AbstractPLCEntityDao<PatientData> implements PatientDataDao {
 
     /**
-     * @return the entity ID
+     * Class constructor.
+     * @param em the entity manager
      */
-    Long getId();
-
+    @Inject
+    PatientDataJPADao(EntityManager em) {
+        super(em);
+    }
 }

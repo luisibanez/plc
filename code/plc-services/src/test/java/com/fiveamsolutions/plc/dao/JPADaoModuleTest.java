@@ -28,26 +28,30 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.dao;
 
-import javax.persistence.EntityManager;
+import static org.junit.Assert.assertNotNull;
 
-import com.fiveamsolutions.plc.services.data.PatientAccount;
-import com.google.inject.Inject;
+import org.junit.Test;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> implements PatientAccountDao {
+public class JPADaoModuleTest {
 
     /**
-     * Class constructor.
-     * @param em the entity manager
+     * Test module insertion.
      */
-    @Inject
-    PatientAccountJPADao(EntityManager em) {
-        super(em);
+    @Test
+    public void testModule() {
+        Injector injector = Guice.createInjector(new JPADaoModule());
+        PatientAccountDao patientAccountDao = injector.getInstance(PatientAccountDao.class);
+        PatientDataDao patientDataDao = injector.getInstance(PatientDataDao.class);
+        assertNotNull(patientAccountDao);
+        assertNotNull(patientDataDao);
     }
-
 }

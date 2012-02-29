@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

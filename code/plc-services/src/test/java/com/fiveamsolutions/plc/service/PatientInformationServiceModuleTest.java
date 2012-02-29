@@ -28,34 +28,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.service;
 
-import javax.persistence.EntityManager;
+import static org.junit.Assert.assertNotNull;
 
-import com.google.inject.Inject;
+import org.junit.Test;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
- * Base JPA dao that provides common functionality.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public class AbstractJPADao {
-
-    private final EntityManager entityManager;
+public class PatientInformationServiceModuleTest {
 
     /**
-     * Class constructor.
-     * @param em the entity manager
+     * Tests module insertion.
      */
-    @Inject
-    protected AbstractJPADao(EntityManager em) {
-        this.entityManager = em;
-    }
-
-    /**
-     * @return the entity manager
-     */
-    protected EntityManager getEntityManager() {
-        return entityManager;
+    @Test
+    public void testModule() {
+        Injector injector = Guice.createInjector(new PatientInformationServiceModule());
+        PatientInformationService pis = injector.getInstance(PatientInformationService.class);
+        assertNotNull(pis);
     }
 }

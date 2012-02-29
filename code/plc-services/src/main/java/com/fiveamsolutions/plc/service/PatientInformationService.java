@@ -28,30 +28,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.service;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.fiveamsolutions.plc.data.PatientData;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * Interface for interacting with patient information.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class JPADaoModuleTest {
+public interface PatientInformationService {
 
     /**
-     * Test module insertion.
+     * Generates the patient's GUID from the given patient data.
+     * @param patientData the patient data to generate the GUID from
+     * @return the generated GUID
      */
-    @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new JPADaoModule());
-        PatientAccountDao patientAccountDao = injector.getInstance(PatientAccountDao.class);
-        PatientDataDao patientDataDao = injector.getInstance(PatientDataDao.class);
-        assertNotNull(patientAccountDao);
-        assertNotNull(patientDataDao);
-    }
+    String generatePatientGUID(PatientData patientData);
 }

@@ -28,42 +28,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.inject;
+package com.fiveamsolutions.plc.dao;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.EntityManager;
 
-import com.fiveamsolutions.plc.services.dao.JPADaoModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
+import com.fiveamsolutions.plc.data.PatientAccount;
+import com.google.inject.Inject;
 
 /**
- * Common guice module that provides injection for objects used across the entire application.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public class GuiceInjectorHolder {
-
-    private static Injector injector;
+public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> implements PatientAccountDao {
 
     /**
-     * Get the guice injector instance.
-     * @return the injector instance
+     * Class constructor.
+     * @param em the entity manager
      */
-    public static Injector getInjector() {
-        if (injector == null) {
-            createInjector();
-        }
-        return injector;
+    @Inject
+    PatientAccountJPADao(EntityManager em) {
+        super(em);
     }
 
-    /**
-     * Create the injector.
-     */
-    private static synchronized void createInjector() {
-        final List<Module> modules = new ArrayList<Module>();
-        modules.add(new JPADaoModule());
-        injector = Guice.createInjector(modules);
-    }
 }

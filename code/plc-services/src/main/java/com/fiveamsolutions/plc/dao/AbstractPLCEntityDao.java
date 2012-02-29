@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -37,7 +37,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.fiveamsolutions.plc.services.data.PLCEntity;
+import com.fiveamsolutions.plc.data.PLCEntity;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 

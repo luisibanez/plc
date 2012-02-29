@@ -28,55 +28,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.service;
 
-import org.junit.Before;
-
-import com.fiveamsolutions.plc.services.data.PLCEntity;
-import com.fiveamsolutions.plc.services.data.PatientData;
+import com.google.inject.AbstractModule;
 
 /**
- * Tests the Patient Data DAO.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
-    private PatientDataJPADao testDao;
-
-    /**
-     * Prepare test data.
-     */
-    @Before
-    public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientDataJPADao getTestDao() {
-        return testDao;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
-    }
+public class PatientInformationServiceModule extends AbstractModule {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
+    protected void configure() {
+        bind(PatientInformationService.class).to(PatientInformationServiceBean.class);
     }
-
 }

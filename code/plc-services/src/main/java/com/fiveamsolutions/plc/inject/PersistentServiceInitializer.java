@@ -28,27 +28,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.inject;
 
-import com.fiveamsolutions.plc.services.inject.PersistentServiceInitializer;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.jpa.JpaPersistModule;
+import com.google.inject.Inject;
+import com.google.inject.persist.PersistService;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class JPADaoModule extends AbstractModule {
+public class PersistentServiceInitializer {
 
     /**
-     * {@inheritDoc}
+     * Class constructor whose only purpose is to start the persistent service.
+     * @param service persistent service
      */
-    @Override
-    protected void configure() {
-        install(new JpaPersistModule("plc-db"));
-        bind(PatientDataDao.class).to(PatientDataJPADao.class);
-        bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
-        bind(PersistentServiceInitializer.class).asEagerSingleton();
+    @Inject
+    public PersistentServiceInitializer(PersistService service) {
+        service.start();
     }
 
 }

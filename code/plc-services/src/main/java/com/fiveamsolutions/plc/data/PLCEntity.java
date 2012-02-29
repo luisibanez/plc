@@ -28,43 +28,19 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.data;
 
-import java.util.List;
-
-import com.fiveamsolutions.plc.services.data.PLCEntity;
+import java.io.Serializable;
 
 /**
- * CRUD API for PLC entities.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
- * @param <T> the entity type
  */
-public interface Dao<T extends PLCEntity> {
+public interface PLCEntity extends Serializable {
 
     /**
-     * Deletes the entity with the give ID.
-     * @param id the entity ID
+     * @return the entity ID
      */
-    void deleteById(Long id);
+    Long getId();
 
-    /**
-     * Get entity by ID.
-     * @param id the entity ID
-     * @return the entity with the give ID
-     */
-    T getById(Long id);
-
-    /**
-     * Retrieves all entities.
-     * @return all entities
-     */
-    List<T> getAll();
-
-    /**
-     * Save the given entity.
-     * @param entity to be saved.
-     */
-    void save(T entity);
 }

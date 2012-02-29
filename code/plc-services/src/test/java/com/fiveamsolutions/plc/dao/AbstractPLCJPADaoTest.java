@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -42,7 +42,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.fiveamsolutions.plc.services.data.PLCEntity;
+import com.fiveamsolutions.plc.data.PLCEntity;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>

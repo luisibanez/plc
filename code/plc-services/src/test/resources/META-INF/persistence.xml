@@ -10,8 +10,8 @@
 
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         
-        <class>com.fiveamsolutions.plc.services.data.PatientData</class>
-        <class>com.fiveamsolutions.plc.services.data.PatientAccount</class>
+        <class>com.fiveamsolutions.plc.data.PatientData</class>
+        <class>com.fiveamsolutions.plc.data.PatientAccount</class>
 
         <properties>
             <property name="hibernate.dialect" value="${plc.testdb.dialect}"/>

@@ -28,24 +28,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.inject;
+package com.fiveamsolutions.plc.dao;
 
-import com.google.inject.Inject;
-import com.google.inject.persist.PersistService;
+import org.junit.Before;
+
+import com.fiveamsolutions.plc.data.PLCEntity;
+import com.fiveamsolutions.plc.data.PatientAccount;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PersistentServiceInitializer {
+public class PatientAccountDaoTest extends AbstractPLCJPADaoTest {
+    private PatientAccountJPADao testDao;
+
 
     /**
-     * Class constructor whose only purpose is to start the persistent service.
-     * @param service persistent service
+     * Prepare test data.
      */
-    @Inject
-    public PersistentServiceInitializer(PersistService service) {
-        service.start();
+    @Before
+    public void prepareTestData() {
+        testDao = new PatientAccountJPADao(getEntityManager());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected  PatientAccountJPADao getTestDao() {
+        return testDao;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected PatientAccount getTestEntity() {
+        return TestPLCEntityFactory.createPatientAccount();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void changeTestEntity(PLCEntity testEntity) {
+        PatientAccount pa = (PatientAccount) testEntity;
+        pa.setEmail("change@example.com");
     }
 
 }

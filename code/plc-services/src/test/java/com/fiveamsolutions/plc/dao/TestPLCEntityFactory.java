@@ -28,14 +28,53 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.services.dao;
+package com.fiveamsolutions.plc.dao;
 
-import com.fiveamsolutions.plc.services.data.PatientAccount;
+import java.util.Date;
+
+import org.apache.commons.lang3.RandomStringUtils;
+
+import com.fiveamsolutions.plc.data.ChallengeQuestion;
+import com.fiveamsolutions.plc.data.PatientAccount;
+import com.fiveamsolutions.plc.data.PatientData;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public interface PatientAccountDao extends Dao<PatientAccount> {
+public class TestPLCEntityFactory {
+    private static final int PASSWORD_LENGTH = 20;
+    private static final int USERNAME_LENGTH = 20;
 
+    /**
+     * Creates a patient data entity for testing.
+     * @return the patient data entity
+     */
+    public static PatientData createPatientData() {
+        PatientData pd = new PatientData();
+        pd.setFirstName("firstName");
+        pd.setBirthName("birthName");
+        pd.setBirthCountry("birthCountry");
+        pd.setBirthPlace("birthPlace");
+        pd.setBirthDate(new Date());
+        return pd;
+    }
+
+    /**
+     * Creates a patient account entity for testing.
+     * @return the patient account entity
+     */
+    public static PatientAccount createPatientAccount() {
+        PatientAccount pa = new PatientAccount();
+        pa.setEmail("test@example.com");
+        pa.setPassword(RandomStringUtils.random(PASSWORD_LENGTH));
+        pa.setUsername(RandomStringUtils.random(USERNAME_LENGTH));
+        pa.setPatientData(createPatientData());
+
+        ChallengeQuestion challenge = new ChallengeQuestion();
+        challenge.setQuestion("Mother's Maiden Name");
+        challenge.setAnswer("Foo");
+        pa.getChallengeQuestions().add(challenge);
+        return pa;
+    }
 }
