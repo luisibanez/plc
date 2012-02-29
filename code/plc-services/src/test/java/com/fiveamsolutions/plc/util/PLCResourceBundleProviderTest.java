@@ -28,37 +28,38 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.util;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import java.util.ResourceBundle;
 
+import org.junit.Before;
 import org.junit.Test;
-
-import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientInformationServiceModuleTest {
+public class PLCResourceBundleProviderTest {
+
+    private PLCResourceBundleProvider testProvider;
+    private ResourceBundle testBundle;
 
     /**
-     * Tests module insertion.
+     * Set up the test.
+     */
+    @Before
+    public void setUp() {
+        testProvider = new PLCResourceBundleProvider();
+        testBundle = testProvider.get();
+    }
+
+    /**
+     * Tests that get doesn't retrieve a new bundle.
      */
     @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
-            }
-        }, new PatientInformationServiceModule());
-        PatientInformationService pis = injector.getInstance(PatientInformationService.class);
-        assertNotNull(pis);
+    public void get() {
+        assertSame(testBundle, testProvider.get());
     }
 }

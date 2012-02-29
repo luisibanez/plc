@@ -33,7 +33,6 @@ package com.fiveamsolutions.plc.inject;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.fiveamsolutions.plc.dao.JPADaoModule;
 import com.fiveamsolutions.plc.service.PatientInformationServiceModule;
 import com.google.inject.Guice;
@@ -65,6 +64,7 @@ public class GuiceInjectorHolder {
      */
     private static synchronized void createInjector() {
         final List<Module> modules = new ArrayList<Module>();
+        modules.add(new PLCModule());
         modules.add(new JPADaoModule());
         modules.add(new PatientInformationServiceModule());
         injector = Guice.createInjector(modules);

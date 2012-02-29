@@ -28,37 +28,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.util;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ResourceBundle;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientInformationServiceModuleTest {
+public class PLCApplicationResourcesTest {
 
     /**
-     * Tests module insertion.
+     * Test retrieving a string resource.
      */
     @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
-            }
-        }, new PatientInformationServiceModule());
-        PatientInformationService pis = injector.getInstance(PatientInformationService.class);
-        assertNotNull(pis);
+    public void getStringResource() {
+        PLCApplicationResources resources = TestApplicationResourcesFactory.getApplicationResources();
+        assertEquals("bar", resources.getStringResource("foo"));
     }
 }

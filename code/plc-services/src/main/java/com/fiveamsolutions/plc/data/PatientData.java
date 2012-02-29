@@ -79,9 +79,6 @@ public class PatientData  implements PLCEntity {
         this.id = id;
     }
 
-
-
-
     /**
      * @return the firstName
      */

@@ -47,5 +47,4 @@ public class PersistentServiceInitializer {
     public PersistentServiceInitializer(PersistService service) {
         service.start();
     }
-
 }

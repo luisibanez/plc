@@ -104,6 +104,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**/*.xml</include>
+                    <include>**/ApplicationResources*.properties</include>
                 </includes>
             </resource>
         </resources>

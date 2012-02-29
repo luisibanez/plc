@@ -28,37 +28,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
-
-import static org.junit.Assert.assertNotNull;
+package com.fiveamsolutions.plc.util;
 
 import java.util.ResourceBundle;
 
-import org.junit.Test;
-
-import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Inject;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class PatientInformationServiceModuleTest {
+public class PLCApplicationResources {
+    private final ResourceBundle resourceBundle;
 
     /**
-     * Tests module insertion.
+     * Class constructor.
+     * @param resourceBundle application's resource bundle.
      */
-    @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
-            }
-        }, new PatientInformationServiceModule());
-        PatientInformationService pis = injector.getInstance(PatientInformationService.class);
-        assertNotNull(pis);
+    @Inject
+    public PLCApplicationResources(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
+
+    /**
+     * Retrieve the specified string resource.
+     * @param resourceName the name of the resource.
+     * @return the resource value.
+     */
+    public String getStringResource(String resourceName) {
+        return resourceBundle.getString(resourceName);
     }
 }

@@ -43,6 +43,7 @@ import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -58,9 +59,9 @@ public class PatientInformationServiceTest {
      */
     @Before
     public void prepareTestData() throws Exception {
-        patientInformationServiceBean = new PatientInformationServiceBean();
+        patientInformationServiceBean =
+                new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources());
     }
-
 
     /**
      * Tests patient GUID generation.

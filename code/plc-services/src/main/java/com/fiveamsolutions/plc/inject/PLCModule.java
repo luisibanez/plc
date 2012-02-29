@@ -28,37 +28,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
-
-import static org.junit.Assert.assertNotNull;
+package com.fiveamsolutions.plc.inject;
 
 import java.util.ResourceBundle;
 
-import org.junit.Test;
-
+import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
 import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * Module to provide some common objects across the entire application.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class PatientInformationServiceModuleTest {
+public class PLCModule extends AbstractModule {
 
     /**
-     * Tests module insertion.
+     * {@inheritDoc}
      */
-    @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
-            }
-        }, new PatientInformationServiceModule());
-        PatientInformationService pis = injector.getInstance(PatientInformationService.class);
-        assertNotNull(pis);
+    @Override
+    protected void configure() {
+        bind(ResourceBundle.class).toProvider(new PLCResourceBundleProvider());
+        bind(PLCApplicationResources.class).asEagerSingleton();
     }
 }

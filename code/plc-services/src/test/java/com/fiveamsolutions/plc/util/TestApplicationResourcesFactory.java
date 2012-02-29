@@ -28,37 +28,37 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.util;
 
-import static org.junit.Assert.assertNotNull;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListResourceBundle;
 import java.util.ResourceBundle;
-
-import org.junit.Test;
-
-import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientInformationServiceModuleTest {
+public class TestApplicationResourcesFactory {
 
     /**
-     * Tests module insertion.
+     * @return application resources for testing purposes.
      */
-    @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new AbstractModule() {
+    public static PLCApplicationResources getApplicationResources() {
+        ResourceBundle testResourceBundle = new ListResourceBundle() {
             @Override
-            protected void configure() {
-                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
+            protected Object[][] getContents() {
+                List<Object[]> contentList = new ArrayList<Object[]>();
+                contentList.add(new Object[] {"foo", "bar"});
+                contentList.add(new Object[] {"hashing.algorithm", "SHA-256"});
+                contentList.add(new Object[] {"hashing.date.format", "yyyyMMdd"});
+                contentList.add(new Object[] {"hashing.string.encoding", "UTF-8"});
+                Object[][] content = new Object[contentList.size()][];
+                contentList.toArray(content);
+                return content;
             }
-        }, new PatientInformationServiceModule());
-        PatientInformationService pis = injector.getInstance(PatientInformationService.class);
-        assertNotNull(pis);
+        };
+        return new PLCApplicationResources(testResourceBundle);
     }
+
 }

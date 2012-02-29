@@ -28,37 +28,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
-
-import static org.junit.Assert.assertNotNull;
+package com.fiveamsolutions.plc.util;
 
 import java.util.ResourceBundle;
 
-import org.junit.Test;
-
-import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.google.inject.Provider;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * Implement guice provider for the application's resource bundle.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class PatientInformationServiceModuleTest {
+public class PLCResourceBundleProvider implements Provider<ResourceBundle> {
+    private static final String APP_RESOURCE_BUNDLE = "ApplicationResources";
+    private static ResourceBundle resourceBundle;
 
     /**
-     * Tests module insertion.
+     * {@inheritDoc}
      */
-    @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
-            }
-        }, new PatientInformationServiceModule());
-        PatientInformationService pis = injector.getInstance(PatientInformationService.class);
-        assertNotNull(pis);
+    @Override
+    public ResourceBundle get() {
+        if (resourceBundle == null) {
+            resourceBundle = ResourceBundle.getBundle(APP_RESOURCE_BUNDLE);
+        }
+        return resourceBundle;
     }
 }
