@@ -7,6 +7,11 @@
 
     <description>Portable Legal Consent</description>
     
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>ApplicationResources</param-value>
+    </context-param>
+    
     <!-- Filters -->
     <filter>
         <filter-name>guice</filter-name>
@@ -18,6 +23,15 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
+    
+    <!-- Context listeners -->
+    <listener>
+        <listener-class>com.fiveamsolutions.plc.web.inject.GuiceServletContextListener</listener-class>
+    </listener>
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
  
     <!-- Security roles -->
     <security-role>
