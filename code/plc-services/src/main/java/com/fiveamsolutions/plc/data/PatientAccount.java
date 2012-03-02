@@ -65,7 +65,7 @@ public class PatientAccount implements PLCEntity {
     private String username;
     private String password;
     private List<ChallengeQuestion> challengeQuestions = new ArrayList<ChallengeQuestion>();
-    private PatientData patientData;
+    private PatientData patientData = new PatientData();
 
     /**
      * {@inheritDoc}
