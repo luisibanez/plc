@@ -39,6 +39,8 @@ import java.util.Locale;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 
+import com.fiveamsolutions.plc.dao.PatientAccountDao;
+import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.google.inject.Inject;
@@ -53,24 +55,47 @@ public class PatientInformationServiceBean implements PatientInformationService 
     private static final String HASHING_ALGORITHM_KEY = "hashing.algorithm";
     private static final String ENCODING_KEY = "hashing.string.encoding";
     private final PLCApplicationResources appResources;
+    private final PatientAccountDao patientAccountDao;
     private final MessageDigest digester;
 
     /**
      * Class constructor.
      * @param appResources the application resources
+     * @param patientAccountDao the patient account dao
      * @throws NoSuchAlgorithmException if the hashing algorithm doesn't exist
      */
     @Inject
-    public PatientInformationServiceBean(PLCApplicationResources appResources) throws NoSuchAlgorithmException {
+    public PatientInformationServiceBean(PLCApplicationResources appResources, PatientAccountDao patientAccountDao)
+            throws NoSuchAlgorithmException {
         this.appResources = appResources;
+        this.patientAccountDao = patientAccountDao;
         digester = MessageDigest.getInstance(this.appResources.getStringResource(HASHING_ALGORITHM_KEY));
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public String generatePatientGUID(PatientData patientData) {
+    public String registerPatient(PatientAccount patient) {
+        String guid = generatePatientGUID(patient.getPatientData());
+        StringBuilder builder = new StringBuilder().append(patient.getSalt()).append(patient.getPassword());
+        byte[] toHashBytes = {};
+        try {
+            toHashBytes = builder.toString().getBytes(appResources.getStringResource(ENCODING_KEY));
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("Unable to retrieve bytes in UTF-8 format.", e);
+        }
+        patient.setPassword(Hex.encodeHexString(digester.digest(toHashBytes)));
+        patient.setGuid(guid);
+        patientAccountDao.save(patient);
+        return guid;
+    }
+
+    /**
+     * Generates the patient's GUID from the given patient data.
+     * @param patientData the patient data to generate the GUID from
+     * @return the generated GUID
+     */
+    private String generatePatientGUID(PatientData patientData) {
         SimpleDateFormat sdf =
                 new SimpleDateFormat(appResources.getStringResource(DATE_FORMAT_KEY), Locale.getDefault());
         String dob = sdf.format(patientData.getBirthDate());

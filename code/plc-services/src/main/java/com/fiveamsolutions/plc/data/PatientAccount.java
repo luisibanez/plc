@@ -44,9 +44,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fiveamsolutions.plc.data.transfer.Patient;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -55,17 +58,43 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity(name = "patient_account")
 public class PatientAccount implements PLCEntity {
     private static final long serialVersionUID = 1L;
+    private static final int SALT_LENGTH = 16;
+    private static final int GUID_LENGTH = 64;
     private static final int MIN_USERNAME_LENGTH = 6;
     private static final int MAX_USERNAME_LENGTH = 20;
-    private static final int MIN_PASSWORD_LENGTH = 8;
-    private static final int MAX_PASSWORD_LENGTH = 20;
 
     private Long id;
     private String email;
     private String username;
     private String password;
+    private String salt;
+    private String guid;
     private List<ChallengeQuestion> challengeQuestions = new ArrayList<ChallengeQuestion>();
     private PatientData patientData = new PatientData();
+
+    /**
+     * Default Constructor.
+     */
+    public PatientAccount() {
+        salt = RandomStringUtils.randomAlphanumeric(SALT_LENGTH);
+    }
+
+    /**
+     * Copy constructor from transfer object.
+     * @param patient the transfer patient
+     */
+    public PatientAccount(Patient patient) {
+        this.salt = RandomStringUtils.randomAlphanumeric(SALT_LENGTH);
+        this.username = patient.getUsername();
+        this.email = patient.getEmail();
+        this.password = patient.getPassword();
+        this.challengeQuestions = patient.getChallengeQuestions();
+        this.getPatientData().setFirstName(patient.getFirstName());
+        this.getPatientData().setBirthName(patient.getBirthName());
+        this.getPatientData().setBirthDate(patient.getBirthDate());
+        this.getPatientData().setBirthPlace(patient.getBirthPlace());
+        this.getPatientData().setBirthCountry(patient.getBirthCountry());
+    }
 
     /**
      * {@inheritDoc}
@@ -120,7 +149,6 @@ public class PatientAccount implements PLCEntity {
     /**
      * @return the password
      */
-    @Length(min = MIN_PASSWORD_LENGTH, max = MAX_PASSWORD_LENGTH)
     @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;
@@ -131,6 +159,36 @@ public class PatientAccount implements PLCEntity {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the salt
+     */
+    @Column(name = "salt", nullable = false, updatable = false, length = SALT_LENGTH)
+    public String getSalt() {
+        return salt;
+    }
+
+    /**
+     * @param salt the salt to set
+     */
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    /**
+     * @return the guid
+     */
+    @Column(name = "guid", nullable = false, updatable = false, length = GUID_LENGTH)
+    public String getGuid() {
+        return guid;
+    }
+
+    /**
+     * @param guid the guid to set
+     */
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     /**

@@ -28,57 +28,38 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.data;
+package com.fiveamsolutions.plc.data.transfer;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
+import com.fiveamsolutions.plc.data.PatientAccount;
 
 /**
- * Represents a challenge question.
+ * Tests conversion between Patient and PatientAccount.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-@Embeddable
-@XmlRootElement(name = "challengeQuestion")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ChallengeQuestion", propOrder = {
-        "question", "answer"
-})
-public class ChallengeQuestion {
-    private String question;
-    private String answer;
+public class PatientConversionTest {
 
     /**
-     * @return the question
+     * Tests conversion between the Patient transfer object and the patient account.
      */
-    @Column(name = "question", nullable = false)
-    public String getQuestion() {
-        return question;
-    }
+    @Test
+    public void conversion() {
+        Patient patient = TestPLCEntityFactory.createPatient();
+        PatientAccount patientAccount = new PatientAccount(patient);
 
-    /**
-     * @param question the question to set
-     */
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    /**
-     * @return the answer
-     */
-    @Column(name = "answer", nullable = false)
-    public String getAnswer() {
-        return answer;
-    }
-
-    /**
-     * @param answer the answer to set
-     */
-    public void setAnswer(String answer) {
-        this.answer = answer;
+        assertEquals(patient.getUsername(), patientAccount.getUsername());
+        assertEquals(patient.getEmail(), patientAccount.getEmail());
+        assertEquals(patient.getPassword(), patientAccount.getPassword());
+        assertEquals(patient.getFirstName(), patientAccount.getPatientData().getFirstName());
+        assertEquals(patient.getBirthName(), patientAccount.getPatientData().getBirthName());
+        assertEquals(patient.getBirthDate(), patientAccount.getPatientData().getBirthDate());
+        assertEquals(patient.getBirthPlace(), patientAccount.getPatientData().getBirthPlace());
+        assertEquals(patient.getBirthCountry(), patientAccount.getPatientData().getBirthCountry());
+        assertEquals(patient.getChallengeQuestions().size(), patientAccount.getChallengeQuestions().size());
     }
 }

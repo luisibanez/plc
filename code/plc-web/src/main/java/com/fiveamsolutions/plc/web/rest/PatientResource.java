@@ -28,57 +28,49 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.data;
+package com.fiveamsolutions.plc.web.rest;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.enterprise.context.RequestScoped;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+
+import com.fiveamsolutions.plc.data.PatientAccount;
+import com.fiveamsolutions.plc.data.transfer.Patient;
+import com.fiveamsolutions.plc.service.PatientInformationService;
+import com.google.inject.Inject;
 
 /**
- * Represents a challenge question.
+ * Defines REST operations for patient data.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-@Embeddable
-@XmlRootElement(name = "challengeQuestion")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ChallengeQuestion", propOrder = {
-        "question", "answer"
-})
-public class ChallengeQuestion {
-    private String question;
-    private String answer;
+@Path("/patient")
+@RequestScoped
+public class PatientResource {
+    private final PatientInformationService patientInformationService;
 
     /**
-     * @return the question
+     * Class constructor.
+     *
+     * @param service the patient information service
      */
-    @Column(name = "question", nullable = false)
-    public String getQuestion() {
-        return question;
+    @Inject
+    public PatientResource(PatientInformationService service) {
+        this.patientInformationService = service;
     }
 
     /**
-     * @param question the question to set
+     * Submits a patient's data, creating an account for them and returning their generated GUID.
+     * @param patient the patient to create
+     * @return the patient's GUID
      */
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    /**
-     * @return the answer
-     */
-    @Column(name = "answer", nullable = false)
-    public String getAnswer() {
-        return answer;
-    }
-
-    /**
-     * @param answer the answer to set
-     */
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    @POST
+    @Produces("text/plain")
+    @Consumes("application/json")
+    public String registerPatient(Patient patient) {
+        PatientAccount patientAccount = new PatientAccount(patient);
+        return patientInformationService.registerPatient(patientAccount);
     }
 }

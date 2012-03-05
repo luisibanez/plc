@@ -34,8 +34,4 @@
     </welcome-file-list>
  
     <!-- Security roles -->
-    <security-role>
-        <description>Portable Legal Consent User</description>
-        <role-name>plcuser</role-name>
-    </security-role>
 </web-app>

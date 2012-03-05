@@ -32,6 +32,7 @@ package com.fiveamsolutions.plc.web.inject;
 
 import com.fiveamsolutions.plc.inject.GuiceInjectorHolder;
 import com.google.inject.Injector;
+import com.google.inject.struts2.Struts2GuicePluginModule;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -44,10 +45,8 @@ public class GuiceServletContextListener extends com.google.inject.servlet.Guice
      */
     @Override
     protected Injector getInjector() {
-        Injector injector = GuiceInjectorHolder.getInjector().createChildInjector(new ListenerModule(),
-                new PLCServletModule());
-        Struts2GuiceObjectFactory.setInjector(injector);
+        Injector injector = GuiceInjectorHolder.getInjector().createChildInjector(new Struts2GuicePluginModule(),
+                new ListenerModule(), new PLCServletModule(), new PLCRestServletModule());
         return injector;
     }
-
 }

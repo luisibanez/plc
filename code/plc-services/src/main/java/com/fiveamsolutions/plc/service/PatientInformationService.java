@@ -30,7 +30,7 @@
  */
 package com.fiveamsolutions.plc.service;
 
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientAccount;
 
 /**
  * Interface for interacting with patient information.
@@ -40,9 +40,9 @@ import com.fiveamsolutions.plc.data.PatientData;
 public interface PatientInformationService {
 
     /**
-     * Generates the patient's GUID from the given patient data.
-     * @param patientData the patient data to generate the GUID from
-     * @return the generated GUID
+     * Registers a patient in the system, returning their GUID.
+     * @param patient the patient to register
+     * @return the patient's GUID
      */
-    String generatePatientGUID(PatientData patientData);
+    String registerPatient(PatientAccount patient);
 }

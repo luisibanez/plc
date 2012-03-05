@@ -2,6 +2,7 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+<!-- 
     <constant name="struts.mapper.class" value="rest" />
     <constant name="struts.rest.namespace" value="" />
 
@@ -9,18 +10,10 @@
     <constant name="struts.convention.action.suffix" value="Controller" />
     <constant name="struts.convention.action.mapAllMatches" value="true" />
     <constant name="struts.convention.default.parent.package" value="plc-default" />
-
-    <bean type="com.opensymphony.xwork2.ObjectFactory" name="guice" class="com.fiveamsolutions.plc.web.inject.Struts2GuiceObjectFactory" />
-    <constant name="struts.objectFactory" value="guice" />
-
-    
-
-    <package name="plc-default" extends="rest-default">
+     <constant name="struts.objectFactory" value="guice" />
+-->
+    <package name="plc-default" extends="struts-default,json-default">
         <interceptors>
-            <interceptor name="rest" class="org.apache.struts2.rest.ContentTypeInterceptor" />
-            <interceptor name="restWorkflow" class="org.apache.struts2.rest.RestWorkflowInterceptor" />
-            <interceptor name="messages" class="org.apache.struts2.interceptor.MessageStoreInterceptor" />
-            
             <interceptor-stack name="plcParamsPrepareParamsStack">
                 <interceptor-ref name="exception" />
                 <interceptor-ref name="alias" />
@@ -48,45 +41,12 @@
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
             </interceptor-stack>
-
-            <interceptor-stack name="restDefaultStack">
-                <interceptor-ref name="exception" />
-                <interceptor-ref name="alias" />
-                <interceptor-ref name="servletConfig" />
-                <interceptor-ref name="messages">
-                    <param name="operationMode">AUTOMATIC</param>
-                </interceptor-ref>
-                <interceptor-ref name="prepare" />
-                <interceptor-ref name="i18n" />
-                <interceptor-ref name="chain" />
-                <interceptor-ref name="debugging" />
-                <interceptor-ref name="profiling" />
-                <interceptor-ref name="actionMappingParams" />
-                <interceptor-ref name="scopedModelDriven" />
-                <interceptor-ref name="modelDriven">
-                    <param name="refreshModelBeforeResult">true</param>
-                </interceptor-ref>
-                <interceptor-ref name="fileUpload" />
-                <interceptor-ref name="checkbox" />
-                <interceptor-ref name="staticParams" />
-                <interceptor-ref name="params">
-                    <param name="excludeParams">dojo\..*</param>
-                </interceptor-ref>
-                <interceptor-ref name="rest" />
-                <interceptor-ref name="conversionError" />
-                <interceptor-ref name="validation">
-                    <param name="excludeMethods">input,back,cancel,browse,index,show,edit,editNew</param>
-                </interceptor-ref>
-                <interceptor-ref name="restWorkflow">
-                    <param name="excludeMethods">input,back,cancel,browse,index,show,edit,editNew</param>
-                </interceptor-ref>
-            </interceptor-stack>
         </interceptors>
 
         <default-interceptor-ref name="plcParamsPrepareParamsStack"/>
     </package>
 
-    <package name="protected" namespace="/protected" extends="plc-default">
-        <default-interceptor-ref name="restDefaultStack"/>
+    <package name="protected" namespace="/www/protected" extends="plc-default">
+        <default-interceptor-ref name="plcParamsPrepareParamsStack"/>
     </package>
 </struts>

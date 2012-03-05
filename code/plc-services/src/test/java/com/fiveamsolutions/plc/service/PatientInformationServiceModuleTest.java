@@ -31,11 +31,13 @@
 package com.fiveamsolutions.plc.service;
 
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 import java.util.ResourceBundle;
 
 import org.junit.Test;
 
+import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -52,10 +54,12 @@ public class PatientInformationServiceModuleTest {
      */
     @Test
     public void testModule() {
+        final PatientAccountDao patientAccountDao = mock(PatientAccountDao.class);
         Injector injector = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
                 bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
+                bind(PatientAccountDao.class).toInstance(patientAccountDao);
             }
         }, new PatientInformationServiceModule());
         PatientInformationService pis = injector.getInstance(PatientInformationService.class);

@@ -28,57 +28,32 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.data;
+package com.fiveamsolutions.plc.web.inject;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.guice.JerseyServletModule;
+import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 /**
- * Represents a challenge question.
+ * Module for configure REST-ful jersey servlet.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-@Embeddable
-@XmlRootElement(name = "challengeQuestion")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ChallengeQuestion", propOrder = {
-        "question", "answer"
-})
-public class ChallengeQuestion {
-    private String question;
-    private String answer;
+public class PLCRestServletModule extends JerseyServletModule {
+    private static final String REST_REQUESTS = "/rest/*";
 
     /**
-     * @return the question
+     * {@inheritDoc}
      */
-    @Column(name = "question", nullable = false)
-    public String getQuestion() {
-        return question;
-    }
-
-    /**
-     * @param question the question to set
-     */
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    /**
-     * @return the answer
-     */
-    @Column(name = "answer", nullable = false)
-    public String getAnswer() {
-        return answer;
-    }
-
-    /**
-     * @param answer the answer to set
-     */
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    @Override
+    protected void configureServlets() {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(PackagesResourceConfig.PROPERTY_PACKAGES, "com.fiveamsolutions.plc.web.rest");
+        params.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
+        serve(REST_REQUESTS).with(GuiceContainer.class, params);
     }
 }

@@ -30,8 +30,7 @@
  */
 package com.fiveamsolutions.plc.web.inject;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
 
 import com.google.inject.servlet.ServletModule;
 
@@ -40,7 +39,7 @@ import com.google.inject.servlet.ServletModule;
  *
  */
 public class PLCServletModule extends ServletModule {
-    private static final String ALL_REQUESTS = "/*";
+    private static final String NON_REST_REQUESTS = "/www/*";
 
     /**
      * {@inheritDoc}
@@ -48,7 +47,6 @@ public class PLCServletModule extends ServletModule {
     @Override
     protected void configureServlets() {
         super.configureServlets();
-        filter(ALL_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(ALL_REQUESTS).through(StrutsExecuteFilter.class);
+        filter(NON_REST_REQUESTS).through(StrutsPrepareAndExecuteFilter.class);
     }
 }

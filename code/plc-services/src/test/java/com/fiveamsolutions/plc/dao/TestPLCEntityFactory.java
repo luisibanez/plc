@@ -37,6 +37,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import com.fiveamsolutions.plc.data.ChallengeQuestion;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.transfer.Patient;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -45,6 +46,7 @@ import com.fiveamsolutions.plc.data.PatientData;
 public class TestPLCEntityFactory {
     private static final int PASSWORD_LENGTH = 20;
     private static final int USERNAME_LENGTH = 20;
+    private static final int GUID_LENGTH = 64;
 
     /**
      * Creates a patient data entity for testing.
@@ -69,6 +71,7 @@ public class TestPLCEntityFactory {
         pa.setEmail("test@example.com");
         pa.setPassword(RandomStringUtils.random(PASSWORD_LENGTH));
         pa.setUsername(RandomStringUtils.random(USERNAME_LENGTH));
+        pa.setGuid(RandomStringUtils.random(GUID_LENGTH));
         pa.setPatientData(createPatientData());
 
         ChallengeQuestion challenge = new ChallengeQuestion();
@@ -76,5 +79,22 @@ public class TestPLCEntityFactory {
         challenge.setAnswer("Foo");
         pa.getChallengeQuestions().add(challenge);
         return pa;
+    }
+
+    /**
+     * Creates patient transfer entity for testing.
+     * @return the patient
+     */
+    public static Patient createPatient() {
+        Patient patient = new Patient();
+        patient.setEmail("test@example.com");
+        patient.setPassword(RandomStringUtils.random(PASSWORD_LENGTH));
+        patient.setUsername(RandomStringUtils.random(USERNAME_LENGTH));
+        patient.setFirstName("firstName");
+        patient.setBirthName("birthName");
+        patient.setBirthCountry("birthCountry");
+        patient.setBirthPlace("birthPlace");
+        patient.setBirthDate(new Date());
+        return patient;
     }
 }

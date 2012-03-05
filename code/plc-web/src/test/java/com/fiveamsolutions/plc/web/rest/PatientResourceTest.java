@@ -28,57 +28,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.data;
+package com.fiveamsolutions.plc.web.rest;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.dao.PatientAccountDao;
+import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
+import com.fiveamsolutions.plc.data.transfer.Patient;
+import com.fiveamsolutions.plc.service.PatientInformationService;
+import com.fiveamsolutions.plc.service.PatientInformationServiceBean;
+import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 
 /**
- * Represents a challenge question.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-@Embeddable
-@XmlRootElement(name = "challengeQuestion")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ChallengeQuestion", propOrder = {
-        "question", "answer"
-})
-public class ChallengeQuestion {
-    private String question;
-    private String answer;
+public class PatientResourceTest {
+    private static final int EXPECTED_GUID_LENGTH = 64;
+    private PatientResource patientResource;
+    private PatientInformationService patientInformationService;
+    private PatientAccountDao patientAccountDao;
 
     /**
-     * @return the question
+     * Sets up the test.
+     * @throws Exception on error
      */
-    @Column(name = "question", nullable = false)
-    public String getQuestion() {
-        return question;
+    @Before
+    public void setUp() throws Exception {
+        patientAccountDao = mock(PatientAccountDao.class);
+        patientInformationService =
+                new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources(),
+                        patientAccountDao);
+        patientResource = new PatientResource(patientInformationService);
     }
 
     /**
-     * @param question the question to set
+     * Tests registering a patient via the REST-ful interface.
+     * @throws Exception on error
      */
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    /**
-     * @return the answer
-     */
-    @Column(name = "answer", nullable = false)
-    public String getAnswer() {
-        return answer;
-    }
-
-    /**
-     * @param answer the answer to set
-     */
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    @Test
+    public void registerPatient() throws Exception {
+        Patient patient = TestPLCEntityFactory.createPatient();
+        String guid = patientResource.registerPatient(patient);
+        assertNotNull(guid);
+        assertEquals(EXPECTED_GUID_LENGTH, guid.length());
     }
 }

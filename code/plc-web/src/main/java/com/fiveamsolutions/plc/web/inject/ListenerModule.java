@@ -30,8 +30,7 @@
  */
 package com.fiveamsolutions.plc.web.inject;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
 
 import com.google.inject.AbstractModule;
 
@@ -46,7 +45,6 @@ public class ListenerModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bind(StrutsPrepareFilter.class).asEagerSingleton();
-        bind(StrutsExecuteFilter.class).asEagerSingleton();
+        bind(StrutsPrepareAndExecuteFilter.class).asEagerSingleton();
     }
 }

@@ -28,34 +28,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.util;
 
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-import com.google.inject.Injector;
-import com.opensymphony.xwork2.ObjectFactory;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
+ * XML Adapter for conversion of Date to the specified format.
+ * 
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
- *
  */
-public class Struts2GuiceObjectFactory extends ObjectFactory {
-    private static final long serialVersionUID = 1L;
-    private static Injector injector;
+@SuppressWarnings("PMD.SignatureDeclareThrowsException")
+public class JAXBDateAdapter extends XmlAdapter<String, Date> {
+
+    private final DateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 
     /**
-     * @param injector the injector to set
+     * {@inheritDoc}
      */
-    public static void setInjector(Injector injector) {
-        Struts2GuiceObjectFactory.injector = injector;
+    @Override
+    public Date unmarshal(String date) throws Exception {
+        return df.parse(date);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings({"unchecked", "rawtypes" })
     @Override
-    public Object buildBean(Class clazz, Map<String, Object> extraContext) {
-        return Struts2GuiceObjectFactory.injector.getInstance(clazz);
+    public String marshal(Date date) throws Exception {
+        return df.format(date);
     }
+
 }
