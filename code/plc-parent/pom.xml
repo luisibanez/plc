@@ -16,7 +16,7 @@
         <java.target>1.6</java.target>
         <cobertura.check.haltOnFailure>true</cobertura.check.haltOnFailure>
         <cobertura.totalLineRate>95</cobertura.totalLineRate>
-        <cobertura.totalBranchRate>90</cobertura.totalBranchRate>
+        <cobertura.totalBranchRate>92</cobertura.totalBranchRate>
         
         <logger.debug>false</logger.debug>
         <logger.level>WARN</logger.level>
@@ -128,7 +128,6 @@
                         <argLine>-Xmx512m -XX:MaxPermSize=256M</argLine>
                         <includes>
                             <include>**/*Test.java</include>
-                            <include>**/*TestDb.java</include>
                         </includes>
                     </configuration>
                 </plugin>

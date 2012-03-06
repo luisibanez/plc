@@ -28,25 +28,38 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.data.validator;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 
 import javax.persistence.EntityManager;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.google.inject.Inject;
+import org.junit.Test;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> implements PatientAccountDao {
+public class ValidatorModuleTest {
 
     /**
-     * Class constructor.
-     * @param em the entity manager
+     * Test module insertion.
      */
-    @Inject
-    PatientAccountJPADao(EntityManager em) {
-        super(em);
+    @Test
+    public void testModule() {
+        final EntityManager em = mock(EntityManager.class);
+        Injector injector = Guice.createInjector(new ValidatorModule(), new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(EntityManager.class).toInstance(em);
+            }
+        });
+        assertNotNull(injector);
     }
+
 }

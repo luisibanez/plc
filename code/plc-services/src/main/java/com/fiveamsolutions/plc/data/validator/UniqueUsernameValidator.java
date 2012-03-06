@@ -28,25 +28,56 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.data.validator;
+
+import java.io.Serializable;
 
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.Query;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> implements PatientAccountDao {
+public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, PatientAccount>, Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Inject
+    private static Provider<EntityManager> entityManagerProvider;
 
     /**
-     * Class constructor.
-     * @param em the entity manager
+     * {@inheritDoc}
      */
-    @Inject
-    PatientAccountJPADao(EntityManager em) {
-        super(em);
+    @Override
+    public void initialize(UniqueUsername parameters) {
+        //Do nothing.
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValid(PatientAccount value, ConstraintValidatorContext context) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select count(e) from ").append(value.getClass().getName())
+            .append(" e where e.username = :username");
+        if (value.getId() != null) {
+            builder.append(" and e.id != :id");
+        }
+        Query query = entityManagerProvider.get().createQuery(builder.toString());
+        query.setParameter("username", value.getUsername());
+        if (value.getId() != null) {
+            query.setParameter("id", value.getId());
+        }
+        query.setFlushMode(FlushModeType.COMMIT);
+        long result = (Long) query.getSingleResult();
+        return result == 0;
     }
 }

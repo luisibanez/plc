@@ -36,6 +36,10 @@ import javax.persistence.Persistence;
 
 import org.junit.Before;
 
+import com.fiveamsolutions.plc.data.validator.UniqueUsernameValidator;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
@@ -49,6 +53,14 @@ public abstract class AbstractJPADaoTest {
     @Before
     public final void setUp() {
         entityManagerFactory = Persistence.createEntityManagerFactory("plc-testdb");
+        Guice.createInjector(new AbstractModule() {
+
+            @Override
+            protected void configure() {
+                bind(EntityManager.class).toInstance(getEntityManager());
+                requestStaticInjection(UniqueUsernameValidator.class);
+            }
+        });
     }
 
     /**
@@ -57,5 +69,4 @@ public abstract class AbstractJPADaoTest {
     protected EntityManager getEntityManager() {
         return entityManagerFactory.createEntityManager();
     }
-
 }

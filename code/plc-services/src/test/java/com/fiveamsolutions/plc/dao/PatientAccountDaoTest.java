@@ -42,9 +42,8 @@ import com.fiveamsolutions.plc.data.PatientAccount;
 public class PatientAccountDaoTest extends AbstractPLCJPADaoTest {
     private PatientAccountJPADao testDao;
 
-
     /**
-     * Prepare test data.
+     * Constructor.
      */
     @Before
     public void prepareTestData() {
@@ -56,7 +55,7 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest {
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected  PatientAccountJPADao getTestDao() {
+    protected PatientAccountJPADao getTestDao() {
         return testDao;
     }
 
@@ -77,5 +76,4 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest {
         PatientAccount pa = (PatientAccount) testEntity;
         pa.setEmail("change@example.com");
     }
-
 }

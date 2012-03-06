@@ -28,25 +28,40 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.data.validator;
 
-import javax.persistence.EntityManager;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.google.inject.Inject;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * Validator annotation for unique usernames.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> implements PatientAccountDao {
+@Documented
+@Constraint(validatedBy = UniqueUsernameValidator.class)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface UniqueUsername {
 
     /**
-     * Class constructor.
-     * @param em the entity manager
+     * Get the message.
      */
-    @Inject
-    PatientAccountJPADao(EntityManager em) {
-        super(em);
-    }
+    String message() default "{validation.unique.username}";
+
+    /**
+     * Get the groups.
+     */
+    Class<?>[] groups() default { };
+
+    /**
+     * Get the payload.
+     */
+    Class<? extends Payload>[] payload() default { };
 }

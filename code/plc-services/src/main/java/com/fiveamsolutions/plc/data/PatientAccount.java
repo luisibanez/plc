@@ -50,11 +50,13 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fiveamsolutions.plc.data.transfer.Patient;
+import com.fiveamsolutions.plc.data.validator.UniqueUsername;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
+@UniqueUsername
 @Entity(name = "patient_account")
 public class PatientAccount implements PLCEntity {
     private static final long serialVersionUID = 1L;

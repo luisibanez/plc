@@ -28,25 +28,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.data.validator;
 
-import javax.persistence.EntityManager;
-
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.google.inject.Inject;
+import com.google.inject.AbstractModule;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> implements PatientAccountDao {
+public class ValidatorModule extends AbstractModule {
 
     /**
-     * Class constructor.
-     * @param em the entity manager
+     * {@inheritDoc}
      */
-    @Inject
-    PatientAccountJPADao(EntityManager em) {
-        super(em);
+    @Override
+    protected void configure() {
+        requestStaticInjection(UniqueUsernameValidator.class);
     }
+
 }

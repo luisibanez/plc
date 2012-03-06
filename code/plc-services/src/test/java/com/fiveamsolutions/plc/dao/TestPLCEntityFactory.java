@@ -69,9 +69,9 @@ public class TestPLCEntityFactory {
     public static PatientAccount createPatientAccount() {
         PatientAccount pa = new PatientAccount();
         pa.setEmail("test@example.com");
-        pa.setPassword(RandomStringUtils.random(PASSWORD_LENGTH));
-        pa.setUsername(RandomStringUtils.random(USERNAME_LENGTH));
-        pa.setGuid(RandomStringUtils.random(GUID_LENGTH));
+        pa.setPassword(RandomStringUtils.randomAscii(PASSWORD_LENGTH));
+        pa.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));
+        pa.setGuid(RandomStringUtils.randomAlphanumeric(GUID_LENGTH));
         pa.setPatientData(createPatientData());
 
         ChallengeQuestion challenge = new ChallengeQuestion();
@@ -88,8 +88,8 @@ public class TestPLCEntityFactory {
     public static Patient createPatient() {
         Patient patient = new Patient();
         patient.setEmail("test@example.com");
-        patient.setPassword(RandomStringUtils.random(PASSWORD_LENGTH));
-        patient.setUsername(RandomStringUtils.random(USERNAME_LENGTH));
+        patient.setPassword(RandomStringUtils.randomAscii(PASSWORD_LENGTH));
+        patient.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));
         patient.setFirstName("firstName");
         patient.setBirthName("birthName");
         patient.setBirthCountry("birthCountry");
