@@ -60,6 +60,44 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>ci-nodeploy</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.11</version>
+                        <configuration>
+                            <!-- Skip the normal tests, we'll run them in the integration-test phase -->
+                            <skip>true</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <configuration>
+                                    <skip>false</skip>
+                                    <includes>
+                                        <include>**/*Integration.java</include>
+                                    </includes>
+                                    <excludes>
+                                        <exclude>**/*Test.java</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -121,7 +159,7 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Test Jars -->
         <dependency>
             <groupId>com.fiveamsolutions.plc</groupId>
