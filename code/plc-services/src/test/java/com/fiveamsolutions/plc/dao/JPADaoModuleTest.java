@@ -34,6 +34,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -48,7 +49,7 @@ public class JPADaoModuleTest {
      */
     @Test
     public void testModule() {
-        Injector injector = Guice.createInjector(new JPADaoModule());
+        Injector injector = Guice.createInjector(new JPADaoModule(TestApplicationResourcesFactory.getApplicationResources()));
         PatientAccountDao patientAccountDao = injector.getInstance(PatientAccountDao.class);
         PatientDataDao patientDataDao = injector.getInstance(PatientDataDao.class);
         assertNotNull(patientAccountDao);

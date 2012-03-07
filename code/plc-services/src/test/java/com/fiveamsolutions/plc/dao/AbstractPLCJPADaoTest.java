@@ -48,15 +48,14 @@ import com.fiveamsolutions.plc.data.PLCEntity;
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
+public abstract class AbstractPLCJPADaoTest<T extends PLCEntity> extends AbstractJPADaoTest {
     private static final int NUMBER_OF_TEST_ENTITIES = 10;
 
     /**
      * Tests retrieve all.
-     * @param <T> the entity type
      */
     @Test
-    public <T extends PLCEntity> void getAll() {
+    public void getAll() {
         persistMultipleTestEntities(NUMBER_OF_TEST_ENTITIES);
         AbstractPLCEntityDao<T> testDao = getTestDao();
         testDao.getEntityManager().getTransaction().begin();
@@ -68,10 +67,9 @@ public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
 
     /**
      * Test delete functionality.
-     * @param <T> the entity type
      */
     @Test
-    public <T extends PLCEntity> void delete() {
+    public void delete() {
         T entity = persistTestEntity();
         assertNotNull(retrieveById(entity.getId()));
         AbstractPLCEntityDao<T> testDao = getTestDao();
@@ -83,10 +81,9 @@ public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
 
     /**
      * Tests deletion of an invalid entity.
-     * @param <T> the entity type
      */
     @Test
-    public <T extends PLCEntity> void invalidDeletion() {
+    public void invalidDeletion() {
         AbstractPLCEntityDao<T> testDao = getTestDao();
         testDao.getEntityManager().getTransaction().begin();
         testDao.deleteById(0L);
@@ -95,10 +92,9 @@ public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
 
     /**
      * Tests update functionality.
-     * @param <T> the entity type
      */
     @Test
-    public <T extends PLCEntity> void update() {
+    public void update() {
         T testEntity = persistTestEntity();
         changeTestEntity(testEntity);
         testEntity  = persistTestEntity(testEntity);
@@ -110,10 +106,9 @@ public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
 
     /**
      * Test the parameterized type.
-     * @param <T> entity type
      */
     @Test
-    public <T extends PLCEntity> void testGetParameterizedType() {
+    public void testGetParameterizedType() {
         AbstractPLCEntityDao<T> testDao = getTestDao();
         PLCEntity testEntity = getTestEntity();
         assertNotNull(testDao.getEntityType());
@@ -122,17 +117,15 @@ public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
 
     /**
      * Get the DAO to be tests.
-     * @param <T> the entity type
      * @return the DAO to be tested
      */
-    protected abstract <T extends PLCEntity> AbstractPLCEntityDao<T> getTestDao();
+    protected abstract AbstractPLCEntityDao<T> getTestDao();
 
     /**
      * Get an entity to be used for testing.
-     * @param <T> the entity type
      * @return a test entity
      */
-    protected abstract <T extends PLCEntity> T getTestEntity();
+    protected abstract T getTestEntity();
 
     /**
      * Change any attribute(s) of the given test entity.
@@ -153,10 +146,9 @@ public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
     /**
      * Retrieve an entity by ID for verification purposes.
      * @param id entity's ID.
-     * @param <T> entity type
      * @return the retrieved entity.
      */
-    protected <T extends PLCEntity> T retrieveById(Long id) {
+    protected T retrieveById(Long id) {
         AbstractPLCEntityDao<T> testDao = getTestDao();
         T retrievedEntity;
         testDao.getEntityManager().getTransaction().begin();
@@ -167,21 +159,19 @@ public abstract class AbstractPLCJPADaoTest extends AbstractJPADaoTest {
 
     /**
      * Create and persist a test entity.
-     * @param <T> entity type.
      * @return the persisted entity.
      */
-    protected <T extends PLCEntity> T persistTestEntity() {
+    protected T persistTestEntity() {
         T testEntity = getTestEntity();
         return persistTestEntity(testEntity);
     }
 
     /**
      * Persist the given entity.
-     * @param <T> entity type
      * @param testEntity entity to be persisted.
      * @return the persisted entity.
      */
-    protected <T extends PLCEntity> T persistTestEntity(T testEntity) {
+    protected T persistTestEntity(T testEntity) {
         AbstractPLCEntityDao<T> testDao = getTestDao();
         try {
             testDao.getEntityManager().getTransaction().begin();

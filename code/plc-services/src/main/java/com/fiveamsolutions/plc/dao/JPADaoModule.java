@@ -31,6 +31,7 @@
 package com.fiveamsolutions.plc.dao;
 
 import com.fiveamsolutions.plc.inject.PersistentServiceInitializer;
+import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
 
@@ -39,13 +40,23 @@ import com.google.inject.persist.jpa.JpaPersistModule;
  *
  */
 public class JPADaoModule extends AbstractModule {
+    private static final String PERSISTENCE_UNIT_NAME_KEY = "plc.persistenceUnit.name";
+    private final PLCApplicationResources applicationResources;
+
+    /**
+     * Class constructor.
+     * @param appResources the application resources
+     */
+    public JPADaoModule(PLCApplicationResources appResources) {
+        this.applicationResources = appResources;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void configure() {
-        install(new JpaPersistModule("plc-db"));
+        install(new JpaPersistModule(applicationResources.getStringResource(PERSISTENCE_UNIT_NAME_KEY)));
         bind(PatientDataDao.class).to(PatientDataJPADao.class);
         bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
         bind(PersistentServiceInitializer.class).asEagerSingleton();

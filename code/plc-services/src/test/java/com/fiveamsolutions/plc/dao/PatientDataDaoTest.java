@@ -41,7 +41,7 @@ import com.fiveamsolutions.plc.data.PatientData;
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
+public class PatientDataDaoTest extends AbstractPLCJPADaoTest<PatientData> {
     private PatientDataJPADao testDao;
 
     /**
@@ -55,7 +55,6 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected PatientDataJPADao getTestDao() {
         return testDao;
@@ -64,7 +63,6 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected PatientData getTestEntity() {
         return TestPLCEntityFactory.createPatientData();

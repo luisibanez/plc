@@ -53,6 +53,7 @@ public class TestApplicationResourcesFactory {
                 contentList.add(new Object[] {"hashing.algorithm", "SHA-256"});
                 contentList.add(new Object[] {"hashing.date.format", "yyyyMMdd"});
                 contentList.add(new Object[] {"hashing.string.encoding", "UTF-8"});
+                contentList.add(new Object[] {"plc.persistenceUnit.name", "plc-testdb"});
                 Object[][] content = new Object[contentList.size()][];
                 contentList.toArray(content);
                 return content;

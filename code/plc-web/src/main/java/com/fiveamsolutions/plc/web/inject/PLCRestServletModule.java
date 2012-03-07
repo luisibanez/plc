@@ -33,6 +33,7 @@ package com.fiveamsolutions.plc.web.inject;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.guice.JerseyServletModule;
@@ -45,6 +46,16 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
  */
 public class PLCRestServletModule extends JerseyServletModule {
     private static final String REST_REQUESTS = "/rest/*";
+    private static final String REST_REQUEST_PACKAGE_KEY = "plc.rest.package";
+    private final PLCApplicationResources appResources;
+
+    /**
+     * Class constructor.
+     * @param appResouces the application resources
+     */
+    public PLCRestServletModule(PLCApplicationResources appResouces) {
+        this.appResources = appResouces;
+    }
 
     /**
      * {@inheritDoc}
@@ -52,7 +63,7 @@ public class PLCRestServletModule extends JerseyServletModule {
     @Override
     protected void configureServlets() {
         Map<String, String> params = new HashMap<String, String>();
-        params.put(PackagesResourceConfig.PROPERTY_PACKAGES, "com.fiveamsolutions.plc.web.rest");
+        params.put(PackagesResourceConfig.PROPERTY_PACKAGES, appResources.getStringResource(REST_REQUEST_PACKAGE_KEY));
         params.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
         serve(REST_REQUESTS).with(GuiceContainer.class, params);
     }
