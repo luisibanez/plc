@@ -1,0 +1,38 @@
+<mockup version="1.0" skin="sketch" measuredW="985" measuredH="738" mockupW="951" mockupH="700">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="34" y="38" w="951" h="700" measuredW="951" measuredH="700" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <override controlID="5:6">
+          <text>-%5B%20%5D%20Sign%20In-%0A-%5B%20%5D%20Upload%20Data-</text>
+        </override>
+        <override controlID="5:1">
+          <text>-%5BX%5D%20Welcome-%0A-%5BX%5D%20Willingness%20to%20Participate-%0A-%5BX%5D%20Researcher%20Terms%20of%20Use-%0A%5B%20%5D%20Grant%20Rights%0A-%5B%20%5D%20Watch%20Video-%0A-%5B%20%5D%20Checkpoint-%0A-%5B%20%5D%20Acknowledge%20Understanding-</text>
+        </override>
+        <override controlID="5:4">
+          <text>-%5B%20%5D%20Consent%20Form-</text>
+        </override>
+        <src>./assets/background.bmml</src>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="84" y="314" w="-1" h="-1" measuredW="53" measuredH="28" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Next</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Paragraph" x="84" y="134" w="561" h="27" measuredW="200" measuredH="140" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>These%20are%20the%20rights%20you%20are%20granting%20to%20%5Bqualified%20researchers%5D</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::CheckBoxGroup" x="84" y="166" w="-1" h="-1" measuredW="444" measuredH="92" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%5B%20%5D%20Right%20to%5Bdo%20research%5D%20with%20my%20data%0A%5B%20%5D%20Right%20to%20%5Bredistribute%5D%20my%20data%0A%5B%20%5D%20Right%20to%20%5Bpublish%20the%20results%20of%20research%5D%20from%20my%20data%0A%5B%20%5D%20Right%20to%20%5Bcommercialize%20products%20derived%20from%20research%5D%20on%20my%20data</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="84" y="276" w="-1" h="-1" measuredW="423" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>All%20boxes%20must%20be%20checked%20to%20move%20forward%20in%20the%20consent%20process</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

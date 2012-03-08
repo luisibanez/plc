@@ -1,0 +1,43 @@
+<mockup version="1.0" skin="sketch" measuredW="985" measuredH="738" mockupW="951" mockupH="700">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="34" y="38" w="951" h="700" measuredW="951" measuredH="700" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <override controlID="5:6">
+          <text>-%5B%20%5D%20Sign%20In-%0A-%5B%20%5D%20Upload%20Data-</text>
+        </override>
+        <override controlID="5:1">
+          <text>-%5BX%5D%20Welcome-%0A-%5BX%5D%20Willingness%20to%20Participate-%0A-%5BX%5D%20Researcher%20Terms%20of%20Use-%0A-%5BX%5D%20Grant%20Rights-%0A-%5BX%5D%20Watch%20Video-%0A-%5BX%5D%20Checkpoint-%0A%5B%20%5D%20Acknowledge%20Understanding</text>
+        </override>
+        <override controlID="5:4">
+          <text>-%5B%20%5D%20Consent%20Form-</text>
+        </override>
+        <src>./assets/background.bmml</src>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="84" y="314" w="-1" h="-1" measuredW="163" measuredH="28" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>I%20want%20to%20give%20consent</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Paragraph" x="84" y="134" w="561" h="27" measuredW="200" measuredH="140" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Tell%20us%20that%20you%20understand%20this%20informed%20consent%20process.</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::CheckBoxGroup" x="84" y="166" w="549" h="95" measuredW="532" measuredH="92" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%5B%20%5D%20I%20understand%20%5Bthe%20uncertainty%20and%20risk%20of%20public%20genetic%20research%5D.%0A%5B%20%5D%20I%20provide%20%5Bconsent%5D%20for%20my%20data%20to%20be%20used%20in%20public%20genetic%20research.%0A%5B%20%5D%20I%20understand%20that%20although%20I%20can%20%5Bwithdraw%5D%20at%20any%20time%2C%20I%20cannot%20withdraw%20data%20%0A%20%20%20%20that%20has%20%5Balready%20been%20distributed%5D.</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="84" y="276" w="-1" h="-1" measuredW="423" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>All%20boxes%20must%20be%20checked%20to%20move%20forward%20in%20the%20consent%20process</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Button" x="263" y="314" w="-1" h="-1" measuredW="98" measuredH="28" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>I%27m%20not%20sure</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

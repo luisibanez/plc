@@ -1,0 +1,30 @@
+<mockup version="1.0" skin="sketch" measuredW="985" measuredH="738" mockupW="951" mockupH="700">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="34" y="38" w="951" h="700" measuredW="951" measuredH="700" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <override controlID="5:6">
+          <text>-%5B%20%5D%20Sign%20In-%0A-%5B%20%5D%20Upload%20Data-</text>
+        </override>
+        <override controlID="5:1">
+          <text>-%5BX%5D%20Welcome-%0A-%5BX%5D%20Willingness%20to%20Participate-%0A-%5BX%5D%20Researcher%20Terms%20of%20Use-%0A-%5BX%5D%20Grant%20Rights-%0A-%5BX%5D%20Watch%20Video-%0A%5B%20%5D%20Checkpoint%0A-%5B%20%5D%20Acknowledge%20Understanding-</text>
+        </override>
+        <override controlID="5:4">
+          <text>-%5B%20%5D%20Consent%20Form-</text>
+        </override>
+        <src>./assets/background.bmml</src>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="84" y="280" w="-1" h="-1" measuredW="243" measuredH="28" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>consentwiz-7%26bm%3Bconsentwiz-7.bmml%26bm%3Bconsentwiz-7.bmml%26bm%3Bconsentwiz-7.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2250%2C242%2C293%2C270%22%20href%3D%22consentwiz-7.bmml%22%20alt%3D%22consentwiz-7%22%20id%3D%223%22/%3E</map>
+        <text>I%20understand%2C%20and%20want%20to%20proceed</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Paragraph" x="84" y="134" w="561" h="146" measuredW="200" measuredH="140" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>If%20you%20don%27t%20feel%20like%20you%20know%20enough%20about%20public%20genetic%20research%20to%20move%20forward%2C%20or%20are%20uncomfortable%20now%20that%20you%20know%2C%20this%20is%20a%20good%20time%20to%20stop.%20%0A%20%0Ao%20%5BPlease%20take%20me%20back%20to%20the%20Sage%20Bionetworks%20home%20page%5D.%0Ao%20%5BPlease%20take%20me%20to%20resources%20on%20public%20genetics%5D.%0Ao%20%5BPlease%20take%20me%20to%20resources%20on%20bioethics%20and%20informed%20consent%5D.</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
