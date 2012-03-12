@@ -1,0 +1,79 @@
+<mockup version="1.0" skin="sketch" measuredW="985" measuredH="738" mockupW="951" mockupH="700">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="34" y="38" w="951" h="700" measuredW="951" measuredH="700" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <override controlID="5:6">
+          <text>-%5B%20%5D%20Sign%20In-%0A-%5B%20%5D%20Upload%20Data-</text>
+        </override>
+        <override controlID="5:1">
+          <text>-%5BX%5D%20Welcome-%0A-%5BX%5D%20Willingness%20to%20Participate-%0A-%5BX%5D%20Researcher%20Terms%20of%20Use-%0A-%5BX%5D%20Grant%20Rights-%0A-%5BX%5D%20Watch%20Video-%0A-%5BX%5D%20Checkpoint-%0A-%5BX%5D%20Acknowledge%20Understanding-</text>
+        </override>
+        <override controlID="5:4">
+          <text>-%5BX%5D%20Consent%20Form-%0A%5B%20%5D%20Generate%20ID%0A-%5B%20%5D%20User%20Profile-</text>
+        </override>
+        <src>./assets/background.bmml</src>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="75" y="136" w="-1" h="-1" measuredW="208" measuredH="23" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Generate%20Sage%20Commons%20User%20ID</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Label" x="75" y="167" w="619" h="62" measuredW="1406" measuredH="23" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>The%20data%20we%20collect%20here%20will%20be%20used%20to%20generate%20a%20unique%20ID%20that%20you%20can%20use%20to%20access%20your%20profile.%20%20You%20will%20provide%20this%20ID%20when%20you%20return%20to%20update%20your%20data%20files%2C%20change%20profile%20settings%2C%20or%20withdraw%20from%20the%20study.</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Label" x="127" y="244" w="-1" h="-1" measuredW="75" measuredH="23" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>First%20Name%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Label" x="75" y="282" w="-1" h="-1" measuredW="127" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Last%20Name%20at%20Birth%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="133" y="320" w="-1" h="-1" measuredW="69" measuredH="23" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Birth%20City%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Label" x="108" y="358" w="-1" h="-1" measuredW="94" measuredH="23" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Birth%20Country%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="127" y="396" w="-1" h="-1" measuredW="73" measuredH="23" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Birth%20Date%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::TextInput" x="217" y="241" w="155" h="-1" measuredW="79" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::TextInput" x="217" y="279" w="155" h="-1" measuredW="79" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::TextInput" x="217" y="317" w="155" h="-1" measuredW="79" measuredH="27" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::ComboBox" x="217" y="357" w="-1" h="-1" measuredW="48" measuredH="23" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>US</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::DateChooser" x="217" y="393" w="-1" h="-1" measuredW="106" measuredH="27" zOrder="12" locked="false" isInGroup="-1"/>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Button" x="75" y="472" w="-1" h="-1" measuredW="98" measuredH="28" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Generate%20ID</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

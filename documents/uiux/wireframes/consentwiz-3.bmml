@@ -9,7 +9,7 @@
           <text>-%5BX%5D%20Welcome-%0A-%5BX%5D%20Willingness%20to%20Participate-%0A%5B%20%5D%20Researcher%20Terms%20of%20Use%0A-%5B%20%5D%20Grant%20Rights-%0A-%5B%20%5D%20Watch%20Video-%0A-%5B%20%5D%20Checkpoint-%0A-%5B%20%5D%20Acknowledge%20Understanding-</text>
         </override>
         <override controlID="5:4">
-          <text>-%5B%20%5D%20Consent%20Form-</text>
+          <text>-%5B%20%5D%20Consent%20Form-%0A-%5B%20%5D%20Generate%20ID-%0A-%5B%20%5D%20User%20Profile-</text>
         </override>
         <src>./assets/background.bmml</src>
       </controlProperties>

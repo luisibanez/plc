@@ -1,0 +1,10 @@
+<mockup version="1.0" skin="sketch" measuredW="983" measuredH="738" mockupW="949" mockupH="700">
+  <controls>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Image" x="48" y="51" w="-1" h="-1" measuredW="833" measuredH="562" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/consform_bottom.png</src>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Canvas" x="34" y="38" w="949" h="700" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="-1"/>
+  </controls>
+</mockup>

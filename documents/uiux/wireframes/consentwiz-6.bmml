@@ -9,7 +9,7 @@
           <text>-%5BX%5D%20Welcome-%0A-%5BX%5D%20Willingness%20to%20Participate-%0A-%5BX%5D%20Researcher%20Terms%20of%20Use-%0A-%5BX%5D%20Grant%20Rights-%0A-%5BX%5D%20Watch%20Video-%0A%5B%20%5D%20Checkpoint%0A-%5B%20%5D%20Acknowledge%20Understanding-</text>
         </override>
         <override controlID="5:4">
-          <text>-%5B%20%5D%20Consent%20Form-</text>
+          <text>-%5B%20%5D%20Consent%20Form-%0A-%5B%20%5D%20Generate%20ID-%0A-%5B%20%5D%20User%20Profile-</text>
         </override>
         <src>./assets/background.bmml</src>
       </controlProperties>
@@ -17,7 +17,6 @@
     <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="84" y="280" w="-1" h="-1" measuredW="243" measuredH="28" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <href>consentwiz-7%26bm%3Bconsentwiz-7.bmml%26bm%3Bconsentwiz-7.bmml%26bm%3Bconsentwiz-7.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2250%2C242%2C293%2C270%22%20href%3D%22consentwiz-7.bmml%22%20alt%3D%22consentwiz-7%22%20id%3D%223%22/%3E</map>
         <text>I%20understand%2C%20and%20want%20to%20proceed</text>
       </controlProperties>
     </control>
