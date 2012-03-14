@@ -37,7 +37,9 @@
         <plc.db.jdbcUrl>${plc.db.jdbcPrefix}/${plc.db.database}</plc.db.jdbcUrl>
         <plc.db.username>legalconsent</plc.db.username>
         <plc.db.password>legalconsent</plc.db.password>
-        <plc.db.adminJdbcUrl>${plc.db.jdbcPrefix}</plc.db.adminJdbcUrl>
+        <plc.db.adminJdbcUrl>${plc.db.jdbcPrefix}/template1</plc.db.adminJdbcUrl>
+        <plc.db.adminUsername>root</plc.db.adminUsername>
+        <plc.db.adminPassword>password</plc.db.adminPassword>
         <plc.db.showSql>false</plc.db.showSql>
     </properties>
 
