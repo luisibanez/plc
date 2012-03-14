@@ -45,6 +45,7 @@ import org.junit.Test;
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientAccount;
+import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 
 /**
@@ -83,6 +84,26 @@ public class PatientInformationServiceTest {
         PatientAccount diffPatientAccount = TestPLCEntityFactory.createPatientAccount();
         diffPatientAccount.getPatientData().setBirthDate(DateUtils.addDays(new Date(), 1));
         String differentGuid = patientInformationServiceBean.registerPatient(diffPatientAccount);
+        assertTrue(StringUtils.isNotEmpty(differentGuid));
+        assertEquals(EXPECTED_GUID_LENGTH, differentGuid.length());
+        assertFalse(StringUtils.equals(guid, differentGuid));
+    }
+
+    /**
+     * Tests patient GUID generation.
+     */
+    @Test
+    public void generatePatientGUID() {
+        PatientData patientData = TestPLCEntityFactory.createPatientData();
+        String guid = patientInformationServiceBean.generatePatientGUID(patientData);
+
+        assertTrue(StringUtils.isNotEmpty(guid));
+        assertEquals(EXPECTED_GUID_LENGTH, guid.length());
+        assertEquals(guid, patientInformationServiceBean.generatePatientGUID(patientData));
+
+        PatientData differentPatientData = TestPLCEntityFactory.createPatientData();
+        differentPatientData.setBirthDate(DateUtils.addDays(new Date(), 1));
+        String differentGuid = patientInformationServiceBean.generatePatientGUID(differentPatientData);
         assertTrue(StringUtils.isNotEmpty(differentGuid));
         assertEquals(EXPECTED_GUID_LENGTH, differentGuid.length());
         assertFalse(StringUtils.equals(guid, differentGuid));

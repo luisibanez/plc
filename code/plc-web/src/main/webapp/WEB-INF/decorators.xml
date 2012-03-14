@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<decorators defaultdir="/WEB-INF/jsp/decorators">
+    <excludes>
+        <pattern>/images/*</pattern>
+        <pattern>/scripts/*</pattern>
+        <pattern>/styles/*</pattern> 
+    </excludes>
+    <decorator name="wizard" page="wizard.jsp">
+        <pattern>/www/wizard/*</pattern>
+    </decorator>
+</decorators>

@@ -33,10 +33,12 @@ package com.fiveamsolutions.plc.dao;
 import java.util.Date;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import com.fiveamsolutions.plc.data.ChallengeQuestion;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.enums.Country;
 import com.fiveamsolutions.plc.data.transfer.Patient;
 
 /**
@@ -56,9 +58,9 @@ public class TestPLCEntityFactory {
         PatientData pd = new PatientData();
         pd.setFirstName("firstName");
         pd.setBirthName("birthName");
-        pd.setBirthCountry("birthCountry");
+        pd.setBirthCountry(Country.US);
         pd.setBirthPlace("birthPlace");
-        pd.setBirthDate(new Date());
+        pd.setBirthDate(DateUtils.addYears(new Date(), -1));
         return pd;
     }
 
@@ -92,7 +94,7 @@ public class TestPLCEntityFactory {
         patient.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));
         patient.setFirstName("firstName");
         patient.setBirthName("birthName");
-        patient.setBirthCountry("birthCountry");
+        patient.setBirthCountry(Country.US);
         patient.setBirthPlace("birthPlace");
         patient.setBirthDate(new Date());
         return patient;

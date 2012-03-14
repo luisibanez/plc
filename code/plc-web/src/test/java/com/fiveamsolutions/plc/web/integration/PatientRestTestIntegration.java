@@ -40,6 +40,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
+import com.fiveamsolutions.plc.data.enums.Country;
 import com.fiveamsolutions.plc.data.transfer.Patient;
 import com.sun.jersey.api.client.WebResource;
 
@@ -64,7 +65,7 @@ public class PatientRestTestIntegration extends AbstractRestTestIntegration {
         p.setBirthDate(DateUtils.addYears(new Date(), -30));
         p.setFirstName("Test");
         p.setBirthName("User");
-        p.setBirthCountry("USA");
+        p.setBirthCountry(Country.US);
         p.setBirthPlace("Rockville, Maryland");
         String result =
                 resource.accept(MediaType.TEXT_PLAIN).type(MediaType.APPLICATION_JSON_TYPE).post(String.class, p);

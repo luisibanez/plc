@@ -38,12 +38,14 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.constraints.NotNull;
 
 /**
  * Validator annotation for unique usernames.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@NotNull
 @Documented
 @Constraint(validatedBy = UniqueUsernameValidator.class)
 @Retention(RetentionPolicy.RUNTIME)

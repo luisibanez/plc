@@ -43,6 +43,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.constraints.Email;
@@ -72,6 +73,7 @@ public class PatientAccount implements PLCEntity {
     private String salt;
     private String guid;
     private List<ChallengeQuestion> challengeQuestions = new ArrayList<ChallengeQuestion>();
+    @Valid
     private PatientData patientData = new PatientData();
 
     /**
@@ -151,6 +153,7 @@ public class PatientAccount implements PLCEntity {
     /**
      * @return the password
      */
+    @NotEmpty
     @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;

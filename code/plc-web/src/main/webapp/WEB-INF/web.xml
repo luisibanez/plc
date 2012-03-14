@@ -11,6 +11,10 @@
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>ApplicationResources</param-value>
     </context-param>
+    <context-param>
+        <param-name>showErrorStackTraces</param-name>
+        <param-value>${plc.web.showStackTraceOnErrorPage}</param-value>
+    </context-param>
     
     <!-- Filters -->
     <filter>

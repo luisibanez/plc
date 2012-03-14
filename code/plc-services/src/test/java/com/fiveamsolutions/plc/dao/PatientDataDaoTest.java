@@ -34,6 +34,7 @@ import org.junit.Before;
 
 import com.fiveamsolutions.plc.data.PLCEntity;
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.enums.Country;
 
 /**
  * Tests the Patient Data DAO.
@@ -74,7 +75,7 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest<PatientData> {
     @Override
     protected void changeTestEntity(PLCEntity testEntity) {
         PatientData pd = (PatientData) testEntity;
-        pd.setBirthCountry("Some other country");
+        pd.setBirthCountry(Country.GB);
     }
 
 }
