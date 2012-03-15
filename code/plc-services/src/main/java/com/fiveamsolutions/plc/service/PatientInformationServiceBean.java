@@ -91,11 +91,9 @@ public class PatientInformationServiceBean implements PatientInformationService 
     }
 
     /**
-     * Generates the patient's GUID from the given patient data.
-     * @param patientData the patient data to generate the GUID from
-     * @return the generated GUID
+     * {@inheritDoc}
      */
-    private String generatePatientGUID(PatientData patientData) {
+    public String generatePatientGUID(PatientData patientData) {
         SimpleDateFormat sdf =
                 new SimpleDateFormat(appResources.getStringResource(DATE_FORMAT_KEY), Locale.getDefault());
         String dob = sdf.format(patientData.getBirthDate());

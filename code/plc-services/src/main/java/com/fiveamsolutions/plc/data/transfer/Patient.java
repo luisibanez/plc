@@ -44,6 +44,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.fiveamsolutions.plc.data.ChallengeQuestion;
+import com.fiveamsolutions.plc.data.enums.Country;
 import com.fiveamsolutions.plc.util.JAXBDateAdapter;
 
 /**
@@ -63,7 +64,7 @@ public class Patient implements Serializable {
     private String firstName;
     private String birthName;
     private String birthPlace;
-    private String birthCountry;
+    private Country birthCountry;
     @XmlJavaTypeAdapter(JAXBDateAdapter.class)
     private Date birthDate;
     private String email;
@@ -118,14 +119,14 @@ public class Patient implements Serializable {
     /**
      * @return the birthCountry
      */
-    public String getBirthCountry() {
+    public Country getBirthCountry() {
         return birthCountry;
     }
 
     /**
      * @param birthCountry the birthCountry to set
      */
-    public void setBirthCountry(String birthCountry) {
+    public void setBirthCountry(Country birthCountry) {
         this.birthCountry = birthCountry;
     }
 

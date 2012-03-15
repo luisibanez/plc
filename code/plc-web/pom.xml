@@ -18,6 +18,7 @@
 
     <properties>
         <plc.webapp.dir></plc.webapp.dir>
+        <plc.web.showStackTraceOnErrorPage>true</plc.web.showStackTraceOnErrorPage>
         <struts.version>2.2.3.1</struts.version>
         <jersey.version>1.9.1</jersey.version>
     </properties>
@@ -111,9 +112,9 @@
             <version>${struts.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.struts</groupId>
-            <artifactId>struts2-convention-plugin</artifactId>
-            <version>${struts.version}</version>
+            <groupId>com.jgeppert.struts2.jquery</groupId>
+            <artifactId>struts2-jquery-plugin</artifactId>
+            <version>3.2.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
@@ -144,6 +145,22 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>${jersey.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+            <version>2.4.2</version>
         </dependency>
 
         <!-- Provided dependencies -->

@@ -30,9 +30,11 @@
  */
 package com.fiveamsolutions.plc.web.inject;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter;
+import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
+import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
 
 import com.google.inject.AbstractModule;
+import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -45,6 +47,8 @@ public class ListenerModule extends AbstractModule {
      */
     @Override
     protected void configure() {
-        bind(StrutsPrepareAndExecuteFilter.class).asEagerSingleton();
+        bind(StrutsPrepareFilter.class).asEagerSingleton();
+        bind(SiteMeshFilter.class).asEagerSingleton();
+        bind(StrutsExecuteFilter.class).asEagerSingleton();
     }
 }

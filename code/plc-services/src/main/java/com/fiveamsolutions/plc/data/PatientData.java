@@ -34,21 +34,27 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fiveamsolutions.plc.data.enums.Country;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
 @Entity(name = "patient_data")
-public class PatientData  implements PLCEntity {
+public class PatientData implements PLCEntity {
     private static final long serialVersionUID = 1L;
 
     private static final int NAME_MAX_LENGTH = 50;
@@ -58,7 +64,7 @@ public class PatientData  implements PLCEntity {
     private String firstName;
     private String birthName;
     private String birthPlace;
-    private String birthCountry;
+    private Country birthCountry;
     private Date birthDate;
 
 
@@ -133,23 +139,25 @@ public class PatientData  implements PLCEntity {
     /**
      * @return the birthCountry
      */
-    @NotEmpty
-    @Length(max = PLACE_OF_BIRTH_MAX_LENGTH)
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "birth_country", nullable = false, updatable = false)
-    public String getBirthCountry() {
+    public Country getBirthCountry() {
         return birthCountry;
     }
 
     /**
      * @param birthCountry the birthCountry to set
      */
-    public void setBirthCountry(String birthCountry) {
+    public void setBirthCountry(Country birthCountry) {
         this.birthCountry = birthCountry;
     }
 
     /**
      * @return the birthDate
      */
+    @Past
+    @NotNull
     @Column(name = "birth_date", nullable = false, updatable = false)
     @Temporal(TemporalType.DATE)
     public Date getBirthDate() {

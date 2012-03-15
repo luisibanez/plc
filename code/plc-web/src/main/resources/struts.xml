@@ -2,18 +2,10 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-<!-- 
-    <constant name="struts.mapper.class" value="rest" />
-    <constant name="struts.rest.namespace" value="" />
-
-    <constant name="struts.convention.package.locators" value="controllers" />
-    <constant name="struts.convention.action.suffix" value="Controller" />
-    <constant name="struts.convention.action.mapAllMatches" value="true" />
-    <constant name="struts.convention.default.parent.package" value="plc-default" />
-     <constant name="struts.objectFactory" value="guice" />
--->
-    <package name="plc-default" extends="struts-default,json-default">
+    <package name="plc-default" extends="struts-default">
         <interceptors>
+             <interceptor name="struts2HibernateValidator"
+                         class="com.fiveamsolutions.plc.web.struts2.interceptor.HibernateValidatorInterceptor"/>
             <interceptor-stack name="plcParamsPrepareParamsStack">
                 <interceptor-ref name="exception" />
                 <interceptor-ref name="alias" />
@@ -37,6 +29,9 @@
                 <interceptor-ref name="validation">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
+                <interceptor-ref name="struts2HibernateValidator">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
                 <interceptor-ref name="workflow">
                     <param name="excludeMethods">input,back,cancel,browse</param>
                 </interceptor-ref>
@@ -48,5 +43,48 @@
 
     <package name="protected" namespace="/www/protected" extends="plc-default">
         <default-interceptor-ref name="plcParamsPrepareParamsStack"/>
+    </package>
+    
+    <package name="wizard" namespace="/www/wizard" extends="plc-default">
+        <default-interceptor-ref name="plcParamsPrepareParamsStack"/>
+        <action name="start" class="com.fiveamsolutions.plc.web.struts2.wizard.Step1Action" method="start">
+            <result name="success">/WEB-INF/jsp/wizard/step1.jsp</result>
+        </action>
+        <action name="step2" class="com.fiveamsolutions.plc.web.struts2.wizard.Step1Action" method="nextStep">
+            <result name="next">/WEB-INF/jsp/wizard/step2.jsp</result>
+        </action>
+        <action name="step3" class="com.fiveamsolutions.plc.web.struts2.wizard.Step2Action" method="nextStep">
+            <result name="input">/WEB-INF/jsp/wizard/step2.jsp</result>
+            <result name="next">/WEB-INF/jsp/wizard/step3.jsp</result>
+        </action>
+        <action name="step4" class="com.fiveamsolutions.plc.web.struts2.wizard.ConsentWizardAction" method="nextStep">
+            <result name="next">/WEB-INF/jsp/wizard/step4.jsp</result>
+        </action>
+        <action name="step5" class="com.fiveamsolutions.plc.web.struts2.wizard.Step4Action" method="nextStep">
+            <result name="input">/WEB-INF/jsp/wizard/step4.jsp</result>
+            <result name="next">/WEB-INF/jsp/wizard/step5.jsp</result>
+        </action>
+        <action name="step6" class="com.fiveamsolutions.plc.web.struts2.wizard.ConsentWizardAction" method="nextStep">
+            <result name="next">/WEB-INF/jsp/wizard/step6.jsp</result>
+        </action>
+        <action name="step7" class="com.fiveamsolutions.plc.web.struts2.wizard.ConsentWizardAction" method="nextStep">
+            <result name="next">/WEB-INF/jsp/wizard/step7.jsp</result>
+        </action>
+        <action name="step8" class="com.fiveamsolutions.plc.web.struts2.wizard.Step7Action" method="nextStep">
+            <result name="input">/WEB-INF/jsp/wizard/step7.jsp</result>
+            <result name="next">/WEB-INF/jsp/wizard/step8.jsp</result>
+        </action>
+        <action name="step9" class="com.fiveamsolutions.plc.web.struts2.wizard.Step8Action" method="nextStep">
+            <result name="input">/WEB-INF/jsp/wizard/step8.jsp</result>
+            <result name="next">/WEB-INF/jsp/wizard/generateId.jsp</result>
+        </action>
+        <action name="generateId" class="com.fiveamsolutions.plc.web.struts2.wizard.GenerateGuidAction" method="generateId">
+            <result name="input">/WEB-INF/jsp/wizard/generateId.jsp</result>
+            <result name="success">/WEB-INF/jsp/wizard/register.jsp</result>
+        </action>
+        <action name="register" class="com.fiveamsolutions.plc.web.struts2.wizard.RegisterPatientAction" method="register">
+            <result name="input">/WEB-INF/jsp/wizard/register.jsp</result>
+            <result name="success">/WEB-INF/jsp/wizard/complete.jsp</result>
+        </action>
     </package>
 </struts>

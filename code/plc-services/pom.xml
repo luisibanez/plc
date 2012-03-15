@@ -42,7 +42,7 @@
                         </component>
                     </components>
                     <componentProperties>
-                        <persistenceunit>plc-db</persistenceunit>
+                        <persistenceunit>${plc.db.jpaPersistenceUnitName}</persistenceunit>
                         <drop>false</drop>
                         <create>true</create>
                         <export>false</export>
@@ -77,35 +77,14 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-plugin</artifactId>
-                <version>1.9.5.0</version>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <changeLogFile>src/main/db/db-changelog.xml</changeLogFile>
-                    <driver>${plc.db.jdbcDriver}</driver>
-                    <url>${plc.db.jdbcUrl}</url>
-                    <username>${plc.db.username}</username>
-                    <password>${plc.db.password}</password>
-                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <executions>
                     <execution>
-                    <goals>
-                        <goal>test-jar</goal>
-                    </goals>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -121,6 +100,87 @@
             </resource>
         </resources>
     </build>
+    <profiles>
+        <profile>
+            <id>local-db</id>
+            <activation>
+                <property>
+                    <name>!skip-liquibase</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-plugin</artifactId>
+                        <version>1.9.5.0</version>
+                        <executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <changeLogFile>src/main/db/db-changelog.xml</changeLogFile>
+                            <driver>${plc.db.jdbcDriver}</driver>
+                            <url>${plc.db.jdbcUrl}</url>
+                            <username>${plc.db.username}</username>
+                            <password>${plc.db.password}</password>
+                            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>init-db</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <version>1.5</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>postgresql</groupId>
+                                <artifactId>postgresql</artifactId>
+                                <version>${postgresql.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <url>${plc.db.adminJdbcUrl}</url>
+                            <username>${plc.db.adminUsername}</username>
+                            <password>${plc.db.adminPassword}</password>
+                            <driver>${plc.db.jdbcDriver}</driver>
+                            <autocommit>true</autocommit>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <sqlCommand>
+                                        drop database if exists ${plc.db.database};
+                                        drop user if exists ${plc.db.username};
+                                        create database ${plc.db.database};
+                                        create user ${plc.db.username} with password '${plc.db.password}';
+                                        grant all on database ${plc.db.database} to ${plc.db.username};
+                                    </sqlCommand>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
