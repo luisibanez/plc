@@ -60,5 +60,10 @@
         <text>File%2C%20Source%2C%20Version%2C%20Date%0Agenome_Andrew_Evans_Full_20101210115106.txt%2C23andMe%2Cv2%2C2012-03-07%2013%3A29%3A30</text>
       </controlProperties>
     </control>
+    <control controlID="64" controlTypeID="com.balsamiq.mockups::Label" x="237" y="321" w="-1" h="-1" measuredW="39" measuredH="23" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>DONE</text>
+      </controlProperties>
+    </control>
   </controls>
 </mockup>
