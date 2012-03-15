@@ -1,0 +1,99 @@
+<mockup version="1.0" skin="sketch" measuredW="985" measuredH="740" mockupW="951" mockupH="700">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Component" x="34" y="40" w="951" h="700" measuredW="951" measuredH="700" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <override controlID="5:1">
+          <text>-%5BX%5D%20Welcome-%0A-%5BX%5D%20Willingness%20to%20Participate-%0A-%5BX%5D%20Researcher%20Terms%20of%20Use-%0A-%5BX%5D%20Grant%20Rights-%0A-%5BX%5D%20Watch%20Video-%0A-%5BX%5D%20Checkpoint-%0A-%5BX%5D%20Acknowledge%20Understanding-</text>
+        </override>
+        <override controlID="5:4">
+          <text>-%5BX%5D%20Consent%20Form-%0A-%5BX%5D%20Generate%20ID-%0A-%5BX%5D%20User%20Profile-</text>
+        </override>
+        <override controlID="5:6">
+          <text>-%5BX%5D%20Sign%20In-%0A%5B%20%5D%20Upload%20Data</text>
+        </override>
+        <src>./assets/background.bmml</src>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Label" x="72" y="317" w="-1" h="-1" measuredW="157" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>16</size>
+        <text>2.%20Upload%20Your%20Data</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::ComboBox" x="70" y="422" w="171" h="-1" measuredW="119" measuredH="23" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>SNP%20Genotype</text>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::ComboBox" x="247" y="422" w="-1" h="-1" measuredW="88" measuredH="23" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>23andMe</text>
+      </controlProperties>
+    </control>
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Label" x="72" y="400" w="-1" h="-1" measuredW="141" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Data%20contained%20in%20file%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Label" x="248" y="400" w="-1" h="-1" measuredW="50" measuredH="23" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Source%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::Label" x="351" y="400" w="-1" h="-1" measuredW="115" measuredH="23" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Version%20%28optional%29%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::TextInput" x="351" y="421" w="111" h="-1" measuredW="27" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>v2</text>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::TextInput" x="71" y="478" w="227" h="-1" measuredW="151" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>AMD%2C%20atrial%20fibrillation</text>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::Label" x="70" y="456" w="-1" h="-1" measuredW="98" measuredH="23" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Tags%20%28optional%29%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="46" controlTypeID="com.balsamiq.mockups::Label" x="72" y="342" w="-1" h="-1" measuredW="438" measuredH="23" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Here%27s%20what%20we%20think%20you%20uploaded%20-%20correct%20anything%20we%20got%20wrong%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="49" controlTypeID="com.balsamiq.mockups::Button" x="71" y="591" w="219" h="28" measuredW="196" measuredH="28" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Looks%20Good%20-%20Save%20Settings</text>
+      </controlProperties>
+    </control>
+    <control controlID="50" controlTypeID="com.balsamiq.mockups::Paragraph" x="84" y="506" w="214" h="62" measuredW="200" measuredH="140" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Enter%20any%20keywords%20you%20can%20think%20of%2C%20separated%20by%20commas%2C%20or%20click%20tags%20in%20the%20cloud%20to%20add%20them</text>
+      </controlProperties>
+    </control>
+    <control controlID="52" controlTypeID="com.balsamiq.mockups::TextArea" x="319" y="478" w="339" h="99" measuredW="200" measuredH="140" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="54" controlTypeID="com.balsamiq.mockups::Paragraph" x="315" y="456" w="415" h="48" measuredW="200" measuredH="140" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Write%20anything%20else%20you%27d%20like%20to%20say%20about%20this%20file%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="55" controlTypeID="com.balsamiq.mockups::Image" x="72" y="127" w="567" h="190" measuredW="600" measuredH="192" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>../../../../../Screen%2520shot%25202012-03-14%2520at%25209.15.26%2520PM.png</src>
+      </controlProperties>
+    </control>
+    <control controlID="57" controlTypeID="com.balsamiq.mockups::Label" x="72" y="371" w="-1" h="-1" measuredW="308" measuredH="23" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>genome_Andrew_Evans_Full_20101210115106.txt</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
