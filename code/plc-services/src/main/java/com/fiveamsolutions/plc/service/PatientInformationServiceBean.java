@@ -42,6 +42,7 @@ import org.apache.log4j.Logger;
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.google.inject.Inject;
 
@@ -76,14 +77,9 @@ public class PatientInformationServiceBean implements PatientInformationService 
      * {@inheritDoc}
      */
     public String registerPatient(PatientAccount patient) {
-        String guid = generatePatientGUID(patient.getPatientData());
+        String guid = generatePatientGUID(patient.getPatientDemographics());
         StringBuilder builder = new StringBuilder().append(patient.getSalt()).append(patient.getPassword());
-        byte[] toHashBytes = {};
-        try {
-            toHashBytes = builder.toString().getBytes(appResources.getStringResource(ENCODING_KEY));
-        } catch (UnsupportedEncodingException e) {
-            LOG.error("Unable to retrieve bytes in UTF-8 format.", e);
-        }
+        byte[] toHashBytes = hashString(builder.toString());
         patient.setPassword(Hex.encodeHexString(digester.digest(toHashBytes)));
         patient.setGuid(guid);
         patientAccountDao.save(patient);
@@ -93,20 +89,42 @@ public class PatientInformationServiceBean implements PatientInformationService 
     /**
      * {@inheritDoc}
      */
-    public String generatePatientGUID(PatientData patientData) {
+    public String generatePatientGUID(PatientDemographics patientDemographics) {
         SimpleDateFormat sdf =
                 new SimpleDateFormat(appResources.getStringResource(DATE_FORMAT_KEY), Locale.getDefault());
-        String dob = sdf.format(patientData.getBirthDate());
-        StringBuilder builder = new StringBuilder().append(patientData.getFirstName())
-                .append(patientData.getBirthName()).append(dob).append(patientData.getBirthPlace())
-                .append(patientData.getBirthCountry());
+        String dob = sdf.format(patientDemographics.getBirthDate());
+        StringBuilder builder = new StringBuilder().append(patientDemographics.getFirstName())
+                .append(patientDemographics.getBirthName()).append(dob).append(patientDemographics.getBirthPlace())
+                .append(patientDemographics.getBirthCountry());
         digester.reset();
-        byte[] bytes = {};
+        byte[] bytes = hashString(builder.toString());
+        return Hex.encodeHexString(digester.digest(bytes));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addPatientData(String guid, PatientData patientData) {
+        PatientAccount account = patientAccountDao.getByGuid(guid);
+        if (account == null) {
+            return;
+        }
+        account.getPatientData().add(patientData);
+        patientAccountDao.save(account);
+    }
+
+    /**
+     * Hashes the given string.
+     * @param input the string to encode
+     * @return the hashed string
+     */
+    private byte[] hashString(String input) {
+        byte[] toHashBytes = {};
         try {
-            bytes = builder.toString().getBytes(appResources.getStringResource(ENCODING_KEY));
+            toHashBytes = input.getBytes(appResources.getStringResource(ENCODING_KEY));
         } catch (UnsupportedEncodingException e) {
             LOG.error("Unable to retrieve bytes in UTF-8 format.", e);
         }
-        return Hex.encodeHexString(digester.digest(bytes));
+        return toHashBytes;
     }
 }

@@ -8,39 +8,39 @@
             <div class="clearfix">
                 <label for="firstName">First Name</label>
                 <div class="input">
-                    <s:textfield cssClass="xlarge required" id="firstName" name="patientData.firstName" size="30" cssErrorClass="error-field" theme="simple"/>
-                    <s:fielderror fieldName="patientData.firstName" cssClass="error-message"/>
+                    <s:textfield cssClass="xlarge required" id="firstName" name="patientDemographics.firstName" size="30" cssErrorClass="error-field" theme="simple"/>
+                    <s:fielderror fieldName="patientDemographics.firstName" cssClass="error-message"/>
                 </div>
             </div>
             <div class="clearfix">
                 <label for="birthName">Last Name at Birth</label>
                 <div class="input">
-                    <s:textfield cssClass="xlarge required" id="birthName" name="patientData.birthName" size="30" cssErrorClass="error-field"/>
-                    <s:fielderror fieldName="patientData.birthName" cssClass="error-message"/>
+                    <s:textfield cssClass="xlarge required" id="birthName" name="patientDemographics.birthName" size="30" cssErrorClass="error-field"/>
+                    <s:fielderror fieldName="patientDemographics.birthName" cssClass="error-message"/>
                 </div>
             </div>
             <div class="clearfix">
                 <label for="birthPlace">Birth City</label>
                 <div class="input">
-                    <s:textfield cssClass="xlarge required" id="birthPlace" name="patientData.birthPlace" size="30" cssErrorClass="error-field"/>
-                    <s:fielderror fieldName="patientData.birthPlace" cssClass="error-message"/>
+                    <s:textfield cssClass="xlarge required" id="birthPlace" name="patientDemographics.birthPlace" size="30" cssErrorClass="error-field"/>
+                    <s:fielderror fieldName="patientDemographics.birthPlace" cssClass="error-message"/>
                 </div>
             </div>
             <div class="clearfix">
                 <label for="birthCountry">Birth Country</label>
                 <div class="input">
-                    <s:select id="birthCountry" cssClass="xlarge required" name="patientData.birthCountry"
+                    <s:select id="birthCountry" cssClass="xlarge required" name="patientDemographics.birthCountry"
                         list="%{@com.fiveamsolutions.plc.data.enums.Country@values()}" listValue="code"
                         headerKey="" headerValue="%{getText('select.emptyOption')}"        
                         cssErrorClass="error-field"/>
-                    <s:fielderror fieldName="patientData.birthCountry" cssClass="error-message"/>
+                    <s:fielderror fieldName="patientDemographics.birthCountry" cssClass="error-message"/>
                 </div>
             </div>
             <div class="clearfix">
                 <label for="dob">Date of Birth</label>
                 <div class="input">
-                    <s:textfield cssClass="xlarge required date" id="dob" name="patientData.birthDate" size="30" cssErrorClass="error-field"/>
-                    <s:fielderror fieldName="patientData.birthDate" cssClass="error-message"/>
+                    <s:textfield cssClass="xlarge required date" id="dob" name="patientDemographics.birthDate" size="30" cssErrorClass="error-field"/>
+                    <s:fielderror fieldName="patientDemographics.birthDate" cssClass="error-message"/>
                 </div>
             </div>
             <div class="actions">

@@ -38,7 +38,7 @@ import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.fiveamsolutions.plc.service.PatientInformationServiceBean;
 import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
@@ -84,11 +84,11 @@ public class GenerateGuidActionTest extends AbstractConsentWizardTest<GenerateGu
     @Test
     public void generateGuid() {
         GenerateGuidAction action = getTestAction();
-        PatientData patientData = TestPLCEntityFactory.createPatientData();
-        action.setPatientData(patientData);
+        PatientDemographics patientDemographics = TestPLCEntityFactory.createPatientDemographics();
+        action.setPatientData(patientDemographics);
         assertEquals(Action.SUCCESS, action.generateId());
         assertNotNull(action.getSession().get("guid"));
-        assertNotNull(action.getSession().get("patientData"));
+        assertNotNull(action.getSession().get("patientDemographics"));
     }
 
 }

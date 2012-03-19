@@ -38,4 +38,10 @@ import com.fiveamsolutions.plc.data.PatientAccount;
  */
 public interface PatientAccountDao extends Dao<PatientAccount> {
 
+    /**
+     * Retrieves the patient account with the given guid.
+     * @param guid the guid
+     * @return the patient account with the given guid
+     */
+    PatientAccount getByGuid(String guid);
 }

@@ -30,37 +30,50 @@
  */
 package com.fiveamsolutions.plc.dao;
 
-import com.fiveamsolutions.plc.inject.PersistentServiceInitializer;
-import com.fiveamsolutions.plc.util.PLCApplicationResources;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.jpa.JpaPersistModule;
+import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Before;
+
+import com.fiveamsolutions.plc.data.PLCEntity;
+import com.fiveamsolutions.plc.data.PatientData;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class JPADaoModule extends AbstractModule {
-    private static final String PERSISTENCE_UNIT_NAME_KEY = "plc.persistenceUnit.name";
-    private final PLCApplicationResources applicationResources;
+public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
+    private PatientDataJPADao testDao;
 
     /**
-     * Class constructor.
-     * @param appResources the application resources
+     * Prepares test data.
      */
-    public JPADaoModule(PLCApplicationResources appResources) {
-        this.applicationResources = appResources;
+    @Before
+    public void prepareTestData() {
+        testDao = new PatientDataJPADao(getEntityManager());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void configure() {
-        install(new JpaPersistModule(applicationResources.getStringResource(PERSISTENCE_UNIT_NAME_KEY)));
-        bind(PatientDemographicsDao.class).to(PatientDemographicsJPADao.class);
-        bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
-        bind(PatientDataDao.class).to(PatientDataJPADao.class);
-        bind(PersistentServiceInitializer.class).asEagerSingleton();
+    protected PatientDataJPADao getTestDao() {
+        return testDao;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected PatientData getTestEntity() {
+        return TestPLCEntityFactory.createPatientData();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void changeTestEntity(PLCEntity testEntity) {
+        PatientData pd = (PatientData) testEntity;
+        pd.setUploadedDate(DateUtils.addDays(pd.getUploadedDate(), 1));
     }
 
 }

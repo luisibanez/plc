@@ -30,15 +30,26 @@
  */
 package com.fiveamsolutions.plc.dao;
 
-import java.util.Date;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.fiveamsolutions.plc.data.ChallengeQuestion;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.data.enums.Country;
+import com.fiveamsolutions.plc.data.enums.PatientDataSource;
+import com.fiveamsolutions.plc.data.enums.PatientDataType;
 import com.fiveamsolutions.plc.data.transfer.Patient;
 
 /**
@@ -51,11 +62,11 @@ public class TestPLCEntityFactory {
     private static final int GUID_LENGTH = 64;
 
     /**
-     * Creates a patient data entity for testing.
-     * @return the patient data entity
+     * Creates a patient demographics entity for testing.
+     * @return the patient demographics entity
      */
-    public static PatientData createPatientData() {
-        PatientData pd = new PatientData();
+    public static PatientDemographics createPatientDemographics() {
+        PatientDemographics pd = new PatientDemographics();
         pd.setFirstName("firstName");
         pd.setBirthName("birthName");
         pd.setBirthCountry(Country.US);
@@ -74,12 +85,15 @@ public class TestPLCEntityFactory {
         pa.setPassword(RandomStringUtils.randomAscii(PASSWORD_LENGTH));
         pa.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));
         pa.setGuid(RandomStringUtils.randomAlphanumeric(GUID_LENGTH));
-        pa.setPatientData(createPatientData());
+        pa.setPatientDemographics(createPatientDemographics());
 
         ChallengeQuestion challenge = new ChallengeQuestion();
         challenge.setQuestion("Mother's Maiden Name");
         challenge.setAnswer("Foo");
-        pa.getChallengeQuestions().add(challenge);
+
+        List<ChallengeQuestion> questions = new ArrayList<ChallengeQuestion>();
+        questions.add(challenge);
+        pa.setChallengeQuestions(questions);
         return pa;
     }
 
@@ -90,13 +104,43 @@ public class TestPLCEntityFactory {
     public static Patient createPatient() {
         Patient patient = new Patient();
         patient.setEmail("test@example.com");
-        patient.setPassword(RandomStringUtils.randomAscii(PASSWORD_LENGTH));
+        patient.setPassword(RandomStringUtils.randomAlphanumeric(PASSWORD_LENGTH));
         patient.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));
         patient.setFirstName("firstName");
         patient.setBirthName("birthName");
         patient.setBirthCountry(Country.US);
         patient.setBirthPlace("birthPlace");
         patient.setBirthDate(new Date());
+
+        ChallengeQuestion challenge = new ChallengeQuestion();
+        challenge.setQuestion("Mother's Maiden Name");
+        challenge.setAnswer("Foo");
+
+        List<ChallengeQuestion> questions = new ArrayList<ChallengeQuestion>();
+        questions.add(challenge);
+        patient.setChallengeQuestions(questions);
         return patient;
+    }
+
+    /**
+     * Creates a patient data entity for testing.
+     * @return the patient data
+     */
+    public static PatientData createPatientData() {
+        PatientData patientData = new PatientData();
+        patientData.setDataType(PatientDataType.SNP_GENOTYPE);
+        patientData.setDataSource(PatientDataSource.TWENTY_THREE_AND_ME);
+        patientData.setVersion("v1");
+        patientData.setNotes("This is a test file.");
+        patientData.setFileName("patient_data.txt");
+
+        try {
+            InputStream inputData = TestPLCEntityFactory.class.getClassLoader().getResourceAsStream("patient_data.txt");
+            patientData.setFileData(IOUtils.toByteArray(inputData));
+        } catch (IOException e) {
+            fail("Error loading test data.");
+        }
+        patientData.setTags(Arrays.asList("AMD", "Experimental"));
+        return patientData;
     }
 }

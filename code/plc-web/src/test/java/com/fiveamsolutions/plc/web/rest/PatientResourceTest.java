@@ -32,13 +32,17 @@ package com.fiveamsolutions.plc.web.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
+import com.fiveamsolutions.plc.data.PatientAccount;
+import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.data.transfer.Patient;
 import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.fiveamsolutions.plc.service.PatientInformationServiceBean;
@@ -77,5 +81,23 @@ public class PatientResourceTest {
         String guid = patientResource.registerPatient(patient);
         assertNotNull(guid);
         assertEquals(EXPECTED_GUID_LENGTH, guid.length());
+    }
+
+    /**
+     * Tests uploading patient data via the REST-ful interface
+     * @throws Exception on error
+     */
+    @Test
+    public void uploadPatientData() throws Exception {
+        Patient patient = TestPLCEntityFactory.createPatient();
+        String guid = patientResource.registerPatient(patient);
+        assertNotNull(guid);
+
+        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
+        patientAccount.setGuid(guid);
+        when(patientAccountDao.getByGuid(anyString())).thenReturn(patientAccount);
+
+        PatientData pd = TestPLCEntityFactory.createPatientData();
+        patientResource.uploadPatientData(guid, pd);
     }
 }

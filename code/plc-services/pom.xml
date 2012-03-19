@@ -161,17 +161,20 @@
                         </configuration>
                         <executions>
                             <execution>
-                                <phase>process-resources</phase>
+                                <phase>initialize</phase>
                                 <goals>
                                     <goal>execute</goal>
                                 </goals>
                                 <configuration>
                                     <sqlCommand>
                                         drop database if exists ${plc.db.database};
-                                        drop user if exists ${plc.db.username};
+                                        drop user if exists
+                                        ${plc.db.username};
                                         create database ${plc.db.database};
-                                        create user ${plc.db.username} with password '${plc.db.password}';
-                                        grant all on database ${plc.db.database} to ${plc.db.username};
+                                        create user
+                                        ${plc.db.username} with password '${plc.db.password}';
+                                        grant all on database
+                                        ${plc.db.database} to ${plc.db.username};
                                     </sqlCommand>
                                 </configuration>
                             </execution>
@@ -224,11 +227,22 @@
             <version>1.6</version>
         </dependency>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.2.6</version>
+            <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>${jersey.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>

@@ -31,9 +31,11 @@
 package com.fiveamsolutions.plc.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -48,5 +50,18 @@ public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> i
     @Inject
     PatientAccountJPADao(EntityManager em) {
         super(em);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    public PatientAccount getByGuid(String guid) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select pa from ").append(getEntityType().getName()).append(" pa where pa.guid = :guid");
+
+        Query query = getEntityManager().createQuery(builder.toString());
+        query.setParameter("guid", guid);
+        return (PatientAccount) query.getSingleResult();
     }
 }

@@ -12,6 +12,7 @@
         <provider>${plc.db.jpaPersistenceProvider}</provider>
         
         <class>com.fiveamsolutions.plc.data.PatientData</class>
+        <class>com.fiveamsolutions.plc.data.PatientDemographics</class>
         <class>com.fiveamsolutions.plc.data.PatientAccount</class>
         
         <properties>

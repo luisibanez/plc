@@ -33,31 +33,31 @@ package com.fiveamsolutions.plc.dao;
 import org.junit.Before;
 
 import com.fiveamsolutions.plc.data.PLCEntity;
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.data.enums.Country;
 
 /**
- * Tests the Patient Data DAO.
+ * Tests the Patient Demographics DAO.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataDaoTest extends AbstractPLCJPADaoTest<PatientData> {
-    private PatientDataJPADao testDao;
+public class PatientDemographicsDaoTest extends AbstractPLCJPADaoTest<PatientDemographics> {
+    private PatientDemographicsJPADao testDao;
 
     /**
      * Prepare test data.
      */
     @Before
     public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
+        testDao = new PatientDemographicsJPADao(getEntityManager());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected PatientDataJPADao getTestDao() {
+    protected PatientDemographicsJPADao getTestDao() {
         return testDao;
     }
 
@@ -65,8 +65,8 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest<PatientData> {
      * {@inheritDoc}
      */
     @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
+    protected PatientDemographics getTestEntity() {
+        return TestPLCEntityFactory.createPatientDemographics();
     }
 
     /**
@@ -74,7 +74,7 @@ public class PatientDataDaoTest extends AbstractPLCJPADaoTest<PatientData> {
      */
     @Override
     protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
+        PatientDemographics pd = (PatientDemographics) testEntity;
         pd.setBirthCountry(Country.GB);
     }
 

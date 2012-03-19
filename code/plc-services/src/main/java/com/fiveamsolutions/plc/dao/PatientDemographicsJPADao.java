@@ -30,37 +30,24 @@
  */
 package com.fiveamsolutions.plc.dao;
 
-import com.fiveamsolutions.plc.inject.PersistentServiceInitializer;
-import com.fiveamsolutions.plc.util.PLCApplicationResources;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.jpa.JpaPersistModule;
+import javax.persistence.EntityManager;
+
+import com.fiveamsolutions.plc.data.PatientDemographics;
+import com.google.inject.Inject;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class JPADaoModule extends AbstractModule {
-    private static final String PERSISTENCE_UNIT_NAME_KEY = "plc.persistenceUnit.name";
-    private final PLCApplicationResources applicationResources;
+public class PatientDemographicsJPADao extends AbstractPLCEntityDao<PatientDemographics>
+    implements PatientDemographicsDao {
 
     /**
      * Class constructor.
-     * @param appResources the application resources
+     * @param em the entity manager
      */
-    public JPADaoModule(PLCApplicationResources appResources) {
-        this.applicationResources = appResources;
+    @Inject
+    PatientDemographicsJPADao(EntityManager em) {
+        super(em);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void configure() {
-        install(new JpaPersistModule(applicationResources.getStringResource(PERSISTENCE_UNIT_NAME_KEY)));
-        bind(PatientDemographicsDao.class).to(PatientDemographicsJPADao.class);
-        bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
-        bind(PatientDataDao.class).to(PatientDataJPADao.class);
-        bind(PersistentServiceInitializer.class).asEagerSingleton();
-    }
-
 }

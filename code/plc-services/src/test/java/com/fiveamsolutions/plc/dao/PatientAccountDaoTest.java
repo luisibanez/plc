@@ -30,7 +30,11 @@
  */
 package com.fiveamsolutions.plc.dao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
+import org.junit.Test;
 
 import com.fiveamsolutions.plc.data.PLCEntity;
 import com.fiveamsolutions.plc.data.PatientAccount;
@@ -73,5 +77,20 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
     protected void changeTestEntity(PLCEntity testEntity) {
         PatientAccount pa = (PatientAccount) testEntity;
         pa.setEmail("change@example.com");
+    }
+
+    /**
+     * Tests retrieval of patient account by guid.
+     */
+    @Test
+    public void getByGuid() {
+        PatientAccount pa = TestPLCEntityFactory.createPatientAccount();
+        getTestDao().getEntityManager().getTransaction().begin();
+        getTestDao().save(pa);
+
+        PatientAccount retrievedAccount = getTestDao().getByGuid(pa.getGuid());
+        assertNotNull(retrievedAccount);
+        getTestDao().getEntityManager().getTransaction().commit();
+        assertEquals(pa.getGuid(), retrievedAccount.getGuid());
     }
 }

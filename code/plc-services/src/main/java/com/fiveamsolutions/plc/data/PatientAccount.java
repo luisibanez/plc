@@ -38,10 +38,12 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 
@@ -74,7 +76,8 @@ public class PatientAccount implements PLCEntity {
     private String guid;
     private List<ChallengeQuestion> challengeQuestions = new ArrayList<ChallengeQuestion>();
     @Valid
-    private PatientData patientData = new PatientData();
+    private PatientDemographics patientDemographics = new PatientDemographics();
+    private List<PatientData> patientData = new ArrayList<PatientData>();
 
     /**
      * Default Constructor.
@@ -93,11 +96,11 @@ public class PatientAccount implements PLCEntity {
         this.email = patient.getEmail();
         this.password = patient.getPassword();
         this.challengeQuestions = patient.getChallengeQuestions();
-        this.getPatientData().setFirstName(patient.getFirstName());
-        this.getPatientData().setBirthName(patient.getBirthName());
-        this.getPatientData().setBirthDate(patient.getBirthDate());
-        this.getPatientData().setBirthPlace(patient.getBirthPlace());
-        this.getPatientData().setBirthCountry(patient.getBirthCountry());
+        this.getPatientDemographics().setFirstName(patient.getFirstName());
+        this.getPatientDemographics().setBirthName(patient.getBirthName());
+        this.getPatientDemographics().setBirthDate(patient.getBirthDate());
+        this.getPatientDemographics().setBirthPlace(patient.getBirthPlace());
+        this.getPatientDemographics().setBirthCountry(patient.getBirthCountry());
     }
 
     /**
@@ -184,7 +187,7 @@ public class PatientAccount implements PLCEntity {
     /**
      * @return the guid
      */
-    @Column(name = "guid", nullable = false, updatable = false, length = GUID_LENGTH)
+    @Column(name = "guid", nullable = false, unique = true, updatable = false, length = GUID_LENGTH)
     public String getGuid() {
         return guid;
     }
@@ -200,7 +203,7 @@ public class PatientAccount implements PLCEntity {
      * @return the challengeQuestions
      */
     @ElementCollection
-    @CollectionTable(name = "challenge_questions", joinColumns = @JoinColumn(name = "patient_data_id"))
+    @CollectionTable(name = "challenge_questions", joinColumns = @JoinColumn(name = "patient_account_id"))
     public List<ChallengeQuestion> getChallengeQuestions() {
         return challengeQuestions;
     }
@@ -213,18 +216,34 @@ public class PatientAccount implements PLCEntity {
     }
 
     /**
-     * @return the patientData
+     * @return the patientDemographics
      */
     @OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "patient_data_id")
-    public PatientData getPatientData() {
+    @JoinColumn(name = "patient_demographics_id")
+    public PatientDemographics getPatientDemographics() {
+        return patientDemographics;
+    }
+
+    /**
+     * @param patientDemographics the patientDemographics to set
+     */
+    public void setPatientDemographics(PatientDemographics patientDemographics) {
+        this.patientDemographics = patientDemographics;
+    }
+
+    /**
+     * @return the patientData
+     */
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_account_id", referencedColumnName = "id")
+    public List<PatientData> getPatientData() {
         return patientData;
     }
 
     /**
      * @param patientData the patientData to set
      */
-    public void setPatientData(PatientData patientData) {
+    public void setPatientData(List<PatientData> patientData) {
         this.patientData = patientData;
     }
 

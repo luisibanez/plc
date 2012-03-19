@@ -35,6 +35,7 @@ import javax.persistence.EntityManager;
 import com.fiveamsolutions.plc.data.PatientData;
 import com.google.inject.Inject;
 
+
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
@@ -49,4 +50,6 @@ public class PatientDataJPADao extends AbstractPLCEntityDao<PatientData> impleme
     PatientDataJPADao(EntityManager em) {
         super(em);
     }
+
+
 }

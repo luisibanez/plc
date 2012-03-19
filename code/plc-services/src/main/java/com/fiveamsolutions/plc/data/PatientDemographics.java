@@ -28,55 +28,69 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.data.transfer;
+package com.fiveamsolutions.plc.data;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
-import com.fiveamsolutions.plc.data.ChallengeQuestion;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fiveamsolutions.plc.data.enums.Country;
-import com.fiveamsolutions.plc.util.JAXBDateAdapter;
 
 /**
- * Transfer representation of a patient's submitted data.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-@XmlRootElement(name = "patient")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Patient", propOrder = {
-        "email", "username", "password", "firstName", "birthName", "birthPlace", "birthCountry", "birthDate",
-        "challengeQuestions"
-})
-public class Patient implements Serializable {
+@Entity(name = "patient_demographics")
+public class PatientDemographics implements PLCEntity {
     private static final long serialVersionUID = 1L;
 
+    private static final int NAME_MAX_LENGTH = 50;
+    private static final int PLACE_OF_BIRTH_MAX_LENGTH = 100;
+
+    private Long id;
     private String firstName;
     private String birthName;
     private String birthPlace;
     private Country birthCountry;
-    @XmlJavaTypeAdapter(JAXBDateAdapter.class)
     private Date birthDate;
-    private String email;
-    private String username;
-    private String password;
-    @XmlElementWrapper(name = "recoveryQuestions")
-    @XmlElement(name = "challengeQuestion")
-    private List<ChallengeQuestion> challengeQuestions = new ArrayList<ChallengeQuestion>();
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     /**
      * @return the firstName
      */
+    @NotEmpty
+    @Length(max = NAME_MAX_LENGTH)
+    @Column(name = "first_name", nullable = false, updatable = false)
     public String getFirstName() {
         return firstName;
     }
@@ -91,6 +105,9 @@ public class Patient implements Serializable {
     /**
      * @return the birthName
      */
+    @NotEmpty
+    @Length(max = NAME_MAX_LENGTH)
+    @Column(name = "birth_name", nullable = false, updatable = false)
     public String getBirthName() {
         return birthName;
     }
@@ -105,6 +122,9 @@ public class Patient implements Serializable {
     /**
      * @return the birthPlace
      */
+    @NotEmpty
+    @Length(max = PLACE_OF_BIRTH_MAX_LENGTH)
+    @Column(name = "birth_place", nullable = false, updatable = false)
     public String getBirthPlace() {
         return birthPlace;
     }
@@ -119,6 +139,9 @@ public class Patient implements Serializable {
     /**
      * @return the birthCountry
      */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "birth_country", nullable = false, updatable = false)
     public Country getBirthCountry() {
         return birthCountry;
     }
@@ -133,6 +156,10 @@ public class Patient implements Serializable {
     /**
      * @return the birthDate
      */
+    @Past
+    @NotNull
+    @Column(name = "birth_date", nullable = false, updatable = false)
+    @Temporal(TemporalType.DATE)
     public Date getBirthDate() {
         return birthDate;
     }
@@ -142,61 +169,5 @@ public class Patient implements Serializable {
      */
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the challengeQuestions
-     */
-    public List<ChallengeQuestion> getChallengeQuestions() {
-        return challengeQuestions;
-    }
-
-    /**
-     * @param challengeQuestions the challengeQuestions to set
-     */
-    public void setChallengeQuestions(List<ChallengeQuestion> challengeQuestions) {
-        this.challengeQuestions = challengeQuestions;
     }
 }

@@ -50,9 +50,12 @@ public class JPADaoModuleTest {
     @Test
     public void testModule() {
         Injector injector = Guice.createInjector(new JPADaoModule(TestApplicationResourcesFactory.getApplicationResources()));
+        assertNotNull(injector);
         PatientAccountDao patientAccountDao = injector.getInstance(PatientAccountDao.class);
+        PatientDemographicsDao patientDemographicsDao = injector.getInstance(PatientDemographicsDao.class);
         PatientDataDao patientDataDao = injector.getInstance(PatientDataDao.class);
         assertNotNull(patientAccountDao);
+        assertNotNull(patientDemographicsDao);
         assertNotNull(patientDataDao);
     }
 }

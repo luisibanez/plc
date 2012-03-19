@@ -36,7 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fiveamsolutions.plc.data.ChallengeQuestion;
 import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.Preparable;
@@ -61,7 +61,7 @@ public class RegisterPatientAction extends ConsentWizardAction implements Prepar
      */
     @Override
     public void prepare() {
-        patientAccount.setPatientData((PatientData) getSession().get("patientData"));
+        patientAccount.setPatientDemographics((PatientDemographics) getSession().get("patientDemographics"));
     }
 
     /**

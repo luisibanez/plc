@@ -23,6 +23,7 @@
         <logger.file>logs/plc.log</logger.file>
         
         <guice.version>3.0</guice.version>
+        <jersey.version>1.9.1</jersey.version>
         
         <plc.server.home>${user.home}/dev/app_servers/apache-tomcat-7.0.23</plc.server.home>
         <plc.webapp.name>legalconsent</plc.webapp.name>

@@ -33,7 +33,9 @@ package com.fiveamsolutions.plc.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
@@ -45,7 +47,7 @@ import org.junit.Test;
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 
 /**
@@ -82,7 +84,7 @@ public class PatientInformationServiceTest {
         assertEquals(guid, patientInformationServiceBean.registerPatient(patientAcount));
 
         PatientAccount diffPatientAccount = TestPLCEntityFactory.createPatientAccount();
-        diffPatientAccount.getPatientData().setBirthDate(DateUtils.addDays(new Date(), 1));
+        diffPatientAccount.getPatientDemographics().setBirthDate(DateUtils.addDays(new Date(), 1));
         String differentGuid = patientInformationServiceBean.registerPatient(diffPatientAccount);
         assertTrue(StringUtils.isNotEmpty(differentGuid));
         assertEquals(EXPECTED_GUID_LENGTH, differentGuid.length());
@@ -94,18 +96,53 @@ public class PatientInformationServiceTest {
      */
     @Test
     public void generatePatientGUID() {
-        PatientData patientData = TestPLCEntityFactory.createPatientData();
-        String guid = patientInformationServiceBean.generatePatientGUID(patientData);
+        PatientDemographics patientDemographics = TestPLCEntityFactory.createPatientDemographics();
+        String guid = patientInformationServiceBean.generatePatientGUID(patientDemographics);
 
         assertTrue(StringUtils.isNotEmpty(guid));
         assertEquals(EXPECTED_GUID_LENGTH, guid.length());
-        assertEquals(guid, patientInformationServiceBean.generatePatientGUID(patientData));
+        assertEquals(guid, patientInformationServiceBean.generatePatientGUID(patientDemographics));
 
-        PatientData differentPatientData = TestPLCEntityFactory.createPatientData();
+        PatientDemographics differentPatientData = TestPLCEntityFactory.createPatientDemographics();
         differentPatientData.setBirthDate(DateUtils.addDays(new Date(), 1));
         String differentGuid = patientInformationServiceBean.generatePatientGUID(differentPatientData);
         assertTrue(StringUtils.isNotEmpty(differentGuid));
         assertEquals(EXPECTED_GUID_LENGTH, differentGuid.length());
         assertFalse(StringUtils.equals(guid, differentGuid));
+    }
+
+    /**
+     * Tests adding patient data to an account.
+     */
+    @Test
+    public void addPatientData() {
+        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
+        when(patientAccountDao.getByGuid(anyString())).thenReturn(patientAccount);
+
+        String guid = patientInformationServiceBean.registerPatient(patientAccount);
+        assertTrue(StringUtils.isNotEmpty(guid));
+        assertEquals(EXPECTED_GUID_LENGTH, guid.length());
+        assertTrue(patientAccount.getPatientData().isEmpty());
+
+        patientInformationServiceBean.addPatientData(guid, TestPLCEntityFactory.createPatientData());
+        assertFalse(patientAccount.getPatientData().isEmpty());
+        assertEquals(1, patientAccount.getPatientData().size());
+    }
+
+    /**
+     * Tests adding patient data to an account that doesn't exist.
+     */
+    @Test
+    public void addPatientDataToInvalidAccount() {
+        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
+        when(patientAccountDao.getByGuid(anyString())).thenReturn(null);
+
+        String guid = patientInformationServiceBean.registerPatient(patientAccount);
+        assertTrue(StringUtils.isNotEmpty(guid));
+        assertEquals(EXPECTED_GUID_LENGTH, guid.length());
+        assertTrue(patientAccount.getPatientData().isEmpty());
+
+        patientInformationServiceBean.addPatientData(guid, TestPLCEntityFactory.createPatientData());
+        assertTrue(patientAccount.getPatientData().isEmpty());
     }
 }

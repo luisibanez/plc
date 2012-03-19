@@ -30,42 +30,64 @@
  */
 package com.fiveamsolutions.plc.data;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
-import org.hibernate.validator.constraints.Length;
+import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.fiveamsolutions.plc.data.enums.Country;
+import com.fiveamsolutions.plc.data.enums.PatientDataSource;
+import com.fiveamsolutions.plc.data.enums.PatientDataType;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * Class for representing uploaded patient data.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
+@XmlRootElement(name = "patient_data")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "PatientData", propOrder =  {
+        "dataType", "dataSource", "version", "notes", "fileName", "fileData", "tags"
+})
 @Entity(name = "patient_data")
 public class PatientData implements PLCEntity {
     private static final long serialVersionUID = 1L;
-
-    private static final int NAME_MAX_LENGTH = 50;
-    private static final int PLACE_OF_BIRTH_MAX_LENGTH = 100;
-
+    @XmlTransient
     private Long id;
-    private String firstName;
-    private String birthName;
-    private String birthPlace;
-    private Country birthCountry;
-    private Date birthDate;
+    private PatientDataType dataType;
+    private PatientDataSource dataSource;
+    private String version;
+    private String notes;
+    @XmlTransient
+    private Date uploadedDate = new Date();
+    private String fileName;
+    private byte[] fileData;
+    @XmlElementWrapper(name = "tags")
+    @XmlElement(name = "value")
+    private List<String> tags = new ArrayList<String>();
 
 
     /**
@@ -86,88 +108,130 @@ public class PatientData implements PLCEntity {
     }
 
     /**
-     * @return the firstName
+     * @return the tags
      */
-    @NotEmpty
-    @Length(max = NAME_MAX_LENGTH)
-    @Column(name = "first_name", nullable = false, updatable = false)
-    public String getFirstName() {
-        return firstName;
+    @ElementCollection
+    @CollectionTable(name = "patient_data_tags", joinColumns = @JoinColumn(name = "patient_data_id"))
+    @Column(name = "tag")
+    public List<String> getTags() {
+        return tags;
     }
 
     /**
-     * @param firstName the firstName to set
+     * @param tags the tags to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     /**
-     * @return the birthName
+     * @return the dataType
      */
-    @NotEmpty
-    @Length(max = NAME_MAX_LENGTH)
-    @Column(name = "birth_name", nullable = false, updatable = false)
-    public String getBirthName() {
-        return birthName;
-    }
-
-    /**
-     * @param birthName the birthName to set
-     */
-    public void setBirthName(String birthName) {
-        this.birthName = birthName;
-    }
-
-    /**
-     * @return the birthPlace
-     */
-    @NotEmpty
-    @Length(max = PLACE_OF_BIRTH_MAX_LENGTH)
-    @Column(name = "birth_place", nullable = false, updatable = false)
-    public String getBirthPlace() {
-        return birthPlace;
-    }
-
-    /**
-     * @param birthPlace the birthPlace to set
-     */
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
-    }
-
-    /**
-     * @return the birthCountry
-     */
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "birth_country", nullable = false, updatable = false)
-    public Country getBirthCountry() {
-        return birthCountry;
+    @Column(name = "data_type", nullable = false)
+    public PatientDataType getDataType() {
+        return dataType;
     }
 
     /**
-     * @param birthCountry the birthCountry to set
+     * @param dataType the dataType to set
      */
-    public void setBirthCountry(Country birthCountry) {
-        this.birthCountry = birthCountry;
+    public void setDataType(PatientDataType dataType) {
+        this.dataType = dataType;
     }
 
     /**
-     * @return the birthDate
+     * @return the dataSource
      */
-    @Past
+    @Enumerated(EnumType.STRING)
+    @Column(name = "data_source")
+    public PatientDataSource getDataSource() {
+        return dataSource;
+    }
+
+    /**
+     * @param dataSource the dataSource to set
+     */
+    public void setDataSource(PatientDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    /**
+     * @return the version
+     */
+    @Column(name = "version")
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    /**
+     * @return the notes
+     */
+    @Column(name = "notes")
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    /**
+     * @return the uploadedDate
+     */
     @NotNull
-    @Column(name = "birth_date", nullable = false, updatable = false)
-    @Temporal(TemporalType.DATE)
-    public Date getBirthDate() {
-        return birthDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "uploaded_date", nullable = false)
+    public Date getUploadedDate() {
+        return uploadedDate;
     }
 
     /**
-     * @param birthDate the birthDate to set
+     * @param uploadedDate the uploadedDate to set
      */
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setUploadedDate(Date uploadedDate) {
+        this.uploadedDate = uploadedDate;
+    }
+
+    /**
+     * @return the fileName
+     */
+    @NotEmpty
+    @Column(name = "file_name", nullable = false)
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    /**
+     * @return the fileData
+     */
+    @Lob
+    @Column(name = "file_data", nullable = false)
+    public byte[] getFileData() {
+        return ArrayUtils.clone(fileData);
+    }
+
+    /**
+     * @param fileData the fileData to set
+     */
+    public void setFileData(byte[] fileData) {
+        this.fileData = ArrayUtils.clone(fileData);
     }
 }

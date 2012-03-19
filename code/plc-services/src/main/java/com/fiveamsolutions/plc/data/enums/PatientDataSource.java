@@ -28,39 +28,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
-
-import com.fiveamsolutions.plc.inject.PersistentServiceInitializer;
-import com.fiveamsolutions.plc.util.PLCApplicationResources;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.jpa.JpaPersistModule;
+package com.fiveamsolutions.plc.data.enums;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class JPADaoModule extends AbstractModule {
-    private static final String PERSISTENCE_UNIT_NAME_KEY = "plc.persistenceUnit.name";
-    private final PLCApplicationResources applicationResources;
+public enum PatientDataSource {
+
+    /** 23 And Me. */
+    TWENTY_THREE_AND_ME("23andMe");
+
+    private String code;
 
     /**
      * Class constructor.
-     * @param appResources the application resources
+     * @param code
      */
-    public JPADaoModule(PLCApplicationResources appResources) {
-        this.applicationResources = appResources;
+    private PatientDataSource(String code) {
+        this.code = code;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the data source
      */
-    @Override
-    protected void configure() {
-        install(new JpaPersistModule(applicationResources.getStringResource(PERSISTENCE_UNIT_NAME_KEY)));
-        bind(PatientDemographicsDao.class).to(PatientDemographicsJPADao.class);
-        bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
-        bind(PatientDataDao.class).to(PatientDataJPADao.class);
-        bind(PersistentServiceInitializer.class).asEagerSingleton();
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name();
     }
 
 }

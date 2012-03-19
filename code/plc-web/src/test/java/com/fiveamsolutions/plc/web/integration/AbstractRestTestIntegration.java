@@ -41,6 +41,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -82,6 +83,7 @@ public abstract class AbstractRestTestIntegration {
      */
     protected WebResource getWebResource(String endpoint) {
         ClientConfig config = new DefaultClientConfig();
+        config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(config);
         WebResource r = client.resource(PROPERTIES.getProperty("test.rest.context") + "/" + endpoint);
         return r;

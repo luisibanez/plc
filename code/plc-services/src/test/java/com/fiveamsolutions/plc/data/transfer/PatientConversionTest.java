@@ -32,10 +32,21 @@ package com.fiveamsolutions.plc.data.transfer;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientAccount;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.api.json.JSONJAXBContext;
+import com.sun.jersey.api.json.JSONMarshaller;
 
 /**
  * Tests conversion between Patient and PatientAccount.
@@ -55,11 +66,50 @@ public class PatientConversionTest {
         assertEquals(patient.getUsername(), patientAccount.getUsername());
         assertEquals(patient.getEmail(), patientAccount.getEmail());
         assertEquals(patient.getPassword(), patientAccount.getPassword());
-        assertEquals(patient.getFirstName(), patientAccount.getPatientData().getFirstName());
-        assertEquals(patient.getBirthName(), patientAccount.getPatientData().getBirthName());
-        assertEquals(patient.getBirthDate(), patientAccount.getPatientData().getBirthDate());
-        assertEquals(patient.getBirthPlace(), patientAccount.getPatientData().getBirthPlace());
-        assertEquals(patient.getBirthCountry(), patientAccount.getPatientData().getBirthCountry());
+        assertEquals(patient.getFirstName(), patientAccount.getPatientDemographics().getFirstName());
+        assertEquals(patient.getBirthName(), patientAccount.getPatientDemographics().getBirthName());
+        assertEquals(patient.getBirthDate(), patientAccount.getPatientDemographics().getBirthDate());
+        assertEquals(patient.getBirthPlace(), patientAccount.getPatientDemographics().getBirthPlace());
+        assertEquals(patient.getBirthCountry(), patientAccount.getPatientDemographics().getBirthCountry());
         assertEquals(patient.getChallengeQuestions().size(), patientAccount.getChallengeQuestions().size());
+    }
+
+    /**
+     * Tests JSON marshalling.
+     * @throws JAXBException on error
+     */
+    @Test
+    public void jsonMarshalling() throws JAXBException {
+        JAXBContext context = new JSONJAXBContext(JSONConfiguration.natural().humanReadableFormatting(true).build(),
+                Patient.class);
+        JSONMarshaller marshaller = JSONJAXBContext.getJSONMarshaller(context.createMarshaller());
+
+        StringWriter writer = new StringWriter();
+        Patient patient = TestPLCEntityFactory.createPatient();
+        marshaller.marshallToJSON(patient, writer);
+        assertEquals(getPatientJson(patient),  writer.toString());
+    }
+
+    private String getPatientJson(Patient patient) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        String dateString  = dateFormat.format(patient.getBirthDate());
+        StringBuilder builder = new StringBuilder();
+        builder.append("{").append("\n");
+        builder.append("  \"email\" : \"").append(patient.getEmail()).append("\",\n");
+        builder.append("  \"username\" : \"").append(patient.getUsername()).append("\",\n");
+        builder.append("  \"password\" : \"").append(patient.getPassword()).append("\",\n");
+        builder.append("  \"firstName\" : \"").append(patient.getFirstName()).append("\",\n");
+        builder.append("  \"birthName\" : \"").append(patient.getBirthName()).append("\",\n");
+        builder.append("  \"birthPlace\" : \"").append(patient.getBirthPlace()).append("\",\n");
+        builder.append("  \"birthCountry\" : \"").append(patient.getBirthCountry()).append("\",\n");
+        builder.append("  \"birthDate\" : \"").append(dateString).append("\",\n");
+        builder.append("  \"recoveryQuestions\" : [ {\n");
+        builder.append("    \"challengeQuestion\" : {\n");
+        builder.append("      \"question\" : \"").append(patient.getChallengeQuestions().get(0).getQuestion()).append("\",\n");
+        builder.append("      \"answer\" : \"").append(patient.getChallengeQuestions().get(0).getAnswer()).append("\"\n");
+        builder.append("    }\n");
+        builder.append("  } ]\n");
+        builder.append("}");
+        return builder.toString();
     }
 }

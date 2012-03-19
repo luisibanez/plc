@@ -32,7 +32,7 @@ package com.fiveamsolutions.plc.web.struts2.wizard;
 
 import javax.validation.Valid;
 
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.google.inject.Inject;
 
@@ -45,7 +45,7 @@ public class GenerateGuidAction extends ConsentWizardAction {
     private static final long serialVersionUID = 1L;
     private final PatientInformationService patientService;
     @Valid
-    private PatientData patientData = new PatientData();
+    private PatientDemographics patientDemographics = new PatientDemographics();
 
     /**
      * Class constructor.
@@ -62,23 +62,23 @@ public class GenerateGuidAction extends ConsentWizardAction {
      * @return the struts forwarding result
      */
     public String generateId() {
-        String guid = patientService.generatePatientGUID(patientData);
-        getSession().put("patientData", patientData);
+        String guid = patientService.generatePatientGUID(patientDemographics);
+        getSession().put("patientDemographics", patientDemographics);
         getSession().put("guid", guid);
         return SUCCESS;
     }
 
     /**
-     * @return the patientData
+     * @return the patientDemographics
      */
-    public PatientData getPatientData() {
-        return patientData;
+    public PatientDemographics getPatientDemographics() {
+        return patientDemographics;
     }
 
     /**
-     * @param patientData the patientData to set
+     * @param patientDemo the patientDemographics to set
      */
-    public void setPatientData(PatientData patientData) {
-        this.patientData = patientData;
+    public void setPatientData(PatientDemographics patientDemo) {
+        this.patientDemographics = patientDemo;
     }
 }
