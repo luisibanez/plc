@@ -13,6 +13,7 @@
         <class>com.fiveamsolutions.plc.data.PatientData</class>
         <class>com.fiveamsolutions.plc.data.PatientDemographics</class>
         <class>com.fiveamsolutions.plc.data.PatientAccount</class>
+        <class>com.fiveamsolutions.plc.data.PLCUser</class>
 
         <properties>
             <property name="hibernate.dialect" value="${plc.testdb.dialect}"/>

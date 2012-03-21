@@ -76,7 +76,7 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
     @Override
     protected void changeTestEntity(PLCEntity testEntity) {
         PatientAccount pa = (PatientAccount) testEntity;
-        pa.setEmail("change@example.com");
+        pa.getPlcUser().setEmail("change@example.com");
     }
 
     /**
@@ -84,7 +84,7 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
      */
     @Test
     public void getByGuid() {
-        PatientAccount pa = TestPLCEntityFactory.createPatientAccount();
+        PatientAccount pa = getTestEntity();
         getTestDao().getEntityManager().getTransaction().begin();
         getTestDao().save(pa);
 

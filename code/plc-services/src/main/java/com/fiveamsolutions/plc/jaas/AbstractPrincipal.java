@@ -28,29 +28,41 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.jaas;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import java.security.Principal;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public abstract class AbstractPrincipal implements Principal {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * {@inheritDoc}
      */
-    String registerPatient(PatientAccount patient);
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
 
     /**
-     * Adds patient data to the patient account the given guid.
-     * @param guid the guid of the account to add the data to
-     * @param patientData the patient data to add
+     * {@inheritDoc}
      */
-    void addPatientData(String guid, PatientData patientData);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Principal rhs = (Principal) obj;
+        return new EqualsBuilder().append(this.getName(), rhs.getName()).isEquals();
+    }
 }

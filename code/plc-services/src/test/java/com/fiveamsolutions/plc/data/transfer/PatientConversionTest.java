@@ -63,9 +63,9 @@ public class PatientConversionTest {
         Patient patient = TestPLCEntityFactory.createPatient();
         PatientAccount patientAccount = new PatientAccount(patient);
 
-        assertEquals(patient.getUsername(), patientAccount.getUsername());
-        assertEquals(patient.getEmail(), patientAccount.getEmail());
-        assertEquals(patient.getPassword(), patientAccount.getPassword());
+        assertEquals(patient.getUsername(), patientAccount.getPlcUser().getUsername());
+        assertEquals(patient.getEmail(), patientAccount.getPlcUser().getEmail());
+        assertEquals(patient.getPassword(), patientAccount.getPlcUser().getPassword());
         assertEquals(patient.getFirstName(), patientAccount.getPatientDemographics().getFirstName());
         assertEquals(patient.getBirthName(), patientAccount.getPatientDemographics().getBirthName());
         assertEquals(patient.getBirthDate(), patientAccount.getPatientDemographics().getBirthDate());

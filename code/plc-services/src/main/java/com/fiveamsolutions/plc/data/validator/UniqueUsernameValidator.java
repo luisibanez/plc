@@ -38,7 +38,7 @@ import javax.persistence.Query;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import com.fiveamsolutions.plc.data.PLCUser;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -46,7 +46,7 @@ import com.google.inject.Provider;
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, PatientAccount>, Serializable {
+public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, PLCUser>, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
@@ -64,7 +64,7 @@ public class UniqueUsernameValidator implements ConstraintValidator<UniqueUserna
      * {@inheritDoc}
      */
     @Override
-    public boolean isValid(PatientAccount value, ConstraintValidatorContext context) {
+    public boolean isValid(PLCUser value, ConstraintValidatorContext context) {
         StringBuilder builder = new StringBuilder();
         builder.append("select count(e) from ").append(value.getClass().getName())
             .append(" e where e.username = :username");

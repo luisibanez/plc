@@ -28,29 +28,66 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.dao;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.data.PLCEntity;
+import com.fiveamsolutions.plc.data.PLCUser;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class PLCUserJPADaoTest extends AbstractPLCJPADaoTest<PLCUser> {
+    private PLCUserJPADao testDao;
+
+    @Before
+    public void prepareTestData() {
+        testDao = new PLCUserJPADao(getEntityManager());
+    }
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * {@inheritDoc}
      */
-    String registerPatient(PatientAccount patient);
+    @Override
+    protected PLCUserJPADao getTestDao() {
+        return testDao;
+    }
 
     /**
-     * Adds patient data to the patient account the given guid.
-     * @param guid the guid of the account to add the data to
-     * @param patientData the patient data to add
+     * {@inheritDoc}
      */
-    void addPatientData(String guid, PatientData patientData);
+    @Override
+    protected PLCUser getTestEntity() {
+        return TestPLCEntityFactory.createPLCUser();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void changeTestEntity(PLCEntity testEntity) {
+        PLCUser user = (PLCUser) testEntity;
+        user.setEmail("changed@example.com");
+    }
+
+    /**
+     * Tests retrieval by username.
+     */
+    @Test
+    public void getByUsername() {
+        PLCUser user = getTestEntity();
+        getTestDao().getEntityManager().getTransaction().begin();
+        getTestDao().save(user);
+
+        PLCUser retrievedUser = getTestDao().getByUsername(user.getUsername());
+        assertNotNull(retrievedUser);
+        getTestDao().getEntityManager().getTransaction().commit();
+        assertEquals(user.getUsername(), retrievedUser.getUsername());
+    }
 }

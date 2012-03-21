@@ -32,15 +32,11 @@ package com.fiveamsolutions.plc.web.struts2.wizard;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 
-import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientDemographics;
-import com.fiveamsolutions.plc.service.PatientInformationService;
-import com.fiveamsolutions.plc.service.PatientInformationServiceBean;
 import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 import com.opensymphony.xwork2.Action;
 
@@ -50,13 +46,10 @@ import com.opensymphony.xwork2.Action;
  */
 public class GenerateGuidActionTest extends AbstractConsentWizardTest<GenerateGuidAction> {
     private GenerateGuidAction testAction;
-    private PatientInformationService patientInfoService;
 
     @Override
     public void prepareTestData() throws Exception {
-        PatientAccountDao paDao = mock(PatientAccountDao.class);
-        patientInfoService = new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources(), paDao);
-        testAction = new GenerateGuidAction(patientInfoService) {
+        testAction = new GenerateGuidAction(TestApplicationResourcesFactory.getApplicationResources()) {
             private static final long serialVersionUID = 1L;
 
             /**

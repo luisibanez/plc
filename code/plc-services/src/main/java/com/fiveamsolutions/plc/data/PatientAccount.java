@@ -47,33 +47,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.fiveamsolutions.plc.data.transfer.Patient;
-import com.fiveamsolutions.plc.data.validator.UniqueUsername;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-@UniqueUsername
 @Entity(name = "patient_account")
 public class PatientAccount implements PLCEntity {
     private static final long serialVersionUID = 1L;
-    private static final int SALT_LENGTH = 16;
     private static final int GUID_LENGTH = 64;
-    private static final int MIN_USERNAME_LENGTH = 6;
-    private static final int MAX_USERNAME_LENGTH = 20;
 
     private Long id;
-    private String email;
-    private String username;
-    private String password;
-    private String salt;
     private String guid;
+    private PLCUser plcUser = new PLCUser();
     private List<ChallengeQuestion> challengeQuestions = new ArrayList<ChallengeQuestion>();
     @Valid
     private PatientDemographics patientDemographics = new PatientDemographics();
@@ -83,7 +70,7 @@ public class PatientAccount implements PLCEntity {
      * Default Constructor.
      */
     public PatientAccount() {
-        salt = RandomStringUtils.randomAlphanumeric(SALT_LENGTH);
+        //Intentionally left blank
     }
 
     /**
@@ -91,10 +78,9 @@ public class PatientAccount implements PLCEntity {
      * @param patient the transfer patient
      */
     public PatientAccount(Patient patient) {
-        this.salt = RandomStringUtils.randomAlphanumeric(SALT_LENGTH);
-        this.username = patient.getUsername();
-        this.email = patient.getEmail();
-        this.password = patient.getPassword();
+        this.getPlcUser().setUsername(patient.getUsername());
+        this.getPlcUser().setEmail(patient.getEmail());
+        this.getPlcUser().setPassword(patient.getPassword());
         this.challengeQuestions = patient.getChallengeQuestions();
         this.getPatientDemographics().setFirstName(patient.getFirstName());
         this.getPatientDemographics().setBirthName(patient.getBirthName());
@@ -121,70 +107,6 @@ public class PatientAccount implements PLCEntity {
     }
 
     /**
-     * @return the email
-     */
-    @NotEmpty
-    @Email
-    @Column(name = "email", nullable = false)
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @return the username
-     */
-    @Length(min = MIN_USERNAME_LENGTH, max = MAX_USERNAME_LENGTH)
-    @Column(name = "username", nullable = false, unique = true, updatable = false)
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * @return the password
-     */
-    @NotEmpty
-    @Column(name = "password", nullable = false)
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the salt
-     */
-    @Column(name = "salt", nullable = false, updatable = false, length = SALT_LENGTH)
-    public String getSalt() {
-        return salt;
-    }
-
-    /**
-     * @param salt the salt to set
-     */
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    /**
      * @return the guid
      */
     @Column(name = "guid", nullable = false, unique = true, updatable = false, length = GUID_LENGTH)
@@ -197,6 +119,22 @@ public class PatientAccount implements PLCEntity {
      */
     public void setGuid(String guid) {
         this.guid = guid;
+    }
+
+    /**
+     * @return the plcUser
+     */
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "plc_user_id")
+    public PLCUser getPlcUser() {
+        return plcUser;
+    }
+
+    /**
+     * @param plcUser the plcUser to set
+     */
+    public void setPlcUser(PLCUser plcUser) {
+        this.plcUser = plcUser;
     }
 
     /**

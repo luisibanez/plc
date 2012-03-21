@@ -28,29 +28,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.web.struts2.action;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.opensymphony.xwork2.Action;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class LoginActionTest {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Test login.
      */
-    String registerPatient(PatientAccount patient);
+    @Test
+    public void login() {
+        LoginAction action = new LoginAction();
+        assertEquals(Action.LOGIN, action.login());
+    }
 
-    /**
-     * Adds patient data to the patient account the given guid.
-     * @param guid the guid of the account to add the data to
-     * @param patientData the patient data to add
-     */
-    void addPatientData(String guid, PatientData patientData);
 }

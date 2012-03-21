@@ -30,19 +30,11 @@
  */
 package com.fiveamsolutions.plc.service;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-import org.apache.commons.codec.binary.Hex;
-import org.apache.log4j.Logger;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
-import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.google.inject.Inject;
 
@@ -51,54 +43,34 @@ import com.google.inject.Inject;
  *
  */
 public class PatientInformationServiceBean implements PatientInformationService {
-    private static final Logger LOG = Logger.getLogger(PatientInformationServiceBean.class);
-    private static final String DATE_FORMAT_KEY = "hashing.date.format";
-    private static final String HASHING_ALGORITHM_KEY = "hashing.algorithm";
-    private static final String ENCODING_KEY = "hashing.string.encoding";
-    private final PLCApplicationResources appResources;
     private final PatientAccountDao patientAccountDao;
-    private final MessageDigest digester;
+    private final EncodingUtils encodingUtils;
 
     /**
      * Class constructor.
      * @param appResources the application resources
      * @param patientAccountDao the patient account dao
-     * @throws NoSuchAlgorithmException if the hashing algorithm doesn't exist
+     * @throws NoSuchAlgorithmException if hashing algorithm isn't found
      */
     @Inject
     public PatientInformationServiceBean(PLCApplicationResources appResources, PatientAccountDao patientAccountDao)
             throws NoSuchAlgorithmException {
-        this.appResources = appResources;
         this.patientAccountDao = patientAccountDao;
-        digester = MessageDigest.getInstance(this.appResources.getStringResource(HASHING_ALGORITHM_KEY));
+        this.encodingUtils = new EncodingUtils(appResources);
+
     }
 
     /**
      * {@inheritDoc}
      */
     public String registerPatient(PatientAccount patient) {
-        String guid = generatePatientGUID(patient.getPatientDemographics());
-        StringBuilder builder = new StringBuilder().append(patient.getSalt()).append(patient.getPassword());
-        byte[] toHashBytes = hashString(builder.toString());
-        patient.setPassword(Hex.encodeHexString(digester.digest(toHashBytes)));
+        String guid = encodingUtils.generatePatientGUID(patient.getPatientDemographics());
+        StringBuilder builder = new StringBuilder().append(patient.getPlcUser().getSalt())
+                .append(patient.getPlcUser().getPassword());
+        patient.getPlcUser().setPassword(encodingUtils.hashString(builder.toString()));
         patient.setGuid(guid);
         patientAccountDao.save(patient);
         return guid;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String generatePatientGUID(PatientDemographics patientDemographics) {
-        SimpleDateFormat sdf =
-                new SimpleDateFormat(appResources.getStringResource(DATE_FORMAT_KEY), Locale.getDefault());
-        String dob = sdf.format(patientDemographics.getBirthDate());
-        StringBuilder builder = new StringBuilder().append(patientDemographics.getFirstName())
-                .append(patientDemographics.getBirthName()).append(dob).append(patientDemographics.getBirthPlace())
-                .append(patientDemographics.getBirthCountry());
-        digester.reset();
-        byte[] bytes = hashString(builder.toString());
-        return Hex.encodeHexString(digester.digest(bytes));
     }
 
     /**
@@ -113,18 +85,4 @@ public class PatientInformationServiceBean implements PatientInformationService 
         patientAccountDao.save(account);
     }
 
-    /**
-     * Hashes the given string.
-     * @param input the string to encode
-     * @return the hashed string
-     */
-    private byte[] hashString(String input) {
-        byte[] toHashBytes = {};
-        try {
-            toHashBytes = input.getBytes(appResources.getStringResource(ENCODING_KEY));
-        } catch (UnsupportedEncodingException e) {
-            LOG.error("Unable to retrieve bytes in UTF-8 format.", e);
-        }
-        return toHashBytes;
-    }
 }

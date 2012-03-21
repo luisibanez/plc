@@ -30,10 +30,13 @@
  */
 package com.fiveamsolutions.plc.web.struts2.wizard;
 
+import java.security.NoSuchAlgorithmException;
+
 import javax.validation.Valid;
 
 import com.fiveamsolutions.plc.data.PatientDemographics;
-import com.fiveamsolutions.plc.service.PatientInformationService;
+import com.fiveamsolutions.plc.service.EncodingUtils;
+import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.google.inject.Inject;
 
 /**
@@ -43,18 +46,20 @@ import com.google.inject.Inject;
 public class GenerateGuidAction extends ConsentWizardAction {
 
     private static final long serialVersionUID = 1L;
-    private final PatientInformationService patientService;
+    private final EncodingUtils encodingUtils;
     @Valid
     private PatientDemographics patientDemographics = new PatientDemographics();
+
 
     /**
      * Class constructor.
      *
-     * @param patientService the patient service
+     * @param appResources the application resources
+     * @throws NoSuchAlgorithmException on error
      */
     @Inject
-    public GenerateGuidAction(PatientInformationService patientService) {
-        this.patientService = patientService;
+    public GenerateGuidAction(PLCApplicationResources appResources) throws NoSuchAlgorithmException {
+        this.encodingUtils = new EncodingUtils(appResources);
     }
 
     /**
@@ -62,7 +67,7 @@ public class GenerateGuidAction extends ConsentWizardAction {
      * @return the struts forwarding result
      */
     public String generateId() {
-        String guid = patientService.generatePatientGUID(patientDemographics);
+        String guid = encodingUtils.generatePatientGUID(patientDemographics);
         getSession().put("patientDemographics", patientDemographics);
         getSession().put("guid", guid);
         return SUCCESS;

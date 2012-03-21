@@ -6,13 +6,11 @@ create table challenge_questions (
 
 create table patient_account (
     id int8 not null,
-    email varchar(255) not null,
     guid varchar(64) not null unique,
-    password varchar(255) not null,
-    salt varchar(16) not null,
-    username varchar(20) not null unique,
     patient_demographics_id int8 not null,
+    plc_user_id int8 not null,
     primary key (id),
+    unique (plc_user_id),
     unique (patient_demographics_id)
 );
 
@@ -44,8 +42,18 @@ create table patient_demographics (
     primary key (id)
 );
 
+create table plc_user (
+    id int8 not null,
+    email varchar(255) not null,
+    password varchar(255) not null,
+    salt varchar(16) not null,
+    username varchar(20) not null unique,
+    primary key (id)
+);
+
 alter table challenge_questions add constraint FKB326D87115813BCD foreign key (patient_account_id) references patient_account;
 alter table patient_account add constraint FK4B7246F3A30C05A7 foreign key (patient_demographics_id) references patient_demographics;
+alter table patient_account add constraint FK4B7246F33F1B414B foreign key (plc_user_id) references plc_user;
 alter table patient_data add constraint FKCBD8D8A415813BCD foreign key (patient_account_id) references patient_account;
 alter table patient_data_tags add constraint FK8F39DAD4D7010927 foreign key (patient_data_id) references patient_data;
 create sequence hibernate_sequence;

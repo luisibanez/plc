@@ -4,8 +4,8 @@
 <struts>
     <package name="plc-default" extends="struts-default">
         <interceptors>
-             <interceptor name="struts2HibernateValidator"
-                         class="com.fiveamsolutions.plc.web.struts2.interceptor.HibernateValidatorInterceptor"/>
+            <interceptor name="struts2HibernateValidator"
+                class="com.fiveamsolutions.plc.web.struts2.interceptor.HibernateValidatorInterceptor" />
             <interceptor-stack name="plcParamsPrepareParamsStack">
                 <interceptor-ref name="exception" />
                 <interceptor-ref name="alias" />
@@ -38,15 +38,25 @@
             </interceptor-stack>
         </interceptors>
 
-        <default-interceptor-ref name="plcParamsPrepareParamsStack"/>
+        <default-interceptor-ref name="plcParamsPrepareParamsStack" />
     </package>
 
     <package name="protected" namespace="/www/protected" extends="plc-default">
-        <default-interceptor-ref name="plcParamsPrepareParamsStack"/>
+        <default-interceptor-ref name="plcParamsPrepareParamsStack" />
+        <action name="test">
+            <result>/index.jsp</result>
+        </action>
     </package>
-    
+
+    <package name="login" namespace="/www/login" extends="plc-default">
+        <default-interceptor-ref name="plcParamsPrepareParamsStack" />
+        <action name="login" class="com.fiveamsolutions.plc.web.struts2.action.LoginAction" method="login">
+            <result name="login">/WEB-INF/jsp/login/login.jsp</result>
+        </action>
+    </package>
+
     <package name="wizard" namespace="/www/wizard" extends="plc-default">
-        <default-interceptor-ref name="plcParamsPrepareParamsStack"/>
+        <default-interceptor-ref name="plcParamsPrepareParamsStack" />
         <action name="start" class="com.fiveamsolutions.plc.web.struts2.wizard.Step1Action" method="start">
             <result name="success">/WEB-INF/jsp/wizard/step1.jsp</result>
         </action>

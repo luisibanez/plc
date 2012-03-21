@@ -56,6 +56,7 @@
                     <warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
                     <webappDirectory>${plc.webapp.dir}</webappDirectory>
                     <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+                    <containerConfigXML>${project.build.directory}/webResources/META-INF/context.xml</containerConfigXML>
                 </configuration>
             </plugin>
         </plugins>

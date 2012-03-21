@@ -140,8 +140,8 @@ public class RegisterPatientActionTest extends AbstractConsentWizardTest<Registe
         assertNotNull(action.getFieldErrors().get("patientAccount.email"));
 
         action.clearErrorsAndMessages();
-        action.setRepeatEmail(action.getPatientAccount().getEmail());
-        action.setRepeatPassword(action.getPatientAccount().getPassword());
+        action.setRepeatEmail(action.getPatientAccount().getPlcUser().getEmail());
+        action.setRepeatPassword(action.getPatientAccount().getPlcUser().getPassword());
         action.validate();
         assertFalse(action.hasFieldErrors());
     }

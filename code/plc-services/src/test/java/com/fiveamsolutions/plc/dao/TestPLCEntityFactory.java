@@ -44,6 +44,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.fiveamsolutions.plc.data.ChallengeQuestion;
+import com.fiveamsolutions.plc.data.PLCUser;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.data.PatientDemographics;
@@ -81,11 +82,9 @@ public class TestPLCEntityFactory {
      */
     public static PatientAccount createPatientAccount() {
         PatientAccount pa = new PatientAccount();
-        pa.setEmail("test@example.com");
-        pa.setPassword(RandomStringUtils.randomAscii(PASSWORD_LENGTH));
-        pa.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));
         pa.setGuid(RandomStringUtils.randomAlphanumeric(GUID_LENGTH));
         pa.setPatientDemographics(createPatientDemographics());
+        pa.setPlcUser(createPLCUser());
 
         ChallengeQuestion challenge = new ChallengeQuestion();
         challenge.setQuestion("Mother's Maiden Name");
@@ -97,6 +96,13 @@ public class TestPLCEntityFactory {
         return pa;
     }
 
+    public static PLCUser createPLCUser() {
+        PLCUser user = new PLCUser();
+        user.setEmail("test@example.com");
+        user.setPassword(RandomStringUtils.randomAscii(PASSWORD_LENGTH));
+        user.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));
+        return user;
+    }
     /**
      * Creates patient transfer entity for testing.
      * @return the patient

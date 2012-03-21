@@ -93,11 +93,11 @@ public class RegisterPatientAction extends ConsentWizardAction implements Prepar
     @Override
     public void validate() {
         super.validate();
-        if (!StringUtils.equals(patientAccount.getPassword(), getRepeatPassword())) {
+        if (!StringUtils.equals(patientAccount.getPlcUser().getPassword(), getRepeatPassword())) {
             addFieldError("patientAccount.password", "Passwords must match.");
             addFieldError("repeatPassword", "Passwords must match.");
         }
-        if (!StringUtils.equals(patientAccount.getPassword(), getRepeatPassword())) {
+        if (!StringUtils.equals(patientAccount.getPlcUser().getPassword(), getRepeatPassword())) {
             addFieldError("patientAccount.email", "Email Addresses must match.");
             addFieldError("repeatEmail", "Email Addresses must match.");
         }

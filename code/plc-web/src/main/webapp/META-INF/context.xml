@@ -1,0 +1,7 @@
+<Context path="/${plc.webapp.name}">
+    <Realm className="org.apache.catalina.realm.JAASRealm" appName="PLCLogin"
+           userClassNames="com.fiveamsolutions.plc.jaas.UserPrincipal"
+           roleClassNames="com.fiveamsolutions.plc.jaas.UserRole"
+           useContextClassLoader="true">
+    </Realm>
+</Context>

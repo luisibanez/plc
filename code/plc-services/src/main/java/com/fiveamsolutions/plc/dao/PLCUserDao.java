@@ -28,29 +28,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.dao;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.PLCUser;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public interface PLCUserDao extends Dao<PLCUser> {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Retrieves the user with the give username.
+     * @param username the username
+     * @return the plc user with the given username
      */
-    String registerPatient(PatientAccount patient);
-
-    /**
-     * Adds patient data to the patient account the given guid.
-     * @param guid the guid of the account to add the data to
-     * @param patientData the patient data to add
-     */
-    void addPatientData(String guid, PatientData patientData);
+    PLCUser getByUsername(String username);
 }

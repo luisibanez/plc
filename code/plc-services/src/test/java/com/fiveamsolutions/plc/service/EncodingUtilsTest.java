@@ -28,77 +28,64 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.data.validator;
+package com.fiveamsolutions.plc.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import java.util.Set;
+import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fiveamsolutions.plc.dao.AbstractJPADaoTest;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
-import com.fiveamsolutions.plc.data.PLCUser;
+import com.fiveamsolutions.plc.data.PatientDemographics;
+import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class UniqueUsernameValidatorTest extends AbstractJPADaoTest {
-    private Validator validator;
-    private EntityManager em;
+public class EncodingUtilsTest {
+    private static final int EXPECTED_HASHED_LENGTH = 64;
+    private EncodingUtils encodingUtils;
 
     /**
-     * Prepares test data.
+     * Prepares the test.
      */
     @Before
-    public void prepareTestData() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
-        em = getEntityManager();
+    public void prepareTest() throws Exception {
+        encodingUtils = new EncodingUtils(TestApplicationResourcesFactory.getApplicationResources());
     }
 
     /**
-     * Tests valid patient account.
+     * Tests patient GUID generation.
      */
     @Test
-    public void valid() {
-        PLCUser user = TestPLCEntityFactory.createPLCUser();
-        Set<ConstraintViolation<PLCUser>> violations = validator.validate(user);
-        assertTrue(violations.isEmpty());
+    public void generatePatientGUID() {
+        PatientDemographics patientDemographics = TestPLCEntityFactory.createPatientDemographics();
+        String guid = encodingUtils.generatePatientGUID(patientDemographics);
+
+        assertTrue(StringUtils.isNotEmpty(guid));
+        assertEquals(EXPECTED_HASHED_LENGTH, guid.length());
+        assertEquals(guid, encodingUtils.generatePatientGUID(patientDemographics));
+
+        PatientDemographics differentPatientData = TestPLCEntityFactory.createPatientDemographics();
+        differentPatientData.setBirthDate(DateUtils.addDays(new Date(), 1));
+        String differentGuid = encodingUtils.generatePatientGUID(differentPatientData);
+        assertTrue(StringUtils.isNotEmpty(differentGuid));
+        assertEquals(EXPECTED_HASHED_LENGTH, differentGuid.length());
+        assertFalse(StringUtils.equals(guid, differentGuid));
     }
 
     /**
-     * Tests invalid patient account.
+     * Tests hashing of string.
      */
-    @Test
-    public void invalid() {
-        PLCUser patientAccount = TestPLCEntityFactory.createPLCUser();
-        PLCUser duplicateAccount = TestPLCEntityFactory.createPLCUser();
-        duplicateAccount.setUsername(patientAccount.getUsername());
-        try {
-            em.getTransaction().begin();
-            em.persist(patientAccount);
-            em.getTransaction().commit();
-            Set<ConstraintViolation<PLCUser>> violations = validator.validate(patientAccount);
-            assertTrue(violations.isEmpty());
-
-            violations = validator.validate(duplicateAccount);
-            assertFalse(violations.isEmpty());
-            assertEquals(1, violations.size());
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            fail(e.getMessage());
-        }
+    public void hashString() {
+        String hashed = encodingUtils.hashString("Hash Me");
+        assertEquals(EXPECTED_HASHED_LENGTH, hashed);
     }
 }

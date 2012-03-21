@@ -8,4 +8,8 @@
     <decorator name="wizard" page="wizard.jsp">
         <pattern>/www/wizard/*</pattern>
     </decorator>
+    <decorator name="default" page="defaultLayout.jsp">
+        <pattern>/www/protected/*</pattern>
+        <pattern>/www/login/*</pattern>
+    </decorator>
 </decorators>

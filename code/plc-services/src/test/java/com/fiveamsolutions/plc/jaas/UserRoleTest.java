@@ -28,36 +28,76 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.jaas;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class JPADaoModuleTest {
+public class UserRoleTest {
 
     /**
-     * Test module insertion.
+     * Test invalid constructor.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void invalidConstructor() {
+        new UserRole(null);
+    }
+
+    /**
+     * Test hash code.
      */
     @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new JPADaoModule(TestApplicationResourcesFactory.getApplicationResources()));
-        assertNotNull(injector);
-        PatientAccountDao patientAccountDao = injector.getInstance(PatientAccountDao.class);
-        PatientDemographicsDao patientDemographicsDao = injector.getInstance(PatientDemographicsDao.class);
-        PatientDataDao patientDataDao = injector.getInstance(PatientDataDao.class);
-        PLCUserDao userDao = injector.getInstance(PLCUserDao.class);
-        assertNotNull(patientAccountDao);
-        assertNotNull(patientDemographicsDao);
-        assertNotNull(patientDataDao);
-        assertNotNull(userDao);
+    public void testHashCode() {
+        String testRoleName = "testRole";
+        UserRole testRole1 = new UserRole(testRoleName);
+        UserRole testRole2 = new UserRole(testRoleName);
+        assertEquals(testRole1.hashCode(), testRole2.hashCode());
     }
+
+    /**
+     * Test equality when the two objects are the same.
+     */
+    @Test
+    public void equalityForSameObject() {
+        UserRole testRole = new UserRole("testRole");
+        assertTrue(testRole.equals(testRole));
+    }
+
+    /**
+     * Test equality of two different objects with the same name.
+     */
+    @Test
+    public void equalsWhenNamesAreEqual() {
+        String testRoleName = "testRole";
+        UserRole testRole1 = new UserRole(testRoleName);
+        UserRole testRole2 = new UserRole(testRoleName);
+        assertTrue(testRole1.equals(testRole2));
+    }
+
+    /**
+     * Test inequality with null.
+     */
+    @Test
+    public void inequalityWithNull() {
+        UserRole testRole = new UserRole("testRole");
+        assertFalse(testRole.equals(null));
+    }
+
+    /**
+     * Test inequality with object of a different class.
+     */
+    @Test
+    public void inequalityWhenNotSameClass() {
+        UserRole testRole = new UserRole("testRole");
+        assertFalse(testRole.equals(new Object()));
+    }
+
 }

@@ -60,6 +60,7 @@ public class JPADaoModule extends AbstractModule {
         bind(PatientDemographicsDao.class).to(PatientDemographicsJPADao.class);
         bind(PatientAccountDao.class).to(PatientAccountJPADao.class);
         bind(PatientDataDao.class).to(PatientDataJPADao.class);
+        bind(PLCUserDao.class).to(PLCUserJPADao.class);
         bind(PersistentServiceInitializer.class).asEagerSingleton();
     }
 

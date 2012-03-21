@@ -28,29 +28,51 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.dao;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.apache.commons.collections.CollectionUtils;
+
+import com.fiveamsolutions.plc.data.PLCUser;
+import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class PLCUserJPADao extends AbstractPLCEntityDao<PLCUser> implements PLCUserDao {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Class constructor.
+     * @param em the entity manager
      */
-    String registerPatient(PatientAccount patient);
+    @Inject
+    PLCUserJPADao(EntityManager em) {
+        super(em);
+    }
 
     /**
-     * Adds patient data to the patient account the given guid.
-     * @param guid the guid of the account to add the data to
-     * @param patientData the patient data to add
+     * {@inheritDoc}
      */
-    void addPatientData(String guid, PatientData patientData);
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public PLCUser getByUsername(String username) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select u from ").append(getEntityType().getName()).append(" u where u.username = :username");
+
+        Query query = getEntityManager().createQuery(builder.toString());
+        query.setParameter("username", username);
+
+        List<PLCUser> results = query.getResultList();
+        PLCUser result = null;
+        if (CollectionUtils.isNotEmpty(results)) {
+            result = results.get(0);
+        }
+        return result;
+    }
 }

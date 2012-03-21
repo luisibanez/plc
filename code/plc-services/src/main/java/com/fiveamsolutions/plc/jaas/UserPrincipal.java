@@ -28,29 +28,69 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.jaas;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.fiveamsolutions.plc.data.PLCUser;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class UserPrincipal extends AbstractPrincipal {
+    private final PLCUser user;
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Class constructor.
+     *
+     * @param user the plc user
      */
-    String registerPatient(PatientAccount patient);
+    public UserPrincipal(PLCUser user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        } else if (user.getId() == null) {
+            throw new IllegalArgumentException("Invalid user ID");
+        }
+        this.user = user;
+    }
 
     /**
-     * Adds patient data to the patient account the given guid.
-     * @param guid the guid of the account to add the data to
-     * @param patientData the patient data to add
+     * @return the user
      */
-    void addPatientData(String guid, PatientData patientData);
+    public PLCUser getUser() {
+        return user;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName() {
+        return user.getUsername();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(user.getId()).toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof UserPrincipal)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        UserPrincipal rhs = (UserPrincipal) obj;
+        return new EqualsBuilder().appendSuper(super.equals(obj)).append(user.getId(), rhs.user.getId()).isEquals();
+    }
 }

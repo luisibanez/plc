@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemalocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
-    version="3.0"> 
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemalocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
 
     <display-name>Portable Legal Consent</display-name>
 
     <description>Portable Legal Consent</description>
-    
+
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>ApplicationResources</param-value>
@@ -15,7 +14,7 @@
         <param-name>showErrorStackTraces</param-name>
         <param-value>${plc.web.showStackTraceOnErrorPage}</param-value>
     </context-param>
-    
+
     <!-- Filters -->
     <filter>
         <filter-name>guice</filter-name>
@@ -27,15 +26,38 @@
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
-    
+
     <!-- Context listeners -->
     <listener>
         <listener-class>com.fiveamsolutions.plc.web.inject.GuiceServletContextListener</listener-class>
     </listener>
-    
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
- 
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/www/login/login.action</form-login-page>
+            <form-error-page>/www/login/login.action?failedLogin=true</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <!-- Security constraints and roles -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>protected</web-resource-name>
+            <url-pattern>/www/protected/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>plcuser</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <!-- Security roles -->
+    <security-role>
+        <description>PLC User</description>
+        <role-name>plcuser</role-name>
+    </security-role>
 </web-app>
