@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.fiveamsolutions.plc.data.PatientDemographics;
@@ -75,10 +76,12 @@ public class EncodingUtils {
         SimpleDateFormat sdf =
                 new SimpleDateFormat(appResources.getStringResource(DATE_FORMAT_KEY), Locale.getDefault());
         String dob = sdf.format(patientDemographics.getBirthDate());
-        StringBuilder builder = new StringBuilder().append(patientDemographics.getFirstName())
-                .append(patientDemographics.getBirthName()).append(dob).append(patientDemographics.getBirthPlace())
+        StringBuilder builder = new StringBuilder().append(patientDemographics.getFirstName()).append("_")
+                .append(patientDemographics.getBirthName()).append("_").append(dob).append("_")
+                .append(patientDemographics.getBirthPlace()).append("_")
                 .append(patientDemographics.getBirthCountry());
-        return hashString(builder.toString());
+        String stringToHash = StringUtils.strip(builder.toString().replace("\\s+", " "));
+        return hashString(stringToHash);
     }
 
     /**
