@@ -28,63 +28,49 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.struts2.wizard;
+package com.fiveamsolutions.plc.web.struts2.util;
 
-import java.security.NoSuchAlgorithmException;
-
-import javax.validation.Valid;
+import java.util.Map;
 
 import com.fiveamsolutions.plc.data.PatientDemographics;
-import com.fiveamsolutions.plc.service.EncodingUtils;
-import com.fiveamsolutions.plc.util.PLCApplicationResources;
-import com.fiveamsolutions.plc.web.struts2.util.PLCSessionHelper;
-import com.google.inject.Inject;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class GenerateGuidAction extends ConsentWizardAction {
-
-    private static final long serialVersionUID = 1L;
-    private final EncodingUtils encodingUtils;
-    @Valid
-    private PatientDemographics patientDemographics = new PatientDemographics();
-
+public class PLCSessionHelper {
+    private static final String PATIENT_DEMOGRAPHICS = "patientDemographics";
+    private static final String GUID = "guid";
 
     /**
-     * Class constructor.
-     *
-     * @param appResources the application resources
-     * @throws NoSuchAlgorithmException on error
+     * @param demographics the demographics
+     * @param session the session
      */
-    @Inject
-    public GenerateGuidAction(PLCApplicationResources appResources) throws NoSuchAlgorithmException {
-        this.encodingUtils = new EncodingUtils(appResources);
+    public static void setPatientDemographics(PatientDemographics demographics, Map<String, Object> session) {
+        session.put(PATIENT_DEMOGRAPHICS, demographics);
     }
 
     /**
-     * Generates a patient's GUID.
-     * @return the struts forwarding result
+     * @param session the session
+     * @return the stored patient demographics
      */
-    public String generateId() {
-        String guid = encodingUtils.generatePatientGUID(patientDemographics);
-        PLCSessionHelper.setPatientDemographics(patientDemographics, getSession());
-        PLCSessionHelper.setPatientGUID(guid, getSession());
-        return SUCCESS;
+    public static PatientDemographics getPatientDemographics(Map<String, Object> session) {
+        return (PatientDemographics) session.get(PATIENT_DEMOGRAPHICS);
     }
 
     /**
-     * @return the patientDemographics
+     * @param guid the guid
+     * @param session the session
      */
-    public PatientDemographics getPatientDemographics() {
-        return patientDemographics;
+    public static void setPatientGUID(String guid, Map<String, Object> session) {
+        session.put(GUID, guid);
     }
 
     /**
-     * @param patientDemo the patientDemographics to set
+     * @param session the session
+     * @return the stored guid
      */
-    public void setPatientData(PatientDemographics patientDemo) {
-        this.patientDemographics = patientDemo;
+    public static String getPatientGUID(Map<String, Object> session) {
+        return (String) session.get(GUID);
     }
 }

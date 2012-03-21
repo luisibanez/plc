@@ -45,6 +45,7 @@ create table patient_demographics (
 create table plc_user (
     id int8 not null,
     email varchar(255) not null,
+    full_name varchar(255) not null,
     password varchar(255) not null,
     salt varchar(16) not null,
     username varchar(20) not null unique,

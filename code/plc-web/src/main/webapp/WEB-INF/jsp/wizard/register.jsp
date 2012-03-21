@@ -7,25 +7,25 @@
             <div class="clearfix">
                 <label for="fullName">Full Name</label>
                 <div class="input">
-                    <s:textfield cssClass="xlarge required" id="fullName" name="fullName" size="30" cssErrorClass="error-field"/>
-                    <s:fielderror fieldName="fullName" cssClass="error-message"/>
+                    <s:textfield cssClass="xlarge required" id="fullName" name="user.fullName" size="30" cssErrorClass="error-field"/>
+                    <s:fielderror fieldName="user.fullName" cssClass="error-message"/>
                 </div>
             </div>
             <div class="clearfix">
                 <label for="username">Username</label>
                 <div class="input">
-                    <s:textfield cssClass="xlarge required" id="username" name="patientAccount.username" size="20" cssErrorClass="error-field"/>
+                    <s:textfield cssClass="xlarge required" id="username" name="user.username" size="20" cssErrorClass="error-field"/>
                     <s:fielderror>
-                        <s:param>patientAccount.username</s:param>
-                        <s:param>patientAccount</s:param>
+                        <s:param>user.username</s:param>
+                        <s:param>plcUser</s:param>
                     </s:fielderror>
                 </div>
             </div>
             <div class="clearfix">
                 <label for="password">Password</label>
                 <div class="input">
-                    <s:password cssClass="xlarge required" id="password" name="patientAccount.password" size="30" cssErrorClass="error-field"/>
-                    <s:fielderror fieldName="patientAccount.password" cssClass="error-message"/>
+                    <s:password cssClass="xlarge required" id="password" name="user.password" size="30" cssErrorClass="error-field"/>
+                    <s:fielderror fieldName="user.password" cssClass="error-message"/>
                 </div>
             </div>
             <div class="clearfix">
@@ -38,8 +38,8 @@
             <div class="clearfix">
                 <label for="email">Email</label>
                 <div class="input">
-                    <s:textfield cssClass="xlarge required email" id="email" name="patientAccount.email" size="30" cssErrorClass="error-field"/>
-                    <s:fielderror fieldName="patientAccount.email" cssClass="error-message"/>
+                    <s:textfield cssClass="xlarge required email" id="email" name="user.email" size="30" cssErrorClass="error-field"/>
+                    <s:fielderror fieldName="user.email" cssClass="error-message"/>
                 </div>
             </div>
             <div class="clearfix">

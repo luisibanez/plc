@@ -98,6 +98,7 @@ public class TestPLCEntityFactory {
 
     public static PLCUser createPLCUser() {
         PLCUser user = new PLCUser();
+        user.setFullName("Full Name");
         user.setEmail("test@example.com");
         user.setPassword(RandomStringUtils.randomAscii(PASSWORD_LENGTH));
         user.setUsername(RandomStringUtils.randomAlphanumeric(USERNAME_LENGTH));

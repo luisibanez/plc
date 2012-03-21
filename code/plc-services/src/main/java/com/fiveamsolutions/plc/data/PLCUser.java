@@ -57,6 +57,7 @@ public class PLCUser implements PLCEntity {
     private static final int MAX_USERNAME_LENGTH = 20;
 
     private Long id;
+    private String fullName;
     private String username;
     private String password;
     private String salt;
@@ -84,6 +85,23 @@ public class PLCUser implements PLCEntity {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    /**
+     * @return the fullName
+     */
+    @NotEmpty
+    @Column(name = "full_name", nullable = false)
+    public String getFullName() {
+        return fullName;
+    }
+
+    /**
+     * @param fullName the fullName to set
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     /**

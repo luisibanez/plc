@@ -42,10 +42,11 @@ import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
-import com.fiveamsolutions.plc.data.PatientAccount;
+import com.fiveamsolutions.plc.data.PLCUser;
 import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.fiveamsolutions.plc.service.PatientInformationServiceBean;
 import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
+import com.fiveamsolutions.plc.web.struts2.util.PLCSessionHelper;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -94,8 +95,9 @@ public class RegisterPatientActionTest extends AbstractConsentWizardTest<Registe
     @Test
     public void register() {
         RegisterPatientAction action = getTestAction();
-        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
-        action.setPatientAccount(patientAccount);
+        PLCSessionHelper.setPatientDemographics(TestPLCEntityFactory.createPatientDemographics(), action.getSession());
+        PLCUser user = TestPLCEntityFactory.createPLCUser();
+        action.setUser(user);
         assertEquals(ActionSupport.SUCCESS, action.register());
     }
 
@@ -105,27 +107,24 @@ public class RegisterPatientActionTest extends AbstractConsentWizardTest<Registe
     @Test
     public void validate() {
         RegisterPatientAction action = getTestAction();
-        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
-        action.setPatientAccount(patientAccount);
+        PLCUser user = TestPLCEntityFactory.createPLCUser();
+        action.setUser(user);
 
         assertNull(action.getRepeatPassword());
         assertNull(action.getRepeatEmail());
-        assertNull(action.getFullName());
         assertNull(action.getChallengeQuestion());
         assertNull(action.getChallengeAnswer());
         action.validate();
 
         assertTrue(action.hasFieldErrors());
-        assertEquals(7, action.getFieldErrors().size());
+        assertEquals(6, action.getFieldErrors().size());
         assertNotNull(action.getFieldErrors().get("repeatPassword"));
         assertNotNull(action.getFieldErrors().get("repeatEmail"));
-        assertNotNull(action.getFieldErrors().get("patientAccount.password"));
-        assertNotNull(action.getFieldErrors().get("fullName"));
+        assertNotNull(action.getFieldErrors().get("user.password"));
         assertNotNull(action.getFieldErrors().get("challengeQuestion"));
         assertNotNull(action.getFieldErrors().get("challengeAnswer"));
 
         action.clearErrorsAndMessages();
-        action.setFullName("Full Name");
         action.setChallengeQuestion("Question");
         action.setChallengeAnswer("Answer");
         action.setRepeatPassword("notTheSame");
@@ -135,13 +134,13 @@ public class RegisterPatientActionTest extends AbstractConsentWizardTest<Registe
         assertTrue(action.hasFieldErrors());
         assertEquals(4, action.getFieldErrors().size());
         assertNotNull(action.getFieldErrors().get("repeatPassword"));
-        assertNotNull(action.getFieldErrors().get("patientAccount.password"));
+        assertNotNull(action.getFieldErrors().get("user.password"));
         assertNotNull(action.getFieldErrors().get("repeatEmail"));
-        assertNotNull(action.getFieldErrors().get("patientAccount.email"));
+        assertNotNull(action.getFieldErrors().get("user.email"));
 
         action.clearErrorsAndMessages();
-        action.setRepeatEmail(action.getPatientAccount().getPlcUser().getEmail());
-        action.setRepeatPassword(action.getPatientAccount().getPlcUser().getPassword());
+        action.setRepeatEmail(action.getUser().getEmail());
+        action.setRepeatPassword(action.getUser().getPassword());
         action.validate();
         assertFalse(action.hasFieldErrors());
     }

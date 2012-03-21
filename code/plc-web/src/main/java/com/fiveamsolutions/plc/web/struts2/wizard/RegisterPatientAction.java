@@ -35,34 +35,25 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fiveamsolutions.plc.data.ChallengeQuestion;
+import com.fiveamsolutions.plc.data.PLCUser;
 import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.service.PatientInformationService;
+import com.fiveamsolutions.plc.web.struts2.util.PLCSessionHelper;
 import com.google.inject.Inject;
-import com.opensymphony.xwork2.Preparable;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class RegisterPatientAction extends ConsentWizardAction implements Preparable {
+public class RegisterPatientAction extends ConsentWizardAction {
     private static final long serialVersionUID = 1L;
     private final PatientInformationService patientService;
     @Valid
-    private PatientAccount patientAccount = new PatientAccount();
+    private PLCUser user = new PLCUser();
     private String repeatPassword;
     private String repeatEmail;
     private String challengeQuestion;
     private String challengeAnswer;
-    private String fullName;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void prepare() {
-        patientAccount.setPatientDemographics((PatientDemographics) getSession().get("patientDemographics"));
-    }
 
     /**
      * Class constructor.
@@ -79,11 +70,16 @@ public class RegisterPatientAction extends ConsentWizardAction implements Prepar
      * @return the struts forwarding result
      */
     public String register() {
+        PatientAccount account = new PatientAccount();
+        account.setPlcUser(user);
+        account.setPatientDemographics(PLCSessionHelper.getPatientDemographics(getSession()));
+
         ChallengeQuestion qa = new ChallengeQuestion();
         qa.setQuestion(challengeQuestion);
         qa.setAnswer(challengeAnswer);
-        patientAccount.getChallengeQuestions().add(qa);
-        patientService.registerPatient(patientAccount);
+        account.getChallengeQuestions().add(qa);
+
+        patientService.registerPatient(account);
         return SUCCESS;
     }
 
@@ -93,16 +89,13 @@ public class RegisterPatientAction extends ConsentWizardAction implements Prepar
     @Override
     public void validate() {
         super.validate();
-        if (!StringUtils.equals(patientAccount.getPlcUser().getPassword(), getRepeatPassword())) {
-            addFieldError("patientAccount.password", "Passwords must match.");
+        if (!StringUtils.equals(user.getPassword(), getRepeatPassword())) {
+            addFieldError("user.password", "Passwords must match.");
             addFieldError("repeatPassword", "Passwords must match.");
         }
-        if (!StringUtils.equals(patientAccount.getPlcUser().getPassword(), getRepeatPassword())) {
-            addFieldError("patientAccount.email", "Email Addresses must match.");
+        if (!StringUtils.equals(user.getPassword(), getRepeatPassword())) {
+            addFieldError("user.email", "Email Addresses must match.");
             addFieldError("repeatEmail", "Email Addresses must match.");
-        }
-        if (StringUtils.isEmpty(fullName)) {
-            addFieldError("fullName", getText(FIELD_REQUIRED_KEY));
         }
         if (StringUtils.isEmpty(challengeQuestion)) {
             addFieldError("challengeQuestion", getText(FIELD_REQUIRED_KEY));
@@ -113,17 +106,17 @@ public class RegisterPatientAction extends ConsentWizardAction implements Prepar
     }
 
     /**
-     * @return the patientAccount
+     * @return the user
      */
-    public PatientAccount getPatientAccount() {
-        return patientAccount;
+    public PLCUser getUser() {
+        return user;
     }
 
     /**
-     * @param patientAccount the patientAccount to set
+     * @param user the user to set
      */
-    public void setPatientAccount(PatientAccount patientAccount) {
-        this.patientAccount = patientAccount;
+    public void setUser(PLCUser user) {
+        this.user = user;
     }
 
     /**
@@ -182,17 +175,4 @@ public class RegisterPatientAction extends ConsentWizardAction implements Prepar
         this.challengeAnswer = challengeAnswer;
     }
 
-    /**
-     * @return the fullName
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * @param fullName the fullName to set
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 }
