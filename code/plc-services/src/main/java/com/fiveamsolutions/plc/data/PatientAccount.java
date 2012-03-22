@@ -38,7 +38,6 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -172,8 +171,7 @@ public class PatientAccount implements PLCEntity {
     /**
      * @return the patientData
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_account_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "patientAccount", orphanRemoval = true)
     public List<PatientData> getPatientData() {
         return patientData;
     }

@@ -30,8 +30,12 @@
  */
 package com.fiveamsolutions.plc.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.google.inject.Inject;
@@ -55,6 +59,8 @@ public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> i
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    @Override
     @Transactional
     public PatientAccount getByGuid(String guid) {
         StringBuilder builder = new StringBuilder();
@@ -62,6 +68,34 @@ public class PatientAccountJPADao extends AbstractPLCEntityDao<PatientAccount> i
 
         Query query = getEntityManager().createQuery(builder.toString());
         query.setParameter("guid", guid);
-        return (PatientAccount) query.getSingleResult();
+        PatientAccount pa = null;
+        List<PatientAccount> results = query.getResultList();
+        if (CollectionUtils.isNotEmpty(results)) {
+            pa = results.get(0);
+        }
+        return pa;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional
+    public PatientAccount getByUsername(String username) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select pa from ").append(getEntityType().getName())
+            .append(" pa where pa.plcUser.username = :username");
+
+        Query query = getEntityManager().createQuery(builder.toString());
+        query.setParameter("username", username);
+        PatientAccount pa = null;
+        List<PatientAccount> results = query.getResultList();
+        if (CollectionUtils.isNotEmpty(results)) {
+            pa = results.get(0);
+        }
+        return pa;
+    }
+
+
 }

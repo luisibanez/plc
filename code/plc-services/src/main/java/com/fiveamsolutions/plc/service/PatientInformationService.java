@@ -30,6 +30,8 @@
  */
 package com.fiveamsolutions.plc.service;
 
+import java.util.List;
+
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 
@@ -53,4 +55,12 @@ public interface PatientInformationService {
      * @param patientData the patient data to add
      */
     void addPatientData(String guid, PatientData patientData);
+
+    /**
+     * The patient data associated with the given guid.
+     * @param guid the guid of the patient to retrieve patient data for
+     * @return the patient data
+     */
+    List<PatientData> getPatientData(String guid);
+
 }

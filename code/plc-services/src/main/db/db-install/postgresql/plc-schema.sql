@@ -23,7 +23,7 @@ create table patient_data (
     notes varchar(255),
     uploaded_date timestamp not null,
     version varchar(255),
-    patient_account_id int8,
+    patient_account_id int8 not null,
     primary key (id)
 );
 

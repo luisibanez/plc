@@ -38,6 +38,7 @@ import java.util.ResourceBundle;
 import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
+import com.fiveamsolutions.plc.dao.PatientDataDao;
 import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -55,11 +56,13 @@ public class PatientInformationServiceModuleTest {
     @Test
     public void testModule() {
         final PatientAccountDao patientAccountDao = mock(PatientAccountDao.class);
+        final PatientDataDao patientDataDao = mock(PatientDataDao.class);
         Injector injector = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
                 bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
                 bind(PatientAccountDao.class).toInstance(patientAccountDao);
+                bind(PatientDataDao.class).toInstance(patientDataDao);
             }
         }, new PatientInformationServiceModule());
         PatientInformationService pis = injector.getInstance(PatientInformationService.class);

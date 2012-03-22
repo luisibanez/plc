@@ -40,6 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
+import com.fiveamsolutions.plc.dao.PatientDataDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
@@ -57,6 +58,7 @@ public class PatientResourceTest {
     private PatientResource patientResource;
     private PatientInformationService patientInformationService;
     private PatientAccountDao patientAccountDao;
+    private PatientDataDao patientDataDao;
 
     /**
      * Sets up the test.
@@ -65,9 +67,10 @@ public class PatientResourceTest {
     @Before
     public void setUp() throws Exception {
         patientAccountDao = mock(PatientAccountDao.class);
+        patientDataDao  = mock(PatientDataDao.class);
         patientInformationService =
                 new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources(),
-                        patientAccountDao);
+                        patientAccountDao, patientDataDao);
         patientResource = new PatientResource(patientInformationService);
     }
 

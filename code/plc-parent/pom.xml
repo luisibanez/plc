@@ -16,7 +16,7 @@
         <java.target>1.6</java.target>
         <cobertura.check.haltOnFailure>true</cobertura.check.haltOnFailure>
         <cobertura.totalLineRate>95</cobertura.totalLineRate>
-        <cobertura.totalBranchRate>92</cobertura.totalBranchRate>
+        <cobertura.totalBranchRate>95</cobertura.totalBranchRate>
         
         <logger.debug>false</logger.debug>
         <logger.level>WARN</logger.level>

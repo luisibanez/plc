@@ -32,6 +32,7 @@ package com.fiveamsolutions.plc.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -92,5 +93,50 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
         assertNotNull(retrievedAccount);
         getTestDao().getEntityManager().getTransaction().commit();
         assertEquals(pa.getGuid(), retrievedAccount.getGuid());
+    }
+
+    /**
+     * Tests retrieval by guid of a patient account that doesn't exist.
+     */
+    @Test
+    public void getByGuidDoesntExist() {
+        PatientAccount pa = getTestEntity();
+        getTestDao().getEntityManager().getTransaction().begin();
+        getTestDao().save(pa);
+
+        PatientAccount retrievedAccount = getTestDao().getByGuid("wrong");
+        getTestDao().getEntityManager().getTransaction().commit();
+        assertNull(retrievedAccount);
+
+    }
+
+    /**
+     * Tests retrieval of patient account by username.
+     */
+    @Test
+    public void getByUsername() {
+        PatientAccount pa = getTestEntity();
+        getTestDao().getEntityManager().getTransaction().begin();
+        getTestDao().save(pa);
+
+        PatientAccount retrievedAccount = getTestDao().getByUsername(pa.getPlcUser().getUsername());
+        assertNotNull(retrievedAccount);
+        getTestDao().getEntityManager().getTransaction().commit();
+        assertEquals(pa.getPlcUser().getUsername(), retrievedAccount.getPlcUser().getUsername());
+    }
+
+    /**
+     * Tests retrieval by username of a patient account that doesn't exist.
+     */
+    @Test
+    public void getByUsernameDoesntExist() {
+        PatientAccount pa = getTestEntity();
+        getTestDao().getEntityManager().getTransaction().begin();
+        getTestDao().save(pa);
+
+        PatientAccount retrievedAccount = getTestDao().getByUsername("wrong");
+        getTestDao().getEntityManager().getTransaction().commit();
+        assertNull(retrievedAccount);
+
     }
 }

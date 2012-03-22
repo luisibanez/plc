@@ -32,6 +32,7 @@ package com.fiveamsolutions.plc.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -89,5 +90,19 @@ public class PLCUserJPADaoTest extends AbstractPLCJPADaoTest<PLCUser> {
         assertNotNull(retrievedUser);
         getTestDao().getEntityManager().getTransaction().commit();
         assertEquals(user.getUsername(), retrievedUser.getUsername());
+    }
+
+    /**
+     * Tests retrieval by a username that doesn't exist.
+     */
+    @Test
+    public void getByUsernameDoesntExist() {
+        PLCUser user = getTestEntity();
+        getTestDao().getEntityManager().getTransaction().begin();
+        getTestDao().save(user);
+
+        PLCUser retrievedUser = getTestDao().getByUsername("wrong");
+        assertNull(retrievedUser);
+        getTestDao().getEntityManager().getTransaction().commit();
     }
 }

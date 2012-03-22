@@ -44,4 +44,11 @@ public interface PatientAccountDao extends Dao<PatientAccount> {
      * @return the patient account with the given guid
      */
     PatientAccount getByGuid(String guid);
+
+    /**
+     * Retrieves the patient account with the given username.
+     * @param username the username
+     * @return the patient account with the give username
+     */
+    PatientAccount getByUsername(String username);
 }

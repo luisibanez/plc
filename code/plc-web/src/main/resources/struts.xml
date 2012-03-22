@@ -43,8 +43,14 @@
 
     <package name="protected" namespace="/www/protected" extends="plc-default">
         <default-interceptor-ref name="plcParamsPrepareParamsStack" />
-        <action name="test">
-            <result>/index.jsp</result>
+        <action name="uploadData/view" class="com.fiveamsolutions.plc.web.struts2.action.UploadDataAction">
+            <result name="success">/WEB-INF/jsp/dataUpload.jsp</result>
+        </action>
+        <action name="uploadData/upload" class="com.fiveamsolutions.plc.web.struts2.action.UploadDataAction" method="upload">
+            <result name="success" type="redirectAction">
+                <param name="actionName">uploadData/view</param>
+            </result>
+            <result name="input">/WEB-INF/jsp/dataUpload.jsp</result>
         </action>
     </package>
 

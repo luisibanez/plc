@@ -30,6 +30,8 @@
  */
 package com.fiveamsolutions.plc.dao;
 
+import java.util.List;
+
 import com.fiveamsolutions.plc.data.PatientData;
 
 /**
@@ -38,4 +40,10 @@ import com.fiveamsolutions.plc.data.PatientData;
  */
 public interface PatientDataDao extends Dao<PatientData> {
 
+    /**
+     * Retrieves all patient data associated with the given account id.
+     * @param id the account id
+     * @return the patient data associated with the account
+     */
+    List<PatientData> getByAccountId(Long id);
 }

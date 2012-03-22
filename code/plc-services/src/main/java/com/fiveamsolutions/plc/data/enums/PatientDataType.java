@@ -37,7 +37,15 @@ package com.fiveamsolutions.plc.data.enums;
 public enum PatientDataType {
 
     /** SNP Genotype. */
-    SNP_GENOTYPE("SNP Genotype");
+    SNP_GENOTYPE("SNP Genotype"),
+    /**Exome.*/
+    EXOME("Exome"),
+    /**Genome Full Sequence.*/
+    GENOME_FULL_SEQUENCE("Genome - FullSequence"),
+    /**Electronic Health Record.*/
+    EHR("Electronic Health Record"),
+    /**Family Health History.*/
+    FHH("Family Health History");
 
     private String code;
 

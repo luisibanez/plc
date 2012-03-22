@@ -30,10 +30,17 @@
  */
 package com.fiveamsolutions.plc.dao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import java.util.List;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
+import org.junit.Test;
 
 import com.fiveamsolutions.plc.data.PLCEntity;
+import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 
 /**
@@ -74,6 +81,26 @@ public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
     protected void changeTestEntity(PLCEntity testEntity) {
         PatientData pd = (PatientData) testEntity;
         pd.setUploadedDate(DateUtils.addDays(pd.getUploadedDate(), 1));
+    }
+
+    /**
+     * Tests retrieving patient data by account id.
+     */
+    @Test
+    public void getByAccountId() {
+        PatientData pd = getTestEntity();
+        PatientAccount pa = TestPLCEntityFactory.createPatientAccount();
+
+        getTestDao().getEntityManager().getTransaction().begin();
+        getTestDao().getEntityManager().persist(pa);
+        pd.setPatientAccount(pa);
+        getTestDao().save(pd);
+
+        List<PatientData> results = getTestDao().getByAccountId(pa.getId());
+        assertFalse(results.isEmpty());
+        assertEquals(1, results.size());
+
+        getTestDao().getEntityManager().getTransaction().commit();
     }
 
 }

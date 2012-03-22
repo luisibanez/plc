@@ -37,7 +37,21 @@ package com.fiveamsolutions.plc.data.enums;
 public enum PatientDataSource {
 
     /** 23 And Me. */
-    TWENTY_THREE_AND_ME("23andMe");
+    TWENTY_THREE_AND_ME("23andMe"),
+    /** Knome.*/
+    KNOME("Knome"),
+    /** DecodeMe.*/
+    DECODE_ME("DecodeMe"),
+    /** BlueButton.*/
+    BLUE_BUTTON("BlueButton"),
+    /** HL7.*/
+    HL7("HL7"),
+    /** Plain Text.*/
+    PLAIN_TEXT("Plain Text"),
+    /** PDF.*/
+    PDF("PDF"),
+    /** Word.*/
+    WORD("Word");
 
     private String code;
 

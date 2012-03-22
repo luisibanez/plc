@@ -30,10 +30,14 @@
  */
 package com.fiveamsolutions.plc.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import com.fiveamsolutions.plc.data.PatientData;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 
 
 /**
@@ -51,5 +55,18 @@ public class PatientDataJPADao extends AbstractPLCEntityDao<PatientData> impleme
         super(em);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<PatientData> getByAccountId(Long id) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select pd from ").append(getEntityType().getName())
+            .append(" pd where pd.patientAccount.id = :id");
 
+        Query query = getEntityManager().createQuery(builder.toString());
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 }
