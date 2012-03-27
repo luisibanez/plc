@@ -17,8 +17,8 @@
                 <plc.db.username>legalconsent</plc.db.username>
                 <plc.db.password>legalconsent</plc.db.password>
                 <plc.db.adminJdbcUrl>${plc.db.jdbcPrefix}/template1</plc.db.adminJdbcUrl>
-                <plc.db.adminUsername>postgres</plc.db.adminUsername>
-                <plc.db.adminPassword></plc.db.adminPassword>
+                <plc.db.adminUsername>root</plc.db.adminUsername>
+                <plc.db.adminPassword>p@ssword</plc.db.adminPassword>
             </properties>
         </profile>
     </profiles>
