@@ -9,7 +9,7 @@
             </activation>
             <properties>
                 <plc.db.host>sfo-plc-backend-ci-01.5amsolutions.com</plc.db.host>
-                <plc.db.database>legalconsent-ci</plc.db.database>
+                <plc.db.database>legalconsent_ci</plc.db.database>
                 <plc.db.dialect>org.hibernate.dialect.PostgreSQLDialect</plc.db.dialect>
                 <plc.db.jdbcDriver>org.postgresql.Driver</plc.db.jdbcDriver>
                 <plc.db.jdbcPrefix>jdbc:postgresql://${plc.db.host}:5432</plc.db.jdbcPrefix>
