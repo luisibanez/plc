@@ -30,6 +30,8 @@
  */
 package com.fiveamsolutions.plc.web.rest;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -69,6 +71,7 @@ public class PatientResource {
      * @param patient the patient to create
      * @return the patient's GUID
      */
+    @PermitAll
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -82,6 +85,7 @@ public class PatientResource {
      * @param guid the guid of the patient to upload the information to
      * @param patientData the data to upload
      */
+    @RolesAllowed({"plcuser" })
     @Path("{guid}")
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

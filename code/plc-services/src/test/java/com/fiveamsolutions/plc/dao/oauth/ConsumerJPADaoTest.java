@@ -28,28 +28,74 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.dao.oauth;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import com.fiveamsolutions.plc.dao.AbstractPLCJPADaoTest;
+import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
+import com.fiveamsolutions.plc.data.PLCEntity;
+import com.fiveamsolutions.plc.data.oauth.Consumer;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class JPADaoModuleTest {
+public class ConsumerJPADaoTest extends AbstractPLCJPADaoTest<Consumer> {
+    private ConsumerJPADao testDao;
 
     /**
-     * Test module insertion.
+     * Prepares test data.
+     */
+    @Before
+    public void prepareTestData() {
+        testDao = new ConsumerJPADao(getEntityManager());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ConsumerJPADao getTestDao() {
+        return testDao;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Consumer getTestEntity() {
+        return TestPLCEntityFactory.createConsumer();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void changeTestEntity(PLCEntity testEntity) {
+        Consumer consumer = (Consumer) testEntity;
+        consumer.setKey("foo");
+    }
+
+    /**
+     * Tests retrieving consumer by its key.
      */
     @Test
-    public void testModule() {
-        Injector injector = Guice.createInjector(new JPADaoModule(TestApplicationResourcesFactory.getApplicationResources()));
-        assertNotNull(injector);
+    public void getByKey() {
+        Consumer c = persistTestEntity();
+        Consumer retrievedConsumer = getTestDao().getByKey(c.getKey());
+        assertNotNull(retrievedConsumer);
+        assertEquals(c.getKey(), retrievedConsumer.getKey());
+        assertEquals(c.getSecret(), retrievedConsumer.getSecret());
+        assertEquals(c.getPrincipal(), retrievedConsumer.getPrincipal());
+        assertEquals(c.isInRole("plcuser"), c.isInRole("plcuser"));
+
+        retrievedConsumer = getTestDao().getByKey("wrongKey");
+        assertNull(retrievedConsumer);
     }
 }

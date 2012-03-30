@@ -82,13 +82,9 @@ public class PLCUserJPADaoTest extends AbstractPLCJPADaoTest<PLCUser> {
      */
     @Test
     public void getByUsername() {
-        PLCUser user = getTestEntity();
-        getTestDao().getEntityManager().getTransaction().begin();
-        getTestDao().save(user);
-
+        PLCUser user = persistTestEntity();
         PLCUser retrievedUser = getTestDao().getByUsername(user.getUsername());
         assertNotNull(retrievedUser);
-        getTestDao().getEntityManager().getTransaction().commit();
         assertEquals(user.getUsername(), retrievedUser.getUsername());
     }
 
@@ -97,12 +93,7 @@ public class PLCUserJPADaoTest extends AbstractPLCJPADaoTest<PLCUser> {
      */
     @Test
     public void getByUsernameDoesntExist() {
-        PLCUser user = getTestEntity();
-        getTestDao().getEntityManager().getTransaction().begin();
-        getTestDao().save(user);
-
         PLCUser retrievedUser = getTestDao().getByUsername("wrong");
         assertNull(retrievedUser);
-        getTestDao().getEntityManager().getTransaction().commit();
     }
 }

@@ -28,31 +28,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.dao.oauth;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
-
-import com.fiveamsolutions.plc.jaas.PLCLoginModule;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.PersistFilter;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import com.fiveamsolutions.plc.dao.Dao;
+import com.fiveamsolutions.plc.data.oauth.Consumer;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class ListenerModule extends AbstractModule {
+public interface ConsumerDao extends Dao<Consumer> {
 
     /**
-     * {@inheritDoc}
+     * Retrieves a consumer by its key.
+     * @param key the key
+     * @return the consumer with the given key or null if no such consumer exists
      */
-    @Override
-    protected void configure() {
-        bind(StrutsPrepareFilter.class).asEagerSingleton();
-        bind(SiteMeshFilter.class).asEagerSingleton();
-        bind(StrutsExecuteFilter.class).asEagerSingleton();
-        bind(PersistFilter.class).asEagerSingleton();
-        requestStaticInjection(PLCLoginModule.class);
-    }
+    Consumer getByKey(String key);
 }

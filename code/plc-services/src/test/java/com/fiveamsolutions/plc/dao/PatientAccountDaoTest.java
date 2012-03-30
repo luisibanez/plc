@@ -85,13 +85,10 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
      */
     @Test
     public void getByGuid() {
-        PatientAccount pa = getTestEntity();
-        getTestDao().getEntityManager().getTransaction().begin();
-        getTestDao().save(pa);
+        PatientAccount pa = persistTestEntity();
 
         PatientAccount retrievedAccount = getTestDao().getByGuid(pa.getGuid());
         assertNotNull(retrievedAccount);
-        getTestDao().getEntityManager().getTransaction().commit();
         assertEquals(pa.getGuid(), retrievedAccount.getGuid());
     }
 
@@ -100,14 +97,8 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
      */
     @Test
     public void getByGuidDoesntExist() {
-        PatientAccount pa = getTestEntity();
-        getTestDao().getEntityManager().getTransaction().begin();
-        getTestDao().save(pa);
-
         PatientAccount retrievedAccount = getTestDao().getByGuid("wrong");
-        getTestDao().getEntityManager().getTransaction().commit();
         assertNull(retrievedAccount);
-
     }
 
     /**
@@ -115,13 +106,9 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
      */
     @Test
     public void getByUsername() {
-        PatientAccount pa = getTestEntity();
-        getTestDao().getEntityManager().getTransaction().begin();
-        getTestDao().save(pa);
-
+        PatientAccount pa = persistTestEntity();
         PatientAccount retrievedAccount = getTestDao().getByUsername(pa.getPlcUser().getUsername());
         assertNotNull(retrievedAccount);
-        getTestDao().getEntityManager().getTransaction().commit();
         assertEquals(pa.getPlcUser().getUsername(), retrievedAccount.getPlcUser().getUsername());
     }
 
@@ -130,13 +117,7 @@ public class PatientAccountDaoTest extends AbstractPLCJPADaoTest<PatientAccount>
      */
     @Test
     public void getByUsernameDoesntExist() {
-        PatientAccount pa = getTestEntity();
-        getTestDao().getEntityManager().getTransaction().begin();
-        getTestDao().save(pa);
-
         PatientAccount retrievedAccount = getTestDao().getByUsername("wrong");
-        getTestDao().getEntityManager().getTransaction().commit();
         assertNull(retrievedAccount);
-
     }
 }

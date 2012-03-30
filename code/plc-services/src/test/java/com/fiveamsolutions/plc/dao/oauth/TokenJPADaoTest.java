@@ -28,41 +28,42 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.dao.oauth;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
-import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fiveamsolutions.plc.dao.AbstractPLCJPADaoTest;
+import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PLCEntity;
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.oauth.OAuthToken;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
-    private PatientDataJPADao testDao;
+public class TokenJPADaoTest extends AbstractPLCJPADaoTest<OAuthToken> {
+    private TokenJPADao testDao;
 
     /**
      * Prepares test data.
      */
     @Before
     public void prepareTestData() {
-        testDao = new PatientDataJPADao(getEntityManager());
+        testDao = new TokenJPADao(getEntityManager());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected PatientDataJPADao getTestDao() {
+    protected TokenJPADao getTestDao() {
         return testDao;
     }
 
@@ -70,8 +71,8 @@ public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
      * {@inheritDoc}
      */
     @Override
-    protected PatientData getTestEntity() {
-        return TestPLCEntityFactory.createPatientData();
+    protected OAuthToken getTestEntity() {
+        return TestPLCEntityFactory.createToken();
     }
 
     /**
@@ -79,25 +80,25 @@ public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
      */
     @Override
     protected void changeTestEntity(PLCEntity testEntity) {
-        PatientData pd = (PatientData) testEntity;
-        pd.setUploadedDate(DateUtils.addDays(pd.getUploadedDate(), 1));
+        OAuthToken token = (OAuthToken) testEntity;
+        token.setSecret(RandomStringUtils.randomAlphanumeric(25));
     }
 
     /**
-     * Tests retrieving patient data by account id.
+     * Tests retrieving token by its token.
      */
     @Test
-    public void getByAccountId() {
-        PatientData pd = persistTestEntity();
-        PatientAccount pa = TestPLCEntityFactory.createPatientAccount();
+    public void getByToken() {
+        OAuthToken t = persistTestEntity();
+        OAuthToken retrievedToken = getTestDao().getByToken(t.getToken());
+        assertNotNull(retrievedToken);
+        assertEquals(t.getToken(), retrievedToken.getToken());
+        assertEquals(t.getSecret(), retrievedToken.getSecret());
+        assertEquals(t.getPrincipal(), retrievedToken.getPrincipal());
+        assertEquals(t.isInRole("plcuser"), retrievedToken.isInRole("plcuser"));
+        assertTrue(retrievedToken.getAttributes().isEmpty());
 
-        getTestDao().getEntityManager().persist(pa);
-        pd.setPatientAccount(pa);
-        getTestDao().save(pd);
-
-        List<PatientData> results = getTestDao().getByAccountId(pa.getId());
-        assertFalse(results.isEmpty());
-        assertEquals(1, results.size());
+        retrievedToken = getTestDao().getByToken("wrongToken");
+        assertNull(retrievedToken);
     }
-
 }

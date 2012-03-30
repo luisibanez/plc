@@ -34,7 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fiveamsolutions.plc.util.PLCApplicationResources;
+import com.google.inject.persist.PersistFilter;
 import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
@@ -47,6 +49,8 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 public class PLCRestServletModule extends JerseyServletModule {
     private static final String REST_REQUESTS = "/rest/*";
     private static final String REST_REQUEST_PACKAGE_KEY = "plc.rest.package";
+    private static final String REST_REQUEST_FILTERS_KEY = "plc.rest.request.filters";
+    private static final String REST_CONTAINER_FILTERS = "plc.rest.container.filters";
     private final PLCApplicationResources appResources;
 
     /**
@@ -62,9 +66,15 @@ public class PLCRestServletModule extends JerseyServletModule {
      */
     @Override
     protected void configureServlets() {
+        super.configureServlets();
         Map<String, String> params = new HashMap<String, String>();
         params.put(PackagesResourceConfig.PROPERTY_PACKAGES, appResources.getStringResource(REST_REQUEST_PACKAGE_KEY));
         params.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
+        params.put(ResourceConfig.PROPERTY_RESOURCE_FILTER_FACTORIES,
+                appResources.getStringResource(REST_REQUEST_FILTERS_KEY));
+        params.put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,
+                appResources.getStringResource(REST_CONTAINER_FILTERS));
+        filter(REST_REQUESTS).through(PersistFilter.class);
         serve(REST_REQUESTS).with(GuiceContainer.class, params);
     }
 }

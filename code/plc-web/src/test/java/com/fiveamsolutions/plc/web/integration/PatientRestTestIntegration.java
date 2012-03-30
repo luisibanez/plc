@@ -54,6 +54,7 @@ import com.fiveamsolutions.plc.data.enums.PatientDataSource;
 import com.fiveamsolutions.plc.data.enums.PatientDataType;
 import com.fiveamsolutions.plc.data.transfer.Patient;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 /**
  * Integration test for the patient REST inteface.
@@ -88,6 +89,8 @@ public class PatientRestTestIntegration extends AbstractRestTestIntegration {
         assertNotNull(guid);
 
         PatientData pd = generatePatientData();
+        resource = getWebResource("patient");
+        resource.addFilter(new HTTPBasicAuthFilter(p.getUsername(), p.getPassword()));
         resource.path(guid).type(MediaType.APPLICATION_JSON_TYPE).entity(pd).post();
     }
 
@@ -106,6 +109,7 @@ public class PatientRestTestIntegration extends AbstractRestTestIntegration {
         p.setBirthName("User");
         p.setBirthCountry(Country.US);
         p.setBirthPlace("Somewhere");
+        p.setFullName("Full Name");
         return p;
     }
 

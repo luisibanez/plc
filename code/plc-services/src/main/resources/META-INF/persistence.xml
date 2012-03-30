@@ -16,6 +16,9 @@
         <class>com.fiveamsolutions.plc.data.PatientAccount</class>
         <class>com.fiveamsolutions.plc.data.PLCUser</class>
         
+        <class>com.fiveamsolutions.plc.data.oauth.Consumer</class>
+        <class>com.fiveamsolutions.plc.data.oauth.OAuthToken</class>
+        
         <properties>
             <property name="hibernate.dialect" value="${plc.db.dialect}"/>
             <property name="hibernate.connection.driver_class" value="${plc.db.jdbcDriver}"/>

@@ -174,11 +174,8 @@ public abstract class AbstractPLCJPADaoTest<T extends PLCEntity> extends Abstrac
     protected T persistTestEntity(T testEntity) {
         AbstractPLCEntityDao<T> testDao = getTestDao();
         try {
-            testDao.getEntityManager().getTransaction().begin();
             testDao.save(testEntity);
-            testDao.getEntityManager().getTransaction().commit();
         } catch (Exception e) {
-            testDao.getEntityManager().getTransaction().rollback();
             fail(e.getMessage());
         }
         testDao.getEntityManager().clear();

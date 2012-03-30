@@ -33,6 +33,7 @@ package com.fiveamsolutions.plc.web.inject;
 import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
 import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
 
+import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.ServletModule;
 import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
@@ -49,6 +50,7 @@ public class PLCServletModule extends ServletModule {
     @Override
     protected void configureServlets() {
         super.configureServlets();
+        filter(NON_REST_REQUESTS).through(PersistFilter.class);
         filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
         filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
         filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);

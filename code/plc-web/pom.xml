@@ -146,6 +146,11 @@
             <artifactId>jersey-client</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs.jersey-oauth</groupId>
+            <artifactId>oauth-client</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>javax.servlet</groupId>

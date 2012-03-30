@@ -42,6 +42,9 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.oauth.client.OAuthClientFilter;
+import com.sun.jersey.oauth.signature.OAuthParameters;
+import com.sun.jersey.oauth.signature.OAuthSecrets;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -85,6 +88,15 @@ public abstract class AbstractRestTestIntegration {
         ClientConfig config = new DefaultClientConfig();
         config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(config);
+
+        OAuthParameters params =
+                new OAuthParameters().signatureMethod("HMAC-SHA1").version();
+        // OAuth secrets to access resource
+        OAuthSecrets secrets = new OAuthSecrets().consumerSecret("foo").tokenSecret("tokenSecret");
+        // if parameters and secrets remain static, filter can be added to each web resource
+        OAuthClientFilter filter = new OAuthClientFilter(client.getProviders(), params, secrets);
+        client.addFilter(filter);
+
         WebResource r = client.resource(PROPERTIES.getProperty("test.rest.context") + "/" + endpoint);
         return r;
     }

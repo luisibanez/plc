@@ -28,31 +28,52 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.dao.oauth;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import java.util.List;
 
-import com.fiveamsolutions.plc.jaas.PLCLoginModule;
-import com.google.inject.AbstractModule;
-import com.google.inject.persist.PersistFilter;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.apache.commons.collections.CollectionUtils;
+
+import com.fiveamsolutions.plc.dao.AbstractPLCEntityDao;
+import com.fiveamsolutions.plc.data.oauth.Consumer;
+import com.google.inject.Inject;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class ListenerModule extends AbstractModule {
+public class ConsumerJPADao extends AbstractPLCEntityDao<Consumer> implements ConsumerDao {
+
+    /**
+     * Class constructor.
+     *
+     * @param em the entity manager
+     */
+    @Inject
+    ConsumerJPADao(EntityManager em) {
+        super(em);
+    }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
-    protected void configure() {
-        bind(StrutsPrepareFilter.class).asEagerSingleton();
-        bind(SiteMeshFilter.class).asEagerSingleton();
-        bind(StrutsExecuteFilter.class).asEagerSingleton();
-        bind(PersistFilter.class).asEagerSingleton();
-        requestStaticInjection(PLCLoginModule.class);
+    public Consumer getByKey(String key) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select c from ").append(getEntityType().getName()).append(" c where c.key = :key");
+
+        Query query = getEntityManager().createQuery(builder.toString());
+        query.setParameter("key", key);
+
+        Consumer consumer = null;
+        List<Consumer> results = query.getResultList();
+        if (CollectionUtils.isNotEmpty(results)) {
+            consumer = results.get(0);
+        }
+        return consumer;
     }
 }

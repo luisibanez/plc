@@ -55,8 +55,8 @@ import com.fiveamsolutions.plc.util.JAXBDateAdapter;
 @XmlRootElement(name = "patient")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Patient", propOrder = {
-        "email", "username", "password", "firstName", "birthName", "birthPlace", "birthCountry", "birthDate",
-        "challengeQuestions"
+        "email", "username", "password", "fullName", "firstName", "birthName", "birthPlace", "birthCountry",
+        "birthDate", "challengeQuestions"
 })
 public class Patient implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -73,6 +73,7 @@ public class Patient implements Serializable {
     @XmlElementWrapper(name = "recoveryQuestions")
     @XmlElement(name = "challengeQuestion")
     private List<ChallengeQuestion> challengeQuestions = new ArrayList<ChallengeQuestion>();
+    private String fullName;
 
     /**
      * @return the firstName
@@ -198,5 +199,19 @@ public class Patient implements Serializable {
      */
     public void setChallengeQuestions(List<ChallengeQuestion> challengeQuestions) {
         this.challengeQuestions = challengeQuestions;
+    }
+
+    /**
+     * @return the fullName
+     */
+    public String getFullName() {
+        return fullName;
+    }
+
+    /**
+     * @param fullName the fullName to set
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

@@ -77,6 +77,7 @@ public class PatientAccount implements PLCEntity {
      * @param patient the transfer patient
      */
     public PatientAccount(Patient patient) {
+        this.getPlcUser().setFullName(patient.getFullName());
         this.getPlcUser().setUsername(patient.getUsername());
         this.getPlcUser().setEmail(patient.getEmail());
         this.getPlcUser().setPassword(patient.getPassword());

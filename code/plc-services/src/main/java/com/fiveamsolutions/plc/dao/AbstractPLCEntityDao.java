@@ -97,12 +97,16 @@ public class AbstractPLCEntityDao<T extends PLCEntity> extends AbstractJPADao im
      */
     @Transactional
     public void save(T entity) {
-        if (entity.getId() != null) {
-            getEntityManager().merge(entity);
-        } else {
-            getEntityManager().persist(entity);
+        try {
+            getEntityManager().getTransaction().begin();
+            if (entity.getId() != null) {
+                getEntityManager().merge(entity);
+            } else {
+                getEntityManager().persist(entity);
+            }
+        } finally {
+            getEntityManager().getTransaction().commit();
         }
-        getEntityManager().flush();
     }
 
     /**

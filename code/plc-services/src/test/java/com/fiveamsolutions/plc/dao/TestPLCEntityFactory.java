@@ -51,7 +51,11 @@ import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.data.enums.Country;
 import com.fiveamsolutions.plc.data.enums.PatientDataSource;
 import com.fiveamsolutions.plc.data.enums.PatientDataType;
+import com.fiveamsolutions.plc.data.oauth.Consumer;
+import com.fiveamsolutions.plc.data.oauth.OAuthToken;
 import com.fiveamsolutions.plc.data.transfer.Patient;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+import com.sun.jersey.core.util.UnmodifiableMultivaluedMap;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
@@ -149,5 +153,29 @@ public class TestPLCEntityFactory {
         }
         patientData.setTags(Arrays.asList("AMD", "Experimental"));
         return patientData;
+    }
+
+    /**
+     * Creates a consumer.
+     * @return the consumer
+     */
+    public static Consumer createConsumer() {
+        Consumer consumer = new Consumer();
+        consumer.setKey(RandomStringUtils.randomAlphanumeric(25));
+        consumer.setSecret(RandomStringUtils.randomAlphanumeric(25));
+        return consumer;
+    }
+
+    /**
+     * Creates a token.
+     * @return the token
+     */
+    public static OAuthToken createToken() {
+        OAuthToken token = new OAuthToken();
+        token.setToken(RandomStringUtils.randomAlphanumeric(25));
+        token.setSecret(RandomStringUtils.randomAlphanumeric(25));
+        token.setAttributes(new UnmodifiableMultivaluedMap<String, String>(new MultivaluedMapImpl()));
+        token.setConsumer(createConsumer());
+        return token;
     }
 }
