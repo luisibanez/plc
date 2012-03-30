@@ -14,6 +14,7 @@
         <class>com.fiveamsolutions.plc.data.PatientDemographics</class>
         <class>com.fiveamsolutions.plc.data.PatientAccount</class>
         <class>com.fiveamsolutions.plc.data.PLCUser</class>
+        <class>com.fiveamsolutions.plc.data.ResearchEntity</class>
         
         <class>com.fiveamsolutions.plc.data.oauth.Consumer</class>
         <class>com.fiveamsolutions.plc.data.oauth.OAuthToken</class>

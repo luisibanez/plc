@@ -28,29 +28,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.dao;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
-
-import com.google.inject.servlet.ServletModule;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import com.fiveamsolutions.plc.data.ResearchEntity;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PLCServletModule extends ServletModule {
-    private static final String NON_REST_REQUESTS = "/www/*";
+public interface ResearchEntityDao extends Dao<ResearchEntity> {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void configureServlets() {
-        super.configureServlets();
-        filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);
-    }
 }

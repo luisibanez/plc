@@ -141,7 +141,12 @@ public class PLCOAuthProviderTest {
     @Test
     public void getAccessToken() {
         com.fiveamsolutions.plc.data.oauth.OAuthToken t = provider.getAccessToken(token.getToken());
+        assertNull(t);
+
+        token.setAuthorized(true);
+        t = provider.getAccessToken(token.getToken());
         assertNotNull(t);
+
     }
 
 }

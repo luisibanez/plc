@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fiveamsolutions.plc.util.PLCApplicationResources;
-import com.google.inject.persist.PersistFilter;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
@@ -74,7 +73,6 @@ public class PLCRestServletModule extends JerseyServletModule {
                 appResources.getStringResource(REST_REQUEST_FILTERS_KEY));
         params.put(ResourceConfig.PROPERTY_CONTAINER_REQUEST_FILTERS,
                 appResources.getStringResource(REST_CONTAINER_FILTERS));
-        filter(REST_REQUESTS).through(PersistFilter.class);
         serve(REST_REQUESTS).with(GuiceContainer.class, params);
     }
 }

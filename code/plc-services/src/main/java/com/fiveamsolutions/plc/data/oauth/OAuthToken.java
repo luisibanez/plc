@@ -57,11 +57,16 @@ import com.sun.jersey.oauth.server.spi.OAuthConsumer;
 @Entity(name = "oauth_token")
 public class OAuthToken implements com.sun.jersey.oauth.server.spi.OAuthToken, PLCEntity {
     private static final long serialVersionUID = 1L;
-    private static final String PLC_ROLE = "plcuser";
+    /** Regular user role.*/
+    public static final String PLC_ROLE = "plcuser";
+    /** Researcher role.*/
+    public static final String RESEARCHER_ROLE = "researcher";
 
     private Long id;
     private String token;
     private String secret;
+    private boolean authorized = false;
+    private boolean researcher = false;
     private MultivaluedMap<String, String> attributes = new MultivaluedMapImpl();
     private OAuthConsumer consumer;
 
@@ -117,6 +122,35 @@ public class OAuthToken implements com.sun.jersey.oauth.server.spi.OAuthToken, P
     }
 
     /**
+     * @return the authorized
+     */
+    @Column(name = "authorized" , nullable = false)
+    public boolean isAuthorized() {
+        return authorized;
+    }
+
+    /**
+     * @param authorized the authorized to set
+     */
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
+    }
+
+    /**
+     * @return the researcher
+     */
+    public boolean isResearcher() {
+        return researcher;
+    }
+
+    /**
+     * @param researcher the researcher to set
+     */
+    public void setResearcher(boolean researcher) {
+        this.researcher = researcher;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -165,6 +199,14 @@ public class OAuthToken implements com.sun.jersey.oauth.server.spi.OAuthToken, P
     @Override
     @Transient
     public boolean isInRole(String role) {
-        return StringUtils.equalsIgnoreCase(PLC_ROLE, role);
+        boolean inRole = false;
+        if (this.isAuthorized()) {
+            if (StringUtils.equals(RESEARCHER_ROLE, role) && this.isResearcher()) {
+                inRole = true;
+            } else if (StringUtils.equalsIgnoreCase(PLC_ROLE, role)) {
+                inRole = true;
+            }
+        }
+        return inRole;
     }
 }

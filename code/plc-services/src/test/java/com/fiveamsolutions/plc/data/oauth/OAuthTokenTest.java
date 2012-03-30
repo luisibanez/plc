@@ -28,29 +28,56 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.data.oauth;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import com.google.inject.servlet.ServletModule;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PLCServletModule extends ServletModule {
-    private static final String NON_REST_REQUESTS = "/www/*";
+public class OAuthTokenTest {
+    private OAuthToken token;
 
     /**
-     * {@inheritDoc}
+     * Setup test data.
      */
-    @Override
-    protected void configureServlets() {
-        super.configureServlets();
-        filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);
+    @Before
+    public void prepareTestData() {
+        token = TestPLCEntityFactory.createToken();
     }
+
+    /**
+     * Tests whether a user is a researcher and has been granted access.
+     */
+    @Test
+    public void isInRoleResearcher() {
+        token.setResearcher(true);
+        assertFalse(token.isInRole(OAuthToken.RESEARCHER_ROLE));
+        assertFalse(token.isInRole(OAuthToken.PLC_ROLE));
+
+        token.setAuthorized(true);
+        assertTrue(token.isInRole(OAuthToken.RESEARCHER_ROLE));
+        assertTrue(token.isInRole(OAuthToken.PLC_ROLE));
+    }
+
+    /**
+     * Tests whether a user is a regular user and has been granted access.
+     */
+    @Test
+    public void isInRoleUser() {
+        assertFalse(token.isInRole(OAuthToken.RESEARCHER_ROLE));
+        assertFalse(token.isInRole(OAuthToken.PLC_ROLE));
+
+        token.setAuthorized(true);
+        assertFalse(token.isInRole(OAuthToken.RESEARCHER_ROLE));
+        assertTrue(token.isInRole(OAuthToken.PLC_ROLE));
+    }
+
 }

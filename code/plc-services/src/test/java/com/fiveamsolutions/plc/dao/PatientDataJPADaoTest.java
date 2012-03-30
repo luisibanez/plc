@@ -91,9 +91,11 @@ public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
         PatientData pd = persistTestEntity();
         PatientAccount pa = TestPLCEntityFactory.createPatientAccount();
 
+        getTestDao().getEntityManager().getTransaction().begin();
         getTestDao().getEntityManager().persist(pa);
         pd.setPatientAccount(pa);
         getTestDao().save(pd);
+        getTestDao().getEntityManager().getTransaction().commit();
 
         List<PatientData> results = getTestDao().getByAccountId(pa.getId());
         assertFalse(results.isEmpty());

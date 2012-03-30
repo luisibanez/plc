@@ -9,4 +9,8 @@
         <comment>Adding OAuth to the application.</comment>
         <sqlFile path="src/main/db/db-upgrade/postgresql/PLC-48.sql" />
     </changeSet>
+    <changeSet id="PLC-69" author="aevansel">
+        <comment>Adding the research entity and modifying OAuth tokens to have access and researcher options.</comment>
+        <sqlFile path="src/main/db/db-upgrade/postgresql/PLC-69.sql" />
+    </changeSet>
 </databaseChangeLog>

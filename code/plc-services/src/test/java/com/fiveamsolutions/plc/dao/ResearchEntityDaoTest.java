@@ -28,29 +28,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.dao;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import org.junit.Before;
 
-import com.google.inject.servlet.ServletModule;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import com.fiveamsolutions.plc.data.PLCEntity;
+import com.fiveamsolutions.plc.data.ResearchEntity;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PLCServletModule extends ServletModule {
-    private static final String NON_REST_REQUESTS = "/www/*";
+public class ResearchEntityDaoTest extends AbstractPLCJPADaoTest<ResearchEntity> {
+    private ResearchEntityJPADao testDao;
+
+    /**
+     * Prepares test data.
+     */
+    @Before
+    public void prepareTestData() {
+        testDao = new ResearchEntityJPADao(getEntityManager());
+    }
+
+    @Override
+    protected ResearchEntityJPADao getTestDao() {
+        return testDao;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void configureServlets() {
-        super.configureServlets();
-        filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);
+    protected ResearchEntity getTestEntity() {
+        return TestPLCEntityFactory.createResearchEntity();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void changeTestEntity(PLCEntity testEntity) {
+        ResearchEntity re = (ResearchEntity) testEntity;
+        re.setEmail("changed@example.com");
+    }
+
 }

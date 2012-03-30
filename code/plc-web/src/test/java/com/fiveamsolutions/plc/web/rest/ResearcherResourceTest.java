@@ -28,29 +28,57 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.web.rest;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import com.google.inject.servlet.ServletModule;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.dao.ResearchEntityDao;
+import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
+import com.fiveamsolutions.plc.dao.oauth.TokenDao;
+import com.fiveamsolutions.plc.data.ResearchEntity;
+import com.sun.jersey.api.core.HttpContext;
+import com.sun.jersey.api.core.HttpRequestContext;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PLCServletModule extends ServletModule {
-    private static final String NON_REST_REQUESTS = "/www/*";
+public class ResearcherResourceTest {
+    private ResearcherResource researcherResource;
+    private ResearchEntityDao researchEntityDao;
+    private TokenDao tokenDao;
+    private HttpContext context;
 
     /**
-     * {@inheritDoc}
+     * Setup test data.
      */
-    @Override
-    protected void configureServlets() {
-        super.configureServlets();
-        filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);
+    @Before
+    public void setUp() {
+        researchEntityDao = mock(ResearchEntityDao.class);
+        tokenDao = mock(TokenDao.class);
+        context = mock(HttpContext.class);
+        HttpRequestContext request = mock(HttpRequestContext.class);
+
+        when(context.getRequest()).thenReturn(request);
+        when(tokenDao.getByToken(anyString())).thenReturn(TestPLCEntityFactory.createToken());
+        researcherResource = new ResearcherResource(researchEntityDao, tokenDao);
     }
+
+    /**
+     * Tests qualification request.
+     */
+    @Test
+    public void qualificationRequest() {
+        ResearchEntity re = TestPLCEntityFactory.createResearchEntity();
+        researcherResource.setHttpContext(context);
+        String results = researcherResource.qualificationRequest(re);
+        assertNotNull(results);
+    }
+
 }

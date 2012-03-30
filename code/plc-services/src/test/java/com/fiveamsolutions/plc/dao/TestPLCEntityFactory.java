@@ -48,6 +48,7 @@ import com.fiveamsolutions.plc.data.PLCUser;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.data.PatientDemographics;
+import com.fiveamsolutions.plc.data.ResearchEntity;
 import com.fiveamsolutions.plc.data.enums.Country;
 import com.fiveamsolutions.plc.data.enums.PatientDataSource;
 import com.fiveamsolutions.plc.data.enums.PatientDataType;
@@ -153,6 +154,21 @@ public class TestPLCEntityFactory {
         }
         patientData.setTags(Arrays.asList("AMD", "Experimental"));
         return patientData;
+    }
+
+    /**
+     * Creates a research entity.
+     * @return the research entity
+     */
+    public static ResearchEntity createResearchEntity() {
+        ResearchEntity re = new ResearchEntity();
+        re.setName("Research Entity");
+        re.setEmail("re@xample.com");
+        re.setTelephone("1-123-456-7890");
+        re.setUrl("http://www.example.com");
+        re.setDescription("Test Research entity for unit tests.");
+        re.setToken(createToken());
+        return re;
     }
 
     /**

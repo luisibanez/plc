@@ -127,6 +127,7 @@ public class PLCOAuthProvider implements OAuthProvider {
      */
     @Override
     public OAuthToken getAccessToken(String token) {
-        return tokenDao.getByToken(token);
+        OAuthToken t = tokenDao.getByToken(token);
+        return t.isAuthorized() ? t : null;
     }
 }

@@ -34,6 +34,7 @@ import com.fiveamsolutions.plc.dao.oauth.ConsumerDao;
 import com.fiveamsolutions.plc.dao.oauth.ConsumerJPADao;
 import com.fiveamsolutions.plc.dao.oauth.TokenDao;
 import com.fiveamsolutions.plc.dao.oauth.TokenJPADao;
+import com.fiveamsolutions.plc.inject.PersistentServiceInitializer;
 import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.google.inject.AbstractModule;
 import com.google.inject.persist.jpa.JpaPersistModule;
@@ -66,5 +67,7 @@ public class JPADaoModule extends AbstractModule {
         bind(PLCUserDao.class).to(PLCUserJPADao.class);
         bind(ConsumerDao.class).to(ConsumerJPADao.class);
         bind(TokenDao.class).to(TokenJPADao.class);
+        bind(ResearchEntityDao.class).to(ResearchEntityJPADao.class);
+        bind(PersistentServiceInitializer.class).asEagerSingleton();
     }
 }

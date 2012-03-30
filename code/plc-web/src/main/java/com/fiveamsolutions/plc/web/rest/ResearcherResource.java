@@ -35,60 +35,66 @@ import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.dao.ResearchEntityDao;
+import com.fiveamsolutions.plc.dao.oauth.TokenDao;
+import com.fiveamsolutions.plc.data.ResearchEntity;
 import com.fiveamsolutions.plc.data.oauth.OAuthToken;
-import com.fiveamsolutions.plc.data.transfer.Patient;
-import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.google.inject.Inject;
+import com.sun.jersey.api.core.HttpContext;
+import com.sun.jersey.oauth.server.OAuthServerRequest;
+import com.sun.jersey.oauth.signature.OAuthParameters;
 
 /**
- * Defines REST operations for patient data.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-@RolesAllowed({OAuthToken.PLC_ROLE })
-@Path("/patient")
+@Path("/researcher")
 @RequestScoped
-public class PatientResource {
-    private final PatientInformationService patientInformationService;
+public class ResearcherResource {
+    private final ResearchEntityDao researchEntityDao;
+    private final TokenDao tokenDao;
+    @Context
+    private HttpContext httpContext;
 
     /**
      * Class constructor.
-     *
-     * @param service the patient information service
+     * @param researchEntityDao the research entity dao
+     * @param tokenDao the token dao
      */
     @Inject
-    public PatientResource(PatientInformationService service) {
-        this.patientInformationService = service;
+    public ResearcherResource(ResearchEntityDao researchEntityDao, TokenDao tokenDao) {
+        this.researchEntityDao = researchEntityDao;
+        this.tokenDao = tokenDao;
     }
 
     /**
-     * Submits a patient's information, creating an account for them and returning their generated GUID.
-     * @param patient the patient to create
-     * @return the patient's GUID
+     * Research researcher access.
+     * @param re the research entity
+     * @param
+     * @return success message
      */
+    @RolesAllowed({OAuthToken.PLC_ROLE })
     @POST
+    @Path("qualification_request")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String registerPatient(Patient patient) {
-        PatientAccount patientAccount = new PatientAccount(patient);
-        return patientInformationService.registerPatient(patientAccount);
+    public String qualificationRequest(ResearchEntity re) {
+        OAuthParameters params = new OAuthParameters();
+        params.readRequest(new OAuthServerRequest(httpContext.getRequest()));
+        OAuthToken token = tokenDao.getByToken(params.getToken());
+        re.setToken(token);
+        researchEntityDao.save(re);
+        return "Researcher Access Successfully requested.";
     }
 
     /**
-     * Submits a patients data, uploading it to the system.
-     * @param guid the guid of the patient to upload the information to
-     * @param patientData the data to upload
+     * @param httpContext the http context to set
      */
-    @Path("{guid}")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void uploadPatientData(@PathParam("guid") String guid, PatientData patientData) {
-        patientInformationService.addPatientData(guid, patientData);
+    void setHttpContext(HttpContext httpContext) {
+        this.httpContext = httpContext;
     }
 }
