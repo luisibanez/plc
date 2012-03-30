@@ -14,7 +14,7 @@
                 <plc.db.jdbcDriver>org.postgresql.Driver</plc.db.jdbcDriver>
                 <plc.db.jdbcPrefix>jdbc:postgresql://${plc.db.host}:5432</plc.db.jdbcPrefix>
                 <plc.db.jdbcUrl>${plc.db.jdbcPrefix}/${plc.db.database}</plc.db.jdbcUrl>
-                <plc.db.username>legalconsent</plc.db.username>
+                <plc.db.username>legalconsent_ci</plc.db.username>
                 <plc.db.password>legalconsent</plc.db.password>
                 <plc.db.adminJdbcUrl>${plc.db.jdbcPrefix}/template1</plc.db.adminJdbcUrl>
                 <plc.db.adminUsername>root</plc.db.adminUsername>
