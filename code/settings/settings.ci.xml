@@ -1,0 +1,25 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <plc.db.host>sfo-plc-backend-ci-01.5amsolutions.com</plc.db.host>
+                <plc.db.database>legalconsent-ci</plc.db.database>
+                <plc.db.dialect>org.hibernate.dialect.PostgreSQLDialect</plc.db.dialect>
+                <plc.db.jdbcDriver>org.postgresql.Driver</plc.db.jdbcDriver>
+                <plc.db.jdbcPrefix>jdbc:postgresql://${plc.db.host}:5432</plc.db.jdbcPrefix>
+                <plc.db.jdbcUrl>${plc.db.jdbcPrefix}/${plc.db.database}</plc.db.jdbcUrl>
+                <plc.db.username>legalconsent</plc.db.username>
+                <plc.db.password>legalconsent</plc.db.password>
+                <plc.db.adminJdbcUrl>${plc.db.jdbcPrefix}/template1</plc.db.adminJdbcUrl>
+                <plc.db.adminUsername>root</plc.db.adminUsername>
+                <plc.db.adminPassword>p@ssword</plc.db.adminPassword>
+            </properties>
+        </profile>
+    </profiles>
+</settings>
