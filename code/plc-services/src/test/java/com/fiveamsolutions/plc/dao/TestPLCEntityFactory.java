@@ -37,7 +37,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -50,11 +54,14 @@ import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.data.PatientDemographics;
 import com.fiveamsolutions.plc.data.ResearchEntity;
 import com.fiveamsolutions.plc.data.enums.Country;
+import com.fiveamsolutions.plc.data.enums.FileSizeUnit;
 import com.fiveamsolutions.plc.data.enums.PatientDataSource;
 import com.fiveamsolutions.plc.data.enums.PatientDataType;
 import com.fiveamsolutions.plc.data.oauth.Consumer;
 import com.fiveamsolutions.plc.data.oauth.OAuthToken;
+import com.fiveamsolutions.plc.data.transfer.Filter;
 import com.fiveamsolutions.plc.data.transfer.Patient;
+import com.fiveamsolutions.plc.data.transfer.Summary;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import com.sun.jersey.core.util.UnmodifiableMultivaluedMap;
 
@@ -153,6 +160,7 @@ public class TestPLCEntityFactory {
             fail("Error loading test data.");
         }
         patientData.setTags(Arrays.asList("AMD", "Experimental"));
+        patientData.setPatientAccount(createPatientAccount());
         return patientData;
     }
 
@@ -193,5 +201,53 @@ public class TestPLCEntityFactory {
         token.setAttributes(new UnmodifiableMultivaluedMap<String, String>(new MultivaluedMapImpl()));
         token.setConsumer(createConsumer());
         return token;
+    }
+
+    /**
+     * Creates a filter.
+     * @return the filter
+     */
+    public static Filter createFilter() {
+        Filter filter = new Filter();
+        Set<String> pgguids = new HashSet<String>();
+        pgguids.add(RandomStringUtils.randomAlphanumeric(GUID_LENGTH));
+        pgguids.add(RandomStringUtils.randomAlphanumeric(GUID_LENGTH));
+        pgguids.add(RandomStringUtils.randomAlphanumeric(GUID_LENGTH));
+        filter.setPguids(pgguids);
+
+        Set<String> tags = new HashSet<String>();
+        tags.add("sample");
+        tags.add("curated");
+        filter.setTags(tags);
+        filter.setLastChangeDate(new Date());
+        return filter;
+    }
+
+    /**
+     * Creates a summary.
+     * @return the filter
+     */
+    public static Summary createSummary() {
+        Summary summary = new Summary();
+        summary.setTotalFileCount(100);
+        summary.setFilteredFileCount(50);
+        summary.setTotalPGUIDCount(100);
+        summary.setFilteredPGUIDCount(50);
+        summary.setTotalFileSize(10);
+        summary.setTotalFileSizeUnit(FileSizeUnit.GB);
+        summary.setFilteredFileSize(500);
+        summary.setFilteredFileSizeUnit(FileSizeUnit.MB);
+
+        Map<String, Integer> countPerTag = new HashMap<String, Integer>();
+        countPerTag.put("sample", 50);
+        countPerTag.put("curated", 50);
+
+        summary.setFileCountPerTag(countPerTag);
+
+        Map<String, Integer> filteredCountPerTag = new HashMap<String, Integer>();
+        filteredCountPerTag.put("sample", 25);
+        filteredCountPerTag.put("curated", 25);
+        summary.setFilteredFileCountPerTag(filteredCountPerTag);
+        return summary;
     }
 }

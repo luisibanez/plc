@@ -33,7 +33,10 @@ package com.fiveamsolutions.plc.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -42,12 +45,16 @@ import org.junit.Test;
 import com.fiveamsolutions.plc.data.PLCEntity;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.enums.FileSizeUnit;
+import com.fiveamsolutions.plc.data.transfer.Filter;
+import com.fiveamsolutions.plc.data.transfer.Summary;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
 public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
+    private static final int PATIENT_DATA_COUNT = 100;
     private PatientDataJPADao testDao;
 
     /**
@@ -102,4 +109,131 @@ public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
         assertEquals(1, results.size());
     }
 
+    /**
+     * Tests retrieval of patient data summary information with no filter data set and no data in the db.
+     */
+    @Test
+    public void patientDataSummaryNoFilterNoData() {
+        Filter filter = new Filter();
+        Summary summary = getTestDao().getPatientDataSummary(filter);
+        assertEquals(0, summary.getTotalFileCount());
+        assertEquals(0, summary.getTotalFileSize());
+        assertEquals(FileSizeUnit.B, summary.getTotalFileSizeUnit());
+        assertEquals(0, summary.getTotalPGUIDCount());
+        assertEquals(0, summary.getFilteredFileCount());
+        assertEquals(0, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.B, summary.getFilteredFileSizeUnit());
+        assertEquals(0, summary.getFilteredPGUIDCount());
+    }
+
+
+    /**
+     * Tests retrieval of patient data summary information with no filter data set.
+     */
+    @Test
+    public void patientDataSummaryNoFilter() {
+        persistMultipleTestEntities(PATIENT_DATA_COUNT);
+
+        Filter filter = new Filter();
+        Summary summary = getTestDao().getPatientDataSummary(filter);
+        verifyTotalSummary(summary);
+        assertEquals(0, summary.getFilteredFileCount());
+        assertEquals(0, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.B, summary.getFilteredFileSizeUnit());
+        assertEquals(0, summary.getFilteredPGUIDCount());
+    }
+
+    /**
+     * Tests retrieval of patient data summary information with date filter set.
+     */
+    @Test
+    public void patientDataSummaryDateFilter() {
+        persistMultipleTestEntities(PATIENT_DATA_COUNT);
+
+        Filter filter = new Filter();
+        filter.setLastChangeDate(DateUtils.addDays(new Date(), 1));
+        Summary summary = getTestDao().getPatientDataSummary(filter);
+        verifyTotalSummary(summary);
+        assertEquals(0, summary.getFilteredFileCount());
+        assertEquals(0, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.B, summary.getFilteredFileSizeUnit());
+        assertEquals(0, summary.getFilteredPGUIDCount());
+
+        filter.setLastChangeDate(DateUtils.addDays(new Date(), -1));
+        summary = getTestDao().getPatientDataSummary(filter);
+        verifyTotalSummary(summary);
+        assertEquals(PATIENT_DATA_COUNT, summary.getFilteredFileCount());
+        assertEquals(2, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.KB, summary.getFilteredFileSizeUnit());
+        assertEquals(PATIENT_DATA_COUNT, summary.getFilteredPGUIDCount());
+    }
+
+    /**
+     * Tests retrieval of patient data summary information with tag filter set.
+     */
+    @Test
+    public void patientDataSummaryTagFilter() {
+        persistMultipleTestEntities(PATIENT_DATA_COUNT);
+
+        Filter filter = new Filter();
+        Set<String> tags = new HashSet<String>();
+        tags.add("NO_SUCH");
+        filter.setTags(tags);
+
+        Summary summary = getTestDao().getPatientDataSummary(filter);
+        verifyTotalSummary(summary);
+        assertEquals(0, summary.getFilteredFileCount());
+        assertEquals(0, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.B, summary.getFilteredFileSizeUnit());
+        assertEquals(0, summary.getFilteredPGUIDCount());
+
+        tags.add("Experimental");
+        filter.setTags(tags);
+        summary = getTestDao().getPatientDataSummary(filter);
+        verifyTotalSummary(summary);
+        assertEquals(PATIENT_DATA_COUNT, summary.getFilteredFileCount());
+        assertEquals(2, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.KB, summary.getFilteredFileSizeUnit());
+        assertEquals(PATIENT_DATA_COUNT, summary.getFilteredPGUIDCount());
+    }
+
+
+    /**
+     * Tests retrieval of patient data summary information with guid filter set.
+     */
+    @Test
+    public void patientDataSummaryGuidFilter() {
+        persistMultipleTestEntities(PATIENT_DATA_COUNT);
+
+        Filter filter = new Filter();
+        Set<String> guids = new HashSet<String>();
+        guids.add("NO_SUCH");
+        filter.setPguids(guids);
+
+        Summary summary = getTestDao().getPatientDataSummary(filter);
+        verifyTotalSummary(summary);
+        assertEquals(0, summary.getFilteredFileCount());
+        assertEquals(0, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.B, summary.getFilteredFileSizeUnit());
+        assertEquals(0, summary.getFilteredPGUIDCount());
+
+        List<PatientData> data = getTestDao().getAll();
+        guids.add(data.get(0).getPatientAccount().getGuid());
+        guids.add(data.get(1).getPatientAccount().getGuid());
+
+        filter.setPguids(guids);
+        summary = getTestDao().getPatientDataSummary(filter);
+        verifyTotalSummary(summary);
+        assertEquals(2, summary.getFilteredFileCount());
+        assertEquals(56, summary.getFilteredFileSize());
+        assertEquals(FileSizeUnit.B, summary.getFilteredFileSizeUnit());
+        assertEquals(2, summary.getFilteredPGUIDCount());
+    }
+
+    private void verifyTotalSummary(Summary summary) {
+        assertEquals(PATIENT_DATA_COUNT, summary.getTotalFileCount());
+        assertEquals(2, summary.getTotalFileSize());
+        assertEquals(FileSizeUnit.KB, summary.getTotalFileSizeUnit());
+        assertEquals(PATIENT_DATA_COUNT, summary.getTotalPGUIDCount());
+    }
 }

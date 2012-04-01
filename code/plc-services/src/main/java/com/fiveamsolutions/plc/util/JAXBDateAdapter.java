@@ -37,9 +37,11 @@ import java.util.Locale;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * XML Adapter for conversion of Date to the specified format.
- * 
+ *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 @SuppressWarnings("PMD.SignatureDeclareThrowsException")
@@ -52,7 +54,7 @@ public class JAXBDateAdapter extends XmlAdapter<String, Date> {
      */
     @Override
     public Date unmarshal(String date) throws Exception {
-        return df.parse(date);
+        return StringUtils.isEmpty(date) ? null : df.parse(date);
     }
 
     /**

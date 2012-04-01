@@ -13,4 +13,8 @@
         <comment>Adding the research entity and modifying OAuth tokens to have access and researcher options.</comment>
         <sqlFile path="src/main/db/db-upgrade/postgresql/PLC-69.sql" />
     </changeSet>
+    <changeSet id="PLC-70" author="aevansel">
+        <comment>Adding patient data file size to the data model to allow for easier data summary queries.</comment>
+        <sqlFile path="src/main/db/db-upgrade/postgresql/PLC-70.sql" />
+    </changeSet>
 </databaseChangeLog>

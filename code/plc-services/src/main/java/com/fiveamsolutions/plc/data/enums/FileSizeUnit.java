@@ -28,31 +28,68 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.data.enums;
 
-import java.util.List;
-
-import com.fiveamsolutions.plc.data.PatientData;
-import com.fiveamsolutions.plc.data.transfer.Filter;
-import com.fiveamsolutions.plc.data.transfer.Summary;
+import org.apache.commons.io.FileUtils;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public interface PatientDataDao extends Dao<PatientData> {
+public enum FileSizeUnit {
+    /** Bytes.*/
+    B("B"),
+    /** Kilobytes.*/
+    KB("KB"),
+    /** Megabytes.*/
+    MB("MB"),
+    /** Gigabytes.*/
+    GB("GB"),
+    /** Terrabytes.*/
+    TB("TB");
+
+    private String code;
 
     /**
-     * Retrieves all patient data associated with the given account id.
-     * @param id the account id
-     * @return the patient data associated with the account
+     * Class constructor.
+     * @param code
      */
-    List<PatientData> getByAccountId(Long id);
+    private FileSizeUnit(String code) {
+        this.code = code;
+    }
 
     /**
-     * Retrieves the patient data summary, filtering by the given filters.
-     * @param filter the values to filter the filtered results by
-     * @return the summary
+     * @return the country
      */
-    Summary getPatientDataSummary(Filter filter);
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name();
+    }
+
+    /**
+     * Returns the appropriate file size unit for a given number of bytes.
+     * @param size the number of bytes
+     * @return the file size unit
+     */
+    public static FileSizeUnit getUnit(long size) {
+        FileSizeUnit unit;
+        if (size / FileUtils.ONE_TB > 0) {
+            unit  = TB;
+        } else if (size / FileUtils.ONE_GB > 0) {
+            unit = GB;
+        } else if (size / FileUtils.ONE_MB > 0) {
+            unit = MB;
+        } else if (size / FileUtils.ONE_KB > 0) {
+            unit = KB;
+        } else {
+            unit = B;
+        }
+        return unit;
+    }
 }

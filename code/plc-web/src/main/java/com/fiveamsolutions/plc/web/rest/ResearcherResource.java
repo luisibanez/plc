@@ -39,10 +39,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fiveamsolutions.plc.dao.PatientDataDao;
 import com.fiveamsolutions.plc.dao.ResearchEntityDao;
 import com.fiveamsolutions.plc.dao.oauth.TokenDao;
 import com.fiveamsolutions.plc.data.ResearchEntity;
 import com.fiveamsolutions.plc.data.oauth.OAuthToken;
+import com.fiveamsolutions.plc.data.transfer.Filter;
+import com.fiveamsolutions.plc.data.transfer.Summary;
 import com.google.inject.Inject;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.oauth.server.OAuthServerRequest;
@@ -57,6 +60,7 @@ import com.sun.jersey.oauth.signature.OAuthParameters;
 public class ResearcherResource {
     private final ResearchEntityDao researchEntityDao;
     private final TokenDao tokenDao;
+    private final PatientDataDao patientDataDao;
     @Context
     private HttpContext httpContext;
 
@@ -64,11 +68,13 @@ public class ResearcherResource {
      * Class constructor.
      * @param researchEntityDao the research entity dao
      * @param tokenDao the token dao
+     * @param patientDataDoa the patient data dao
      */
     @Inject
-    public ResearcherResource(ResearchEntityDao researchEntityDao, TokenDao tokenDao) {
+    public ResearcherResource(ResearchEntityDao researchEntityDao, TokenDao tokenDao, PatientDataDao patientDataDoa) {
         this.researchEntityDao = researchEntityDao;
         this.tokenDao = tokenDao;
+        this.patientDataDao = patientDataDoa;
     }
 
     /**
@@ -89,6 +95,20 @@ public class ResearcherResource {
         re.setToken(token);
         researchEntityDao.save(re);
         return "Researcher Access Successfully requested.";
+    }
+
+    /**
+     * Retrieves patient shared data summary.
+     * @param filter the filter
+     * @return the data summary
+     */
+    @RolesAllowed({OAuthToken.RESEARCHER_ROLE })
+    @POST
+    @Path("shared/summary")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Summary dataSummary(Filter filter) {
+        return patientDataDao.getPatientDataSummary(filter);
     }
 
     /**

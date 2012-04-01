@@ -1,0 +1,1 @@
+alter table patient_data add column file_data_size int8 not null default 0;

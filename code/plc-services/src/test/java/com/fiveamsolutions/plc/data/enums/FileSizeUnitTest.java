@@ -28,31 +28,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.data.enums;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 
-import com.fiveamsolutions.plc.data.PatientData;
-import com.fiveamsolutions.plc.data.transfer.Filter;
-import com.fiveamsolutions.plc.data.transfer.Summary;
+import org.apache.commons.io.FileUtils;
+import org.junit.Test;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public interface PatientDataDao extends Dao<PatientData> {
+public class FileSizeUnitTest {
 
     /**
-     * Retrieves all patient data associated with the given account id.
-     * @param id the account id
-     * @return the patient data associated with the account
+     * Tests retrieval of file size unit by number of bytes.
      */
-    List<PatientData> getByAccountId(Long id);
-
-    /**
-     * Retrieves the patient data summary, filtering by the given filters.
-     * @param filter the values to filter the filtered results by
-     * @return the summary
-     */
-    Summary getPatientDataSummary(Filter filter);
+    @Test
+    public void getUnit() {
+        assertEquals(FileSizeUnit.B, FileSizeUnit.getUnit(1));
+        assertEquals(FileSizeUnit.KB, FileSizeUnit.getUnit(FileUtils.ONE_KB));
+        assertEquals(FileSizeUnit.MB, FileSizeUnit.getUnit(FileUtils.ONE_MB));
+        assertEquals(FileSizeUnit.GB, FileSizeUnit.getUnit(FileUtils.ONE_GB));
+        assertEquals(FileSizeUnit.TB, FileSizeUnit.getUnit(FileUtils.ONE_TB));
+    }
 }

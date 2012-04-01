@@ -89,6 +89,8 @@ public class PatientData implements PLCEntity {
     private Date uploadedDate = new Date();
     private String fileName;
     private byte[] fileData;
+    @XmlTransient
+    private long fileDataSize;
     @XmlElementWrapper(name = "tags")
     @XmlElement(name = "value")
     private List<String> tags = new ArrayList<String>();
@@ -243,12 +245,30 @@ public class PatientData implements PLCEntity {
      */
     public void setFileData(byte[] fileData) {
         this.fileData = ArrayUtils.clone(fileData);
+        this.fileDataSize = fileData.length;
+    }
+
+    /**
+     * The associated patient data's size in bytes.
+     * @return the fileDataSize
+     */
+    @NotNull
+    @Column(name = "file_data_size", nullable = false)
+    public long getFileDataSize() {
+        return fileDataSize;
+    }
+
+    /**
+     * @param fileDataSize the fileDataSize to set
+     */
+    public void setFileDataSize(long fileDataSize) {
+        this.fileDataSize = fileDataSize;
     }
 
     /**
      * @return the patientAccount
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_account_id")
     public PatientAccount getPatientAccount() {
         return patientAccount;

@@ -31,6 +31,7 @@
 package com.fiveamsolutions.plc.web.rest;
 
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -38,10 +39,13 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fiveamsolutions.plc.dao.PatientDataDao;
 import com.fiveamsolutions.plc.dao.ResearchEntityDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.dao.oauth.TokenDao;
 import com.fiveamsolutions.plc.data.ResearchEntity;
+import com.fiveamsolutions.plc.data.transfer.Filter;
+import com.fiveamsolutions.plc.data.transfer.Summary;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.core.HttpRequestContext;
 
@@ -53,6 +57,7 @@ public class ResearcherResourceTest {
     private ResearcherResource researcherResource;
     private ResearchEntityDao researchEntityDao;
     private TokenDao tokenDao;
+    private PatientDataDao patientDataDao;
     private HttpContext context;
 
     /**
@@ -62,12 +67,14 @@ public class ResearcherResourceTest {
     public void setUp() {
         researchEntityDao = mock(ResearchEntityDao.class);
         tokenDao = mock(TokenDao.class);
+        patientDataDao = mock(PatientDataDao.class);
         context = mock(HttpContext.class);
         HttpRequestContext request = mock(HttpRequestContext.class);
 
         when(context.getRequest()).thenReturn(request);
         when(tokenDao.getByToken(anyString())).thenReturn(TestPLCEntityFactory.createToken());
-        researcherResource = new ResearcherResource(researchEntityDao, tokenDao);
+        when(patientDataDao.getPatientDataSummary(any(Filter.class))).thenReturn(TestPLCEntityFactory.createSummary());
+        researcherResource = new ResearcherResource(researchEntityDao, tokenDao, patientDataDao);
     }
 
     /**
@@ -79,6 +86,15 @@ public class ResearcherResourceTest {
         researcherResource.setHttpContext(context);
         String results = researcherResource.qualificationRequest(re);
         assertNotNull(results);
+    }
+
+    /**
+     * Tests data summary retrieval.
+     */
+    @Test
+    public void dataSummary() {
+        Summary summary = researcherResource.dataSummary(new Filter());
+        assertNotNull(summary);
     }
 
 }

@@ -28,31 +28,40 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.dao;
+package com.fiveamsolutions.plc.util;
 
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-import com.fiveamsolutions.plc.data.PatientData;
-import com.fiveamsolutions.plc.data.transfer.Filter;
-import com.fiveamsolutions.plc.data.transfer.Summary;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ * XML Adapter for conversion of Date to the specified format.
  *
+ * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public interface PatientDataDao extends Dao<PatientData> {
+@SuppressWarnings("PMD.SignatureDeclareThrowsException")
+public class JAXBDateTimeAdapter extends XmlAdapter<String, Date> {
+
+    private final DateFormat df = new SimpleDateFormat("MM-dd-yyyy HH:mm", Locale.getDefault());
 
     /**
-     * Retrieves all patient data associated with the given account id.
-     * @param id the account id
-     * @return the patient data associated with the account
+     * {@inheritDoc}
      */
-    List<PatientData> getByAccountId(Long id);
+    @Override
+    public Date unmarshal(String date) throws Exception {
+        return StringUtils.isEmpty(date) ? null : df.parse(date);
+    }
 
     /**
-     * Retrieves the patient data summary, filtering by the given filters.
-     * @param filter the values to filter the filtered results by
-     * @return the summary
+     * {@inheritDoc}
      */
-    Summary getPatientDataSummary(Filter filter);
+    @Override
+    public String marshal(Date date) throws Exception {
+        return df.format(date);
+    }
 }

@@ -55,7 +55,7 @@ import org.junit.Test;
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class JAXBDateAdapterTest {
+public class JAXBDateTimeAdapterTest {
 
     /**
      * Internal class for testing.
@@ -65,7 +65,7 @@ public class JAXBDateAdapterTest {
     @XmlRootElement(name = "test")
     @XmlAccessorType(XmlAccessType.FIELD)
     static class ATestClass {
-        @XmlJavaTypeAdapter(JAXBDateAdapter.class)
+        @XmlJavaTypeAdapter(JAXBDateTimeAdapter.class)
         private Date date;
 
         /**
@@ -102,11 +102,11 @@ public class JAXBDateAdapterTest {
     @Test
     public void testMarshallingValidDate() throws JAXBException {
         ATestClass testObject = new ATestClass();
-        Date d = new SimpleDateFormat("yyyyMMdd").parse("20120101", new ParsePosition(0));
+        Date d = new SimpleDateFormat("MM-dd-yyyy HH:mm").parse("01-01-2012 00:00", new ParsePosition(0));
         testObject.setDate(d);
         String stringifiedTestObject = marshall(testObject);
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-                + "<test><date>20120101</date></test>", stringifiedTestObject);
+                + "<test><date>01-01-2012 00:00</date></test>", stringifiedTestObject);
     }
 
     /**
