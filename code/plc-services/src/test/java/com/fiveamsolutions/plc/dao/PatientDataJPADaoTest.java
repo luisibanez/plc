@@ -32,12 +32,16 @@ package com.fiveamsolutions.plc.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +50,7 @@ import com.fiveamsolutions.plc.data.PLCEntity;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.data.enums.FileSizeUnit;
+import com.fiveamsolutions.plc.data.transfer.FileInfo;
 import com.fiveamsolutions.plc.data.transfer.Filter;
 import com.fiveamsolutions.plc.data.transfer.Summary;
 
@@ -230,10 +235,49 @@ public class PatientDataJPADaoTest extends AbstractPLCJPADaoTest<PatientData> {
         assertEquals(2, summary.getFilteredPGUIDCount());
     }
 
+    /**
+     * Tests retrieval of file data by filter
+     */
+    @Test
+    public void getPatientData() {
+        persistMultipleTestEntities(PATIENT_DATA_COUNT);
+
+        PatientData refData = TestPLCEntityFactory.createPatientData();
+
+        Filter filter = new Filter();
+
+        List<FileInfo> results = getTestDao().getPatientData(filter);
+        assertTrue(results.isEmpty());
+
+        Set<String> tags = new HashSet<String>();
+        tags.add("Experimental");
+        filter.setTags(tags);
+        results = getTestDao().getPatientData(filter);
+        assertEquals(PATIENT_DATA_COUNT, results.size());
+
+        for (FileInfo info: results) {
+            assertTrue(StringUtils.isNotEmpty(info.getFileName()));
+            assertTrue(ArrayUtils.isNotEmpty(info.getFileData()));
+            assertTrue(Arrays.equals(refData.getFileData(), info.getFileData()));
+        }
+    }
+
     private void verifyTotalSummary(Summary summary) {
         assertEquals(PATIENT_DATA_COUNT, summary.getTotalFileCount());
         assertEquals(2, summary.getTotalFileSize());
         assertEquals(FileSizeUnit.KB, summary.getTotalFileSizeUnit());
         assertEquals(PATIENT_DATA_COUNT, summary.getTotalPGUIDCount());
+    }
+
+    /**
+     * Tests normalization of file size.
+     */
+    @Test
+    public void normalizeFileSize() {
+        assertEquals(1, getTestDao().normalizeFileSize(1L));
+        assertEquals(1, getTestDao().normalizeFileSize(1025));
+        assertEquals(1, getTestDao().normalizeFileSize(1025 * 1024));
+        assertEquals(1, getTestDao().normalizeFileSize(1025 * 1024 * 1024));
+        assertEquals(1, getTestDao().normalizeFileSize(1025 * 1024 * 1024 * 1024));
     }
 }

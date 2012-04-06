@@ -52,10 +52,10 @@ import com.fiveamsolutions.plc.data.enums.FileSizeUnit;
 })
 public class Summary implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int totalFileCount;
-    private int filteredFileCount;
-    private int totalPGUIDCount;
-    private int filteredPGUIDCount;
+    private long totalFileCount;
+    private long filteredFileCount;
+    private long totalPGUIDCount;
+    private long filteredPGUIDCount;
     private long totalFileSize;
     private FileSizeUnit totalFileSizeUnit = FileSizeUnit.B;
     private long filteredFileSize;
@@ -66,56 +66,56 @@ public class Summary implements Serializable {
     /**
      * @return the totalFileCount
      */
-    public int getTotalFileCount() {
+    public long getTotalFileCount() {
         return totalFileCount;
     }
 
     /**
      * @param totalFileCount the totalFileCount to set
      */
-    public void setTotalFileCount(int totalFileCount) {
+    public void setTotalFileCount(long totalFileCount) {
         this.totalFileCount = totalFileCount;
     }
 
     /**
      * @return the filteredFileCount
      */
-    public int getFilteredFileCount() {
+    public long getFilteredFileCount() {
         return filteredFileCount;
     }
 
     /**
      * @param filteredFileCount the filteredFileCount to set
      */
-    public void setFilteredFileCount(int filteredFileCount) {
+    public void setFilteredFileCount(long filteredFileCount) {
         this.filteredFileCount = filteredFileCount;
     }
 
     /**
      * @return the totalPGUIDCount
      */
-    public int getTotalPGUIDCount() {
+    public long getTotalPGUIDCount() {
         return totalPGUIDCount;
     }
 
     /**
      * @param totalPGUIDCount the totalPGUIDCount to set
      */
-    public void setTotalPGUIDCount(int totalPGUIDCount) {
+    public void setTotalPGUIDCount(long totalPGUIDCount) {
         this.totalPGUIDCount = totalPGUIDCount;
     }
 
     /**
      * @return the filteredPGUIDCount
      */
-    public int getFilteredPGUIDCount() {
+    public long getFilteredPGUIDCount() {
         return filteredPGUIDCount;
     }
 
     /**
      * @param filteredPGUIDCount the filteredPGUIDCount to set
      */
-    public void setFilteredPGUIDCount(int filteredPGUIDCount) {
+    public void setFilteredPGUIDCount(long filteredPGUIDCount) {
         this.filteredPGUIDCount = filteredPGUIDCount;
     }
 

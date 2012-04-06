@@ -28,71 +28,36 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.rest;
+package com.fiveamsolutions.plc.service.scheduled;
 
-import javax.annotation.security.RolesAllowed;
-import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
-import com.fiveamsolutions.plc.data.oauth.OAuthToken;
-import com.fiveamsolutions.plc.data.transfer.Patient;
 import com.fiveamsolutions.plc.service.PatientDataService;
-import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.google.inject.Inject;
 
 /**
- * Defines REST operations for patient data.
+ * This job, when run, removes all files from a predetermined location that are older than a specified age.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-@RolesAllowed({OAuthToken.PLC_ROLE })
-@Path("/patient")
-@RequestScoped
-public class PatientResource {
-    private final PatientInformationService patientInformationService;
+public class CleanupExpiredDownloadsJob implements org.quartz.Job {
     private final PatientDataService patientDataService;
 
     /**
      * Class constructor.
-     *
-     * @param service the patient information service
      * @param patientDataService the patient data service
      */
     @Inject
-    public PatientResource(PatientInformationService service, PatientDataService patientDataService) {
-        this.patientInformationService = service;
+    public CleanupExpiredDownloadsJob(PatientDataService patientDataService) {
         this.patientDataService = patientDataService;
     }
 
     /**
-     * Submits a patient's information, creating an account for them and returning their generated GUID.
-     * @param patient the patient to create
-     * @return the patient's GUID
+     * {@inheritDoc}
      */
-    @POST
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String registerPatient(Patient patient) {
-        PatientAccount patientAccount = new PatientAccount(patient);
-        return patientInformationService.registerPatient(patientAccount);
-    }
-
-    /**
-     * Submits a patients data, uploading it to the system.
-     * @param guid the guid of the patient to upload the information to
-     * @param patientData the data to upload
-     */
-    @Path("{guid}")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void uploadPatientData(@PathParam("guid") String guid, PatientData patientData) {
-        patientDataService.addPatientData(guid, patientData);
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        patientDataService.cleanupExpiredDownloads();
     }
 }

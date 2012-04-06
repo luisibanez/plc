@@ -28,22 +28,45 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.data.transfer;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import java.io.Serializable;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
- * Interface for interacting with patient information.
+ * Utility class for holding retrieved file data.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public interface PatientInformationService {
+public class FileInfo  implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private final String fileName;
+    private final byte[] fileData;
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Class constructor.
+     *
+     * @param fileName the file name
+     * @param fileData the file data
      */
-    String registerPatient(PatientAccount patient);
+    public FileInfo(String fileName, byte[] fileData) {
+        this.fileName = fileName;
+        this.fileData = ArrayUtils.clone(fileData);
+    }
+
+    /**
+     * @return the file name
+     */
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * @return the file data
+     */
+    public byte[] getFileData() {
+        return ArrayUtils.clone(fileData);
+    }
 
 }

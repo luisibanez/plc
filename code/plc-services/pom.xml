@@ -242,6 +242,11 @@
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.99soft.guice</groupId>
+            <artifactId>guartz</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.2.6</version>

@@ -64,25 +64,25 @@ public class SummaryTest {
         JSONMarshaller marshaller = JSONJAXBContext.getJSONMarshaller(context.createMarshaller());
 
         StringWriter writer = new StringWriter();
-        Summary filter = TestPLCEntityFactory.createSummary();
-        marshaller.marshallToJSON(filter, writer);
-        assertEquals(getJson(filter),  writer.toString());
+        Summary summary = TestPLCEntityFactory.createSummary();
+        marshaller.marshallToJSON(summary, writer);
+        assertEquals(getJson(summary),  writer.toString());
     }
 
-    private String getJson(Summary filter) {
+    private String getJson(Summary summary) {
         StringBuilder builder = new StringBuilder();
         builder.append("{").append("\n");
-        builder.append("  \"totalFileCount\" : ").append(filter.getTotalFileCount()).append(",\n");
-        builder.append("  \"filteredFileCount\" : ").append(filter.getFilteredFileCount()).append(",\n");
-        builder.append("  \"totalPGUIDCount\" : ").append(filter.getTotalPGUIDCount()).append(",\n");
-        builder.append("  \"filteredPGUIDCount\" : ").append(filter.getFilteredPGUIDCount()).append(",\n");
-        builder.append("  \"totalFileSize\" : ").append(filter.getTotalFileSize()).append(",\n");
-        builder.append("  \"totalFileSizeUnit\" : \"").append(filter.getTotalFileSizeUnit()).append("\",\n");
-        builder.append("  \"filteredFileSize\" : ").append(filter.getFilteredFileSize()).append(",\n");
-        builder.append("  \"filteredFileSizeUnit\" : \"").append(filter.getFilteredFileSizeUnit()).append("\",\n");
+        builder.append("  \"totalFileCount\" : ").append(summary.getTotalFileCount()).append(",\n");
+        builder.append("  \"filteredFileCount\" : ").append(summary.getFilteredFileCount()).append(",\n");
+        builder.append("  \"totalPGUIDCount\" : ").append(summary.getTotalPGUIDCount()).append(",\n");
+        builder.append("  \"filteredPGUIDCount\" : ").append(summary.getFilteredPGUIDCount()).append(",\n");
+        builder.append("  \"totalFileSize\" : ").append(summary.getTotalFileSize()).append(",\n");
+        builder.append("  \"totalFileSizeUnit\" : \"").append(summary.getTotalFileSizeUnit()).append("\",\n");
+        builder.append("  \"filteredFileSize\" : ").append(summary.getFilteredFileSize()).append(",\n");
+        builder.append("  \"filteredFileSizeUnit\" : \"").append(summary.getFilteredFileSizeUnit()).append("\",\n");
         builder.append("  \"fileCountPerTag\" : {\n");
 
-        Iterator<Map.Entry<String, Integer>> countPerTag = filter.getFileCountPerTag().entrySet().iterator();
+        Iterator<Map.Entry<String, Integer>> countPerTag = summary.getFileCountPerTag().entrySet().iterator();
         while (countPerTag.hasNext()) {
             Map.Entry<String, Integer> entry = countPerTag.next();
             builder.append("    \"entry\" : {\n");
@@ -96,7 +96,7 @@ public class SummaryTest {
         }
         builder.append("  },\n");
         builder.append("  \"filteredFileCountPerTag\" : {\n");
-        Iterator<Map.Entry<String, Integer>> filteredCountPerTag = filter.getFilteredFileCountPerTag().entrySet().iterator();
+        Iterator<Map.Entry<String, Integer>> filteredCountPerTag = summary.getFilteredFileCountPerTag().entrySet().iterator();
         while (filteredCountPerTag.hasNext()) {
             Map.Entry<String, Integer> entry = filteredCountPerTag.next();
             builder.append("    \"entry\" : {\n");

@@ -30,22 +30,31 @@
  */
 package com.fiveamsolutions.plc.web.rest;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import javax.ws.rs.core.Response;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.PatientDataDao;
 import com.fiveamsolutions.plc.dao.ResearchEntityDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.dao.oauth.TokenDao;
 import com.fiveamsolutions.plc.data.ResearchEntity;
+import com.fiveamsolutions.plc.data.transfer.DownloadDetails;
 import com.fiveamsolutions.plc.data.transfer.Filter;
 import com.fiveamsolutions.plc.data.transfer.Summary;
+import com.fiveamsolutions.plc.service.PatientDataService;
+import com.fiveamsolutions.plc.service.PatientDataServiceBean;
+import com.fiveamsolutions.plc.util.PLCApplicationResources;
+import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.core.HttpRequestContext;
 
@@ -58,6 +67,7 @@ public class ResearcherResourceTest {
     private ResearchEntityDao researchEntityDao;
     private TokenDao tokenDao;
     private PatientDataDao patientDataDao;
+    private PatientAccountDao patientAccountDao;
     private HttpContext context;
 
     /**
@@ -65,6 +75,7 @@ public class ResearcherResourceTest {
      */
     @Before
     public void setUp() {
+        PLCApplicationResources appResources = TestApplicationResourcesFactory.getApplicationResources();
         researchEntityDao = mock(ResearchEntityDao.class);
         tokenDao = mock(TokenDao.class);
         patientDataDao = mock(PatientDataDao.class);
@@ -74,7 +85,9 @@ public class ResearcherResourceTest {
         when(context.getRequest()).thenReturn(request);
         when(tokenDao.getByToken(anyString())).thenReturn(TestPLCEntityFactory.createToken());
         when(patientDataDao.getPatientDataSummary(any(Filter.class))).thenReturn(TestPLCEntityFactory.createSummary());
-        researcherResource = new ResearcherResource(researchEntityDao, tokenDao, patientDataDao);
+
+        PatientDataService pds = new PatientDataServiceBean(patientAccountDao, patientDataDao, appResources);
+        researcherResource = new ResearcherResource(researchEntityDao, tokenDao, pds, appResources);
     }
 
     /**
@@ -97,4 +110,23 @@ public class ResearcherResourceTest {
         assertNotNull(summary);
     }
 
+    /**
+     * Tests data request.
+     */
+    @Test
+    public void requestData() {
+        DownloadDetails details = researcherResource.requestData(new Filter());
+        assertNotNull(details);
+    }
+
+    /**
+     * Tests patient data download.
+     */
+    @Test
+    public void downloadPatientData() {
+        Response response = researcherResource.downloadPatientData("foo");
+        assertNotNull(response);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        assertNotNull(response.getEntity());
+    }
 }

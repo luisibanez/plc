@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -59,6 +60,7 @@ import com.fiveamsolutions.plc.data.enums.PatientDataSource;
 import com.fiveamsolutions.plc.data.enums.PatientDataType;
 import com.fiveamsolutions.plc.data.oauth.Consumer;
 import com.fiveamsolutions.plc.data.oauth.OAuthToken;
+import com.fiveamsolutions.plc.data.transfer.DownloadDetails;
 import com.fiveamsolutions.plc.data.transfer.Filter;
 import com.fiveamsolutions.plc.data.transfer.Patient;
 import com.fiveamsolutions.plc.data.transfer.Summary;
@@ -151,7 +153,7 @@ public class TestPLCEntityFactory {
         patientData.setDataSource(PatientDataSource.TWENTY_THREE_AND_ME);
         patientData.setVersion("v1");
         patientData.setNotes("This is a test file.");
-        patientData.setFileName("patient_data.txt");
+        patientData.setFileName(UUID.randomUUID().toString() + ".txt");
 
         try {
             InputStream inputData = TestPLCEntityFactory.class.getClassLoader().getResourceAsStream("patient_data.txt");
@@ -249,5 +251,18 @@ public class TestPLCEntityFactory {
         filteredCountPerTag.put("curated", 25);
         summary.setFilteredFileCountPerTag(filteredCountPerTag);
         return summary;
+    }
+
+    /**
+     * Creates a new instance of download details.
+     * @return the newly created download details
+     */
+    public static DownloadDetails createDownloadDetails() {
+        DownloadDetails details = new DownloadDetails();
+        details.setSize(100);
+        details.setExpirationDate(DateUtils.addHours(new Date(), 10));
+        details.setUnit(FileSizeUnit.MB);
+        details.setUrl("http://localhost/rest/download/fileName");
+        return details;
     }
 }

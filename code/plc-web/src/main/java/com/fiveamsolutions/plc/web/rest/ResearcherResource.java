@@ -30,22 +30,36 @@
  */
 package com.fiveamsolutions.plc.web.rest;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 
-import com.fiveamsolutions.plc.dao.PatientDataDao;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
 import com.fiveamsolutions.plc.dao.ResearchEntityDao;
 import com.fiveamsolutions.plc.dao.oauth.TokenDao;
 import com.fiveamsolutions.plc.data.ResearchEntity;
 import com.fiveamsolutions.plc.data.oauth.OAuthToken;
+import com.fiveamsolutions.plc.data.transfer.DownloadDetails;
 import com.fiveamsolutions.plc.data.transfer.Filter;
 import com.fiveamsolutions.plc.data.transfer.Summary;
+import com.fiveamsolutions.plc.service.PatientDataService;
+import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.google.inject.Inject;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.oauth.server.OAuthServerRequest;
@@ -58,9 +72,11 @@ import com.sun.jersey.oauth.signature.OAuthParameters;
 @Path("/researcher")
 @RequestScoped
 public class ResearcherResource {
+    private static final String FILE_LOCATION_KEY = "file.storage.location";
     private final ResearchEntityDao researchEntityDao;
     private final TokenDao tokenDao;
-    private final PatientDataDao patientDataDao;
+    private final PatientDataService patientDataService;
+    private final PLCApplicationResources appResources;
     @Context
     private HttpContext httpContext;
 
@@ -68,13 +84,16 @@ public class ResearcherResource {
      * Class constructor.
      * @param researchEntityDao the research entity dao
      * @param tokenDao the token dao
-     * @param patientDataDoa the patient data dao
+     * @param patientDataService the patient data service
+     * @param appResources the application resources
      */
     @Inject
-    public ResearcherResource(ResearchEntityDao researchEntityDao, TokenDao tokenDao, PatientDataDao patientDataDoa) {
+    public ResearcherResource(ResearchEntityDao researchEntityDao, TokenDao tokenDao,
+            PatientDataService patientDataService, PLCApplicationResources appResources) {
         this.researchEntityDao = researchEntityDao;
         this.tokenDao = tokenDao;
-        this.patientDataDao = patientDataDoa;
+        this.patientDataService = patientDataService;
+        this.appResources = appResources;
     }
 
     /**
@@ -108,7 +127,46 @@ public class ResearcherResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Summary dataSummary(Filter filter) {
-        return patientDataDao.getPatientDataSummary(filter);
+        return patientDataService.getSummary(filter);
+    }
+
+    /**
+     * Retrieves patient shared data summary.
+     * @param filter the filter
+     * @return the data summary
+     */
+    @RolesAllowed({OAuthToken.RESEARCHER_ROLE })
+    @POST
+    @Path("shared")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public DownloadDetails requestData(Filter filter) {
+        return patientDataService.getDownloadDetails(filter);
+    }
+
+    /**
+     * Downloads the compiled patient data.
+     * @param fileName the file name to download
+     * @return the file to download
+     */
+    @Path("shared/download/{fileName}")
+    @RolesAllowed({OAuthToken.RESEARCHER_ROLE })
+    @GET
+    public Response downloadPatientData(@PathParam("fileName") final String fileName) {
+        final String filePath = appResources.getStringResource(FILE_LOCATION_KEY);
+        StreamingOutput output = new StreamingOutput() {
+            @Override
+            public void write(OutputStream output) throws IOException {
+                try {
+                    InputStream input = FileUtils.openInputStream(FileUtils.getFile(filePath, fileName + ".zip"));
+                    IOUtils.copyLarge(input, output);
+                } catch (Exception e) {
+                    throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
+                }
+            }
+        };
+        return Response.ok(output, "application/zip")
+                .header("content-disposition", "attachment; filename = patientData.zip").build();
     }
 
     /**

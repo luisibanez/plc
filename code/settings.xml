@@ -8,6 +8,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+		<plc.file.storage.location>/Users/ajevans/apps</plc.file.storage.location>
                 <plc.server.home>/opt/apache-tomcat-7.0.25</plc.server.home>
                 <logger.level>INFO</logger.level>
             </properties>

@@ -35,7 +35,9 @@ import java.util.List;
 
 import com.fiveamsolutions.plc.dao.JPADaoModule;
 import com.fiveamsolutions.plc.data.validator.ValidatorModule;
+import com.fiveamsolutions.plc.service.PatientDataServiceModule;
 import com.fiveamsolutions.plc.service.PatientInformationServiceModule;
+import com.fiveamsolutions.plc.service.scheduled.ScheduledJobModule;
 import com.fiveamsolutions.plc.util.PLCApplicationResources;
 import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
 import com.google.inject.Guice;
@@ -70,7 +72,9 @@ public class GuiceInjectorHolder {
         modules.add(new PLCModule());
         modules.add(new JPADaoModule(new PLCApplicationResources(new PLCResourceBundleProvider().get())));
         modules.add(new PatientInformationServiceModule());
+        modules.add(new PatientDataServiceModule());
         modules.add(new ValidatorModule());
+        modules.add(new ScheduledJobModule(new PLCApplicationResources(new PLCResourceBundleProvider().get())));
         injector = Guice.createInjector(modules);
     }
 }

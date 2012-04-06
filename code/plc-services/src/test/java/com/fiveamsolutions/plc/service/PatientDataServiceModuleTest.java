@@ -30,20 +30,42 @@
  */
 package com.fiveamsolutions.plc.service;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+
+import java.util.ResourceBundle;
+
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.dao.PatientAccountDao;
+import com.fiveamsolutions.plc.dao.PatientDataDao;
+import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class PatientDataServiceModuleTest {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Tests module insertion.
      */
-    String registerPatient(PatientAccount patient);
-
+    @Test
+    public void testModule() {
+        final PatientAccountDao patientAccountDao = mock(PatientAccountDao.class);
+        final PatientDataDao patientDataDao = mock(PatientDataDao.class);
+        Injector injector = Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(PatientAccountDao.class).toInstance(patientAccountDao);
+                bind(PatientDataDao.class).toInstance(patientDataDao);
+                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
+            }
+        }, new PatientDataServiceModule());
+        PatientDataService pds = injector.getInstance(PatientDataService.class);
+        assertNotNull(pds);
+    }
 }

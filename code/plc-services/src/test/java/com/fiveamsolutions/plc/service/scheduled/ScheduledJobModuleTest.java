@@ -28,22 +28,39 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.service.scheduled;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ResourceBundle;
+
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.util.PLCResourceBundleProvider;
+import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class ScheduledJobModuleTest {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Test module insertion.
      */
-    String registerPatient(PatientAccount patient);
+    @Test
+    public void testModule() {
+        Injector injector = Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(ResourceBundle.class).toProvider(PLCResourceBundleProvider.class);
+            }
+        },
+        new ScheduledJobModule(TestApplicationResourcesFactory.getApplicationResources()));
+        assertNotNull(injector);
+    }
 
 }

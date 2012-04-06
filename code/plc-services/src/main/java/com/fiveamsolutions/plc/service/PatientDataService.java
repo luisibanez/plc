@@ -30,20 +30,52 @@
  */
 package com.fiveamsolutions.plc.service;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import java.util.List;
+
+import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.transfer.DownloadDetails;
+import com.fiveamsolutions.plc.data.transfer.Filter;
+import com.fiveamsolutions.plc.data.transfer.Summary;
 
 /**
- * Interface for interacting with patient information.
+ *
+ * Interface for interacting with patient data.
  *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
-public interface PatientInformationService {
+public interface PatientDataService {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Adds patient data to the patient account the given guid.
+     * @param guid the guid of the account to add the data to
+     * @param patientData the patient data to add
      */
-    String registerPatient(PatientAccount patient);
+    void addPatientData(String guid, PatientData patientData);
 
+    /**
+     * The patient data associated with the given guid.
+     * @param guid the guid of the patient to retrieve patient data for
+     * @return the patient data
+     */
+    List<PatientData> getPatientData(String guid);
+
+    /**
+     * Returns the summary statistics for the given filter.
+     * @param filter the filter
+     * @return the summary
+     */
+    Summary getSummary(Filter filter);
+
+    /**
+     * Retrieves and constructs the file to be downloaded by the researcher, returning vital information about the
+     * download.
+     * @param filter the filter to restrict the data by
+     * @return the download details, if no filter is provided, download details will be empty.
+     */
+    DownloadDetails getDownloadDetails(Filter filter);
+
+    /**
+     * Removes all files from a predetermined location on the file system that are older than a specific age.
+     */
+    void cleanupExpiredDownloads();
 }

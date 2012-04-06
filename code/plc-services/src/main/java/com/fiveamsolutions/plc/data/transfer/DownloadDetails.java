@@ -32,87 +32,85 @@ package com.fiveamsolutions.plc.data.transfer;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.commons.collections.CollectionUtils;
-
+import com.fiveamsolutions.plc.data.enums.FileSizeUnit;
 import com.fiveamsolutions.plc.util.JAXBDateTimeAdapter;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-@XmlRootElement(name = "filter")
+@XmlRootElement(name = "download_details")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Filter", propOrder = { "pguids", "tags", "lastChangeDate" })
-public class Filter implements Serializable {
+@XmlType(name = "DownloadDetails", propOrder = {"size", "unit", "url", "expirationDate" })
+public class DownloadDetails implements Serializable {
     private static final long serialVersionUID = 1L;
-    @XmlElementWrapper(name = "pguids")
-    @XmlElement(name = "pguid")
-    private Set<String> pguids = new HashSet<String>();
-    @XmlElementWrapper(name = "tags")
-    @XmlElement(name = "tag")
-    private Set<String> tags = new HashSet<String>();
+
+    private long size;
+    private FileSizeUnit unit = FileSizeUnit.B;
+    private String url;
     @XmlJavaTypeAdapter(JAXBDateTimeAdapter.class)
-    private Date lastChangeDate;
+    private Date expirationDate;
 
     /**
-     * @return the pguids
+     * @return the size
      */
-    public Set<String> getPguids() {
-        return pguids;
+    public long getSize() {
+        return size;
     }
 
     /**
-     * @param pguids the pguids to set
+     * @param size the size to set
      */
-    public void setPguids(Set<String> pguids) {
-        this.pguids = pguids;
+    public void setSize(long size) {
+        this.size = size;
     }
 
     /**
-     * @return the tags
+     * @return the unit
      */
-    public Set<String> getTags() {
-        return tags;
+    public FileSizeUnit getUnit() {
+        return unit;
     }
 
     /**
-     * @param tags the tags to set
+     * @param unit the unit to set
      */
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
+    public void setUnit(FileSizeUnit unit) {
+        this.unit = unit;
     }
 
     /**
-     * @return the lastChangeDate
+     * @return the url
      */
-    public Date getLastChangeDate() {
-        return lastChangeDate;
+    public String getUrl() {
+        return url;
     }
 
     /**
-     * @param lastChangeDate the lastChangeDate to set
+     * @param url the url to set
      */
-    public void setLastChangeDate(Date lastChangeDate) {
-        this.lastChangeDate = lastChangeDate;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     /**
-     * Returns true iff at least one filter value has been provided.
-     * @return true iff one filter value has been provided
+     * @return the expirationDate
      */
-    public boolean valuesProvided() {
-        return CollectionUtils.isNotEmpty(getPguids()) || CollectionUtils.isNotEmpty(getTags())
-                || getLastChangeDate() != null;
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    /**
+     * @param expirationDate the expirationDate to set
+     */
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

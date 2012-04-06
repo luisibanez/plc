@@ -41,7 +41,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
-import com.fiveamsolutions.plc.dao.PatientDataDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PLCUser;
 import com.fiveamsolutions.plc.service.PatientInformationService;
@@ -67,8 +66,8 @@ public class RegisterPatientActionTest extends AbstractConsentWizardTest<Registe
     @Before
     public void prepareTestData() throws Exception {
         PatientAccountDao paDao = mock(PatientAccountDao.class);
-        PatientDataDao pdDao = mock(PatientDataDao.class);
-        patientInfoService = new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources(), paDao, pdDao);
+        patientInfoService =
+                new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources(), paDao);
         testAction = new RegisterPatientAction(patientInfoService) {
             private static final long serialVersionUID = 1L;
 

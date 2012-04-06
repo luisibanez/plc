@@ -30,8 +30,7 @@
  */
 package com.fiveamsolutions.plc.dao;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -42,7 +41,9 @@ import org.apache.commons.io.FileUtils;
 
 import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.data.enums.FileSizeUnit;
+import com.fiveamsolutions.plc.data.transfer.FileInfo;
 import com.fiveamsolutions.plc.data.transfer.Filter;
+import com.fiveamsolutions.plc.data.transfer.PatientDataStats;
 import com.fiveamsolutions.plc.data.transfer.Summary;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
@@ -86,35 +87,70 @@ public class PatientDataJPADao extends AbstractPLCEntityDao<PatientData> impleme
     public Summary getPatientDataSummary(Filter filter) {
         Summary summary = new Summary();
         //First, grab un-filtered stats.
-        StringBuilder builder = new StringBuilder();
-        builder.append("select count(pd.id) as file_count, count(distinct pa.guid) as guid_count,")
-            .append(" sum(pd.file_data_size) as data_sum from  patient_data as pd inner join patient_account as pa on")
-            .append(" pd.patient_account_id = pa.id where 1 = 1");
-        Query query = getEntityManager().createNativeQuery(builder.toString());
-        Object[] results = (Object[]) query.getSingleResult();
-        summary.setTotalFileCount(((BigInteger) results[0]).intValue());
-        summary.setTotalPGUIDCount(((BigInteger) results[1]).intValue());
-
-        long fileSize = (BigDecimal) results[2] == null ? 0L : ((BigDecimal) results[2]).longValue();
-        summary.setTotalFileSize(normalizeFileSize(fileSize));
-        summary.setTotalFileSizeUnit(FileSizeUnit.getUnit(fileSize));
+        StringBuilder builder = generateQuery(filter, true, false);
+        Query query = getEntityManager().createQuery(builder.toString());
+        PatientDataStats stats = (PatientDataStats) query.getSingleResult();
+        summary.setTotalFileCount(stats.getFileCount());
+        summary.setTotalPGUIDCount(stats.getGuidCount());
+        summary.setTotalFileSize(normalizeFileSize(stats.getFileDataSize()));
+        summary.setTotalFileSizeUnit(FileSizeUnit.getUnit(stats.getFileDataSize()));
 
         //If filtered values have been provided, gather those statistics, otherwise we're done.
         if (filter.valuesProvided()) {
-            appendFilterQuery(filter, builder);
+            builder = generateQuery(filter, true, true);
 
-            query = getEntityManager().createNativeQuery(builder.toString());
+            query = getEntityManager().createQuery(builder.toString());
             populateQueryParams(filter, query);
 
-            results = (Object[]) query.getSingleResult();
-            summary.setFilteredFileCount(((BigInteger) results[0]).intValue());
-            summary.setFilteredPGUIDCount(((BigInteger) results[1]).intValue());
-
-            long filteredFileSize = (BigDecimal) results[2] == null ? 0L : ((BigDecimal) results[2]).longValue();
-            summary.setFilteredFileSize(normalizeFileSize(filteredFileSize));
-            summary.setFilteredFileSizeUnit(FileSizeUnit.getUnit(filteredFileSize));
+            stats = (PatientDataStats) query.getSingleResult();
+            summary.setFilteredFileCount(stats.getFileCount());
+            summary.setFilteredPGUIDCount(stats.getGuidCount());
+            summary.setFilteredFileSize(normalizeFileSize(stats.getFileDataSize()));
+            summary.setFilteredFileSizeUnit(FileSizeUnit.getUnit(stats.getFileDataSize()));
         }
         return summary;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<FileInfo> getPatientData(Filter filter) {
+        List<FileInfo> fileInfo = new ArrayList<FileInfo>();
+        if (!filter.valuesProvided()) {
+            return fileInfo;
+        }
+        StringBuilder builder = generateQuery(filter, false, true);
+        Query query = getEntityManager().createQuery(builder.toString());
+        populateQueryParams(filter, query);
+
+        fileInfo.addAll(query.getResultList());
+        return fileInfo;
+    }
+
+    /**
+     * Generates the necessary sql.
+     * @param params the filter
+     * @param count whether or not the query should be for counts or actual objects
+     * @param filter whether to filter the query or not
+     * @return the sql query to run
+     */
+    private StringBuilder generateQuery(Filter params, boolean count, boolean filter) {
+        StringBuilder builder = new StringBuilder();
+        if (count) {
+            builder.append("select new com.fiveamsolutions.plc.data.transfer.PatientDataStats(count(pd.id),")
+                .append(" count(distinct pa.guid), sum(pd.fileDataSize)) from ").append(getEntityType().getName())
+                .append(" as pd inner join pd.patientAccount as pa where 1 = 1");
+        } else {
+            builder.append("select new com.fiveamsolutions.plc.data.transfer.FileInfo(pd.fileName, pd.fileData) from  ")
+                .append(getEntityType().getName()).append(" as pd inner join pd.patientAccount as pa where 1 = 1");
+        }
+
+        if (filter) {
+            appendFilterQuery(params, builder);
+        }
+        return builder;
     }
 
     private void appendFilterQuery(Filter filter, StringBuilder builder) {
@@ -122,11 +158,10 @@ public class PatientDataJPADao extends AbstractPLCEntityDao<PatientData> impleme
             builder.append(" and pa.guid in (:pguids) ");
         }
         if (CollectionUtils.isNotEmpty(filter.getTags())) {
-            builder.append(" and (select count(pt.tag) from patient_data_tags as pt where pt.tag in (:tags) and "
-                    + " pd.id = pt.patient_data_id) > 0");
+            builder.append(" and (select count(tag) from pd.tags where tag in (:tags)) > 0 ");
         }
         if (filter.getLastChangeDate() != null) {
-            builder.append(" and pd.uploaded_date >= :changeDate");
+            builder.append(" and pd.uploadedDate >= :changeDate");
         }
     }
 
@@ -143,11 +178,10 @@ public class PatientDataJPADao extends AbstractPLCEntityDao<PatientData> impleme
     }
 
     /**
-     * Normalizes the file sie to match the file size unit.
-     * @param size the size
-     * @return the normalize size
+     * {@inheritDoc}
      */
-    private long normalizeFileSize(long size) {
+    @Override
+    public long normalizeFileSize(long size) {
         long normalizedSize;
         if (size / FileUtils.ONE_TB > 0) {
             normalizedSize = size / FileUtils.ONE_TB;

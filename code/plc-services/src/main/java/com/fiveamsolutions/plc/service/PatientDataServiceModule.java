@@ -30,20 +30,19 @@
  */
 package com.fiveamsolutions.plc.service;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import com.google.inject.AbstractModule;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class PatientDataServiceModule extends AbstractModule {
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * {@inheritDoc}
      */
-    String registerPatient(PatientAccount patient);
-
+    @Override
+    protected void configure() {
+        bind(PatientDataService.class).to(PatientDataServiceBean.class);
+    }
 }

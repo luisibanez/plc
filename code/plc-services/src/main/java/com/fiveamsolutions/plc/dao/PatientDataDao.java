@@ -33,6 +33,7 @@ package com.fiveamsolutions.plc.dao;
 import java.util.List;
 
 import com.fiveamsolutions.plc.data.PatientData;
+import com.fiveamsolutions.plc.data.transfer.FileInfo;
 import com.fiveamsolutions.plc.data.transfer.Filter;
 import com.fiveamsolutions.plc.data.transfer.Summary;
 
@@ -55,4 +56,19 @@ public interface PatientDataDao extends Dao<PatientData> {
      * @return the summary
      */
     Summary getPatientDataSummary(Filter filter);
+
+    /**
+     * Retrieves all of the patient file data that matches the given filter.
+     * If no filter settings are provided, an empty list it returned.
+     * @param filter the filter values
+     * @return the matching file data
+     */
+    List<FileInfo> getPatientData(Filter filter);
+
+    /**
+     * Normalizes the file sie to match the file size unit.
+     * @param size the size
+     * @return the normalize size
+     */
+    long normalizeFileSize(long size);
 }

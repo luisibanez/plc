@@ -45,6 +45,8 @@ import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.data.transfer.Patient;
+import com.fiveamsolutions.plc.service.PatientDataService;
+import com.fiveamsolutions.plc.service.PatientDataServiceBean;
 import com.fiveamsolutions.plc.service.PatientInformationService;
 import com.fiveamsolutions.plc.service.PatientInformationServiceBean;
 import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
@@ -56,6 +58,7 @@ import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 public class PatientResourceTest {
     private static final int EXPECTED_GUID_LENGTH = 64;
     private PatientResource patientResource;
+    private PatientDataService patientDataService;
     private PatientInformationService patientInformationService;
     private PatientAccountDao patientAccountDao;
     private PatientDataDao patientDataDao;
@@ -70,8 +73,10 @@ public class PatientResourceTest {
         patientDataDao  = mock(PatientDataDao.class);
         patientInformationService =
                 new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources(),
-                        patientAccountDao, patientDataDao);
-        patientResource = new PatientResource(patientInformationService);
+                        patientAccountDao);
+        patientDataService = new PatientDataServiceBean(patientAccountDao, patientDataDao,
+                TestApplicationResourcesFactory.getApplicationResources());
+        patientResource = new PatientResource(patientInformationService, patientDataService);
     }
 
     /**

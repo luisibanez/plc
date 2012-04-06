@@ -48,7 +48,7 @@ import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.data.PatientAccount;
 import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.jaas.UserPrincipal;
-import com.fiveamsolutions.plc.service.PatientInformationService;
+import com.fiveamsolutions.plc.service.PatientDataService;
 import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -63,7 +63,7 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
     private List<PatientData> retrievedPatientData;
 
     private PrincipalProxy principalProxy;
-    private final PatientInformationService patientService;
+    private final PatientDataService patientDataService;
     private final PatientAccountDao patientDao;
     @NotNull
     private File dataFile;
@@ -74,12 +74,12 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
     /**
      * Class constructor.
      *
-     * @param patientService the patient service
+     * @param patientDataService the patient data service
      * @param accountDao the patient account dao
      */
     @Inject
-    public UploadDataAction(PatientInformationService patientService, PatientAccountDao accountDao) {
-        this.patientService = patientService;
+    public UploadDataAction(PatientDataService patientDataService, PatientAccountDao accountDao) {
+        this.patientDataService = patientDataService;
         this.patientDao = accountDao;
     }
 
@@ -90,7 +90,7 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
     @SkipValidation
     public String execute() {
         PatientAccount account = patientDao.getByUsername(getUserPrincipal().getName());
-        List<PatientData> data = patientService.getPatientData(account.getGuid());
+        List<PatientData> data = patientDataService.getPatientData(account.getGuid());
         setRetrievedPatientData(data);
         return SUCCESS;
     }
@@ -114,7 +114,7 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
         } catch (IOException e) {
             LOG.error("Error reading file data.", e);
         }
-        patientService.addPatientData(account.getGuid(), pa);
+        patientDataService.addPatientData(account.getGuid(), pa);
         return SUCCESS;
     }
 

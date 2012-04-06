@@ -31,6 +31,7 @@
 package com.fiveamsolutions.plc.web.struts2.action;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -45,8 +46,10 @@ import org.junit.Test;
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PLCUser;
+import com.fiveamsolutions.plc.data.enums.PatientDataSource;
+import com.fiveamsolutions.plc.data.enums.PatientDataType;
 import com.fiveamsolutions.plc.jaas.UserPrincipal;
-import com.fiveamsolutions.plc.service.PatientInformationService;
+import com.fiveamsolutions.plc.service.PatientDataService;
 import com.opensymphony.xwork2.Action;
 
 /**
@@ -67,7 +70,7 @@ public class UploadDataActionTest {
         user.setId(1L);
         PatientAccountDao accountDao = mock(PatientAccountDao.class);
         when(accountDao.getByUsername(anyString())).thenReturn(TestPLCEntityFactory.createPatientAccount());
-        action = new UploadDataAction(mock(PatientInformationService.class), accountDao);
+        action = new UploadDataAction(mock(PatientDataService.class), accountDao);
         setPrincipalProxy(action, user);
     }
 
@@ -77,6 +80,7 @@ public class UploadDataActionTest {
     @Test
     public void execute() {
         assertEquals(Action.SUCCESS, action.execute());
+        assertNotNull(action.getRetrievedPatientData());
     }
 
     /**
@@ -85,6 +89,9 @@ public class UploadDataActionTest {
     @Test
     public void upload() {
         URL uploadUrl = UploadDataAction.class.getClassLoader().getResource("upload-data.txt");
+        action.getPatientData().setDataSource(PatientDataSource.HL7);
+        action.getPatientData().setDataType(PatientDataType.GENOME_FULL_SEQUENCE);
+        action.getPatientData().setNotes("Test File Upload");
         action.setDataFile(FileUtils.toFile(uploadUrl));
         action.setDataFileFileName("upload-data.txt");
         action.setTags("ACTION,TAGS");

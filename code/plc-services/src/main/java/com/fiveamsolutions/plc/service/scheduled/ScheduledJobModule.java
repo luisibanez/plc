@@ -28,22 +28,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.service.scheduled;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import org.nnsoft.guice.guartz.QuartzModule;
+
+import com.fiveamsolutions.plc.util.PLCApplicationResources;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class ScheduledJobModule extends QuartzModule {
+    private static final String CLEANUP_INTERVAL_KEY = "file.cleanup.interval";
+    private final PLCApplicationResources appResources;
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Class constructor.
+     * @param appResources the application resources
      */
-    String registerPatient(PatientAccount patient);
+    public ScheduledJobModule(PLCApplicationResources appResources) {
+        this.appResources = appResources;
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void schedule() {
+        String interval = appResources.getStringResource(CLEANUP_INTERVAL_KEY);
+        scheduleJob(CleanupExpiredDownloadsJob.class).withCronExpression("0 0/" + interval + " * * * ?");
+    }
 }

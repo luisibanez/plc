@@ -54,6 +54,12 @@ public class TestApplicationResourcesFactory {
                 contentList.add(new Object[] {"hashing.date.format", "yyyyMMdd"});
                 contentList.add(new Object[] {"hashing.string.encoding", "UTF-8"});
                 contentList.add(new Object[] {"plc.persistenceUnit.name", "plc-testdb"});
+                contentList.add(new Object[] {"file.storage.location", "/tmp"});
+                contentList.add(new Object[] {"file.storage.duration", "-20"});
+                contentList.add(new Object[] {"file.cleanup.interval", "5"});
+                contentList.add(new Object[] {"file.storage.duration.invalid", "20a"});
+                contentList.add(new Object[] {"file.download.url", ""});
+
                 Object[][] content = new Object[contentList.size()][];
                 contentList.toArray(content);
                 return content;

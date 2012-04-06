@@ -33,13 +33,9 @@ package com.fiveamsolutions.plc.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -47,10 +43,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fiveamsolutions.plc.dao.PatientAccountDao;
-import com.fiveamsolutions.plc.dao.PatientDataDao;
 import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.data.PatientAccount;
-import com.fiveamsolutions.plc.data.PatientData;
 import com.fiveamsolutions.plc.util.TestApplicationResourcesFactory;
 
 /**
@@ -61,7 +55,6 @@ public class PatientInformationServiceTest {
     private static final int EXPECTED_GUID_LENGTH = 64;
     private PatientInformationServiceBean patientInformationServiceBean;
     private PatientAccountDao patientAccountDao;
-    private PatientDataDao patientDataDao;
 
     /**
      * Setup test.
@@ -70,10 +63,9 @@ public class PatientInformationServiceTest {
     @Before
     public void prepareTestData() throws Exception {
         patientAccountDao = mock(PatientAccountDao.class);
-        patientDataDao = mock(PatientDataDao.class);
         patientInformationServiceBean =
                 new PatientInformationServiceBean(TestApplicationResourcesFactory.getApplicationResources(),
-                        patientAccountDao, patientDataDao);
+                        patientAccountDao);
     }
 
     /**
@@ -94,72 +86,5 @@ public class PatientInformationServiceTest {
         assertTrue(StringUtils.isNotEmpty(differentGuid));
         assertEquals(EXPECTED_GUID_LENGTH, differentGuid.length());
         assertFalse(StringUtils.equals(guid, differentGuid));
-    }
-
-    /**
-     * Tests adding patient data to an account.
-     */
-    @Test
-    public void addPatientData() {
-        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
-        when(patientAccountDao.getByGuid(anyString())).thenReturn(patientAccount);
-
-        String guid = patientInformationServiceBean.registerPatient(patientAccount);
-        assertTrue(StringUtils.isNotEmpty(guid));
-        assertEquals(EXPECTED_GUID_LENGTH, guid.length());
-        assertTrue(patientAccount.getPatientData().isEmpty());
-
-        patientInformationServiceBean.addPatientData(guid, TestPLCEntityFactory.createPatientData());
-        assertFalse(patientAccount.getPatientData().isEmpty());
-        assertEquals(1, patientAccount.getPatientData().size());
-    }
-
-    /**
-     * Tests adding patient data to an account that doesn't exist.
-     */
-    @Test
-    public void addPatientDataToInvalidAccount() {
-        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
-        when(patientAccountDao.getByGuid(anyString())).thenReturn(null);
-
-        String guid = patientInformationServiceBean.registerPatient(patientAccount);
-        assertTrue(StringUtils.isNotEmpty(guid));
-        assertEquals(EXPECTED_GUID_LENGTH, guid.length());
-        assertTrue(patientAccount.getPatientData().isEmpty());
-
-        patientInformationServiceBean.addPatientData(guid, TestPLCEntityFactory.createPatientData());
-        assertTrue(patientAccount.getPatientData().isEmpty());
-    }
-
-    /**
-     * Tests patient data retrieval.
-     */
-    @Test
-    public void getPatientData() {
-        PatientAccount patientAccount = TestPLCEntityFactory.createPatientAccount();
-        when(patientAccountDao.getByGuid(anyString())).thenReturn(patientAccount);
-        when(patientDataDao.getByAccountId(anyLong())).thenReturn(patientAccount.getPatientData());
-
-        String guid = patientInformationServiceBean.registerPatient(patientAccount);
-        assertTrue(StringUtils.isNotEmpty(guid));
-        assertEquals(EXPECTED_GUID_LENGTH, guid.length());
-        assertTrue(patientAccount.getPatientData().isEmpty());
-
-        patientInformationServiceBean.addPatientData(guid, TestPLCEntityFactory.createPatientData());
-        assertFalse(patientAccount.getPatientData().isEmpty());
-        assertEquals(1, patientAccount.getPatientData().size());
-
-        List<PatientData> results = patientInformationServiceBean.getPatientData(guid);
-        assertFalse(results.isEmpty());
-        assertEquals(1, results.size());
-    }
-
-    /**
-     * Tests patient data retrieval for non existent guid.
-     */
-    @Test
-    public void getPatientDataDoesntExist() {
-        List<PatientData> results = patientInformationServiceBean.getPatientData("wrong");
-        assertTrue(results.isEmpty());
     }
 }

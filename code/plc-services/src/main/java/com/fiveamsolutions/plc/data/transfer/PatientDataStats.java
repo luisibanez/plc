@@ -28,22 +28,52 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service;
+package com.fiveamsolutions.plc.data.transfer;
 
-import com.fiveamsolutions.plc.data.PatientAccount;
+import java.io.Serializable;
 
 /**
- * Interface for interacting with patient information.
- *
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
+ *
  */
-public interface PatientInformationService {
+public class PatientDataStats implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final Long fileCount;
+    private final Long guidCount;
+    private final Long fileDataSize;
 
     /**
-     * Registers a patient in the system, returning their GUID.
-     * @param patient the patient to register
-     * @return the patient's GUID
+     * Class constructor.
+     *
+     * @param fileCount the file count
+     * @param guidCount the guid count
+     * @param fileDataSize the sum of file data size
      */
-    String registerPatient(PatientAccount patient);
+    public PatientDataStats(Long fileCount, Long guidCount, Long fileDataSize) {
+        this.fileCount = fileCount;
+        this.guidCount = guidCount;
+        this.fileDataSize = fileDataSize;
+    }
 
+    /**
+     * @return the fileCount
+     */
+    public long getFileCount() {
+        return fileCount.longValue();
+    }
+
+    /**
+     * @return the guidCount
+     */
+    public long getGuidCount() {
+        return guidCount.longValue();
+    }
+
+    /**
+     * @return the fileDataSize
+     */
+    public long getFileDataSize() {
+        return fileDataSize == null ? 0 : fileDataSize.longValue();
+    }
 }

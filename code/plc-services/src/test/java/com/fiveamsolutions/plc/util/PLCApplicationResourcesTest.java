@@ -48,4 +48,14 @@ public class PLCApplicationResourcesTest {
         PLCApplicationResources resources = TestApplicationResourcesFactory.getApplicationResources();
         assertEquals("bar", resources.getStringResource("foo"));
     }
+
+    /**
+     * Tests retrieving as an int resource.
+     */
+    @Test
+    public void getIntResource() {
+        PLCApplicationResources resources = TestApplicationResourcesFactory.getApplicationResources();
+        assertEquals(-20, resources.getIntResource("file.storage.duration"));
+        assertEquals(0, resources.getIntResource("file.storage.duration.invalid"));
+    }
 }

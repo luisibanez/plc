@@ -35,7 +35,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.Locale;
 
 import javax.xml.bind.JAXBContext;
@@ -52,7 +51,7 @@ import com.sun.jersey.api.json.JSONMarshaller;
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class FilterTest {
+public class DownloadDetailsTest {
 
     /**
      * Tests JSON marshalling.
@@ -61,42 +60,24 @@ public class FilterTest {
     @Test
     public void jsonMarshalling() throws JAXBException {
         JAXBContext context = new JSONJAXBContext(JSONConfiguration.natural().humanReadableFormatting(true).build(),
-                Filter.class);
+                DownloadDetails.class);
         JSONMarshaller marshaller = JSONJAXBContext.getJSONMarshaller(context.createMarshaller());
 
         StringWriter writer = new StringWriter();
-        Filter filter = TestPLCEntityFactory.createFilter();
-        marshaller.marshallToJSON(filter, writer);
-        assertEquals(getJson(filter),  writer.toString());
+        DownloadDetails downloadDetails = TestPLCEntityFactory.createDownloadDetails();
+        marshaller.marshallToJSON(downloadDetails, writer);
+        assertEquals(getJson(downloadDetails),  writer.toString());
     }
 
-    private String getJson(Filter filter) {
+    private String getJson(DownloadDetails downloadDetails) {
         DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm", Locale.getDefault());
-        String dateString  = dateFormat.format(filter.getLastChangeDate());
+        String dateString  = dateFormat.format(downloadDetails.getExpirationDate());
         StringBuilder builder = new StringBuilder();
         builder.append("{").append("\n");
-        builder.append("  \"pguids\" : [ {").append("\n");
-
-        Iterator<String> pguids = filter.getPguids().iterator();
-        while(pguids.hasNext()) {
-            builder.append("    \"pguid\" : \"").append(pguids.next()).append("\"");
-            if (pguids.hasNext()) {
-                builder.append(",");
-            }
-            builder.append("\n");
-        }
-        builder.append("  } ],\n");
-        builder.append("  \"tags\" : [ {\n");
-        Iterator<String> tags = filter.getTags().iterator();
-        while (tags.hasNext()) {
-            builder.append("    \"tag\" : \"").append(tags.next()).append("\"");
-            if (tags.hasNext()) {
-                builder.append(",");
-            }
-            builder.append("\n");
-        }
-        builder.append("  } ],\n");
-        builder.append("  \"lastChangeDate\" : \"").append(dateString).append("\"\n");
+        builder.append("  \"size\" : ").append(downloadDetails.getSize()).append(",\n");
+        builder.append("  \"unit\" : \"").append(downloadDetails.getUnit()).append("\",\n");
+        builder.append("  \"url\" : \"").append(downloadDetails.getUrl()).append("\",\n");
+        builder.append("  \"expirationDate\" : \"").append(dateString).append("\"\n");
         builder.append("}");
         return builder.toString();
     }

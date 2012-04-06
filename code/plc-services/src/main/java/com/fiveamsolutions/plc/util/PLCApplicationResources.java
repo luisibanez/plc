@@ -32,6 +32,9 @@ package com.fiveamsolutions.plc.util;
 
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.log4j.Logger;
+
 import com.google.inject.Inject;
 
 /**
@@ -39,6 +42,7 @@ import com.google.inject.Inject;
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  */
 public class PLCApplicationResources {
+    private static final Logger LOG = Logger.getLogger(PLCApplicationResources.class);
     private final ResourceBundle resourceBundle;
 
     /**
@@ -57,5 +61,21 @@ public class PLCApplicationResources {
      */
     public String getStringResource(String resourceName) {
         return resourceBundle.getString(resourceName);
+    }
+
+    /**
+     * Retrieves the specified resource as an integer.
+     * @param resourceName the name of the resource
+     * @return the resource value as an int
+     */
+    public int getIntResource(String resourceName) {
+        String value = getStringResource(resourceName);
+        Integer i = 0;
+        try {
+            i = NumberUtils.createInteger(value);
+        } catch (NumberFormatException e) {
+            LOG.error("Error converting " + value  + " to int.");
+        }
+        return i;
     }
 }
