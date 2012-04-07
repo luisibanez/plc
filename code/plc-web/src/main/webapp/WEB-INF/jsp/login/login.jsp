@@ -19,3 +19,8 @@
         <input id="signInButton" class="btn primary" type="submit" value="${signInLabel}" tabindex="6" onclick="submit(); return false;" />
     </form>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        markProgress('#signInStep');
+    });
+</script>

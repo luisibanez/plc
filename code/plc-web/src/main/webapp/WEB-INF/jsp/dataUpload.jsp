@@ -99,6 +99,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
+        markProgress('#uploadDataStep');
     	var confirmDialog = 
         $('#confirmationMessage').dialog({
         	autoOpen: false,

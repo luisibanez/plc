@@ -27,6 +27,29 @@
                     <decorator:body />
                 </div>
                 <div id="span4" class="span4">
+                    <div id="sidebar">
+                        <h6>Get Informed</h6>
+                        <ul>
+                            <li id="welcomeStep">Welcome</li>
+                            <li id="willingnessStep">Willingness to Participate</li>
+                            <li id="termsOfUseStep">Researcher Terms of Use</li>
+                            <li id="grantRightsStep">Grant Rights</li>
+                            <li id="watchVideoStep">Watch Video</li>
+                            <li id="checkpointStep">Checkpoint</li>
+                            <li id="acknowledgeUnderstandingStep">Acknowledge Understanding</li>
+                        </ul>
+                        <h6>Consent to Research</h6>
+                        <ul>
+                            <li id="consentFormStep">Consent Form</li>
+                            <li id="generateIdStep">Generate ID</li>
+                        </ul>
+                        <h6>Upload Your Data</h6>
+                        <ul>
+                            <li id="userProfileStep">User Profile</li>
+                            <li id="signInStep">Sign In</li>
+                            <li id="uploadDataStep">Upload Data</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
