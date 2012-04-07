@@ -19,7 +19,7 @@
             <div id="logout_link"></div>
             <div id="consent_header" class="page-header">
                 <h1>
-                    Consent to Research <small>Getting Consent</small>
+                    Consent to Research <small>Upload Data</small>
                 </h1>
             </div>
             <div id="row" class="row">
