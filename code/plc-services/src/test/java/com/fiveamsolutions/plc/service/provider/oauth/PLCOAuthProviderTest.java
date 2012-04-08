@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service.oauth.provider;
+package com.fiveamsolutions.plc.service.provider.oauth;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -49,6 +49,7 @@ import com.fiveamsolutions.plc.dao.TestPLCEntityFactory;
 import com.fiveamsolutions.plc.dao.oauth.ConsumerDao;
 import com.fiveamsolutions.plc.dao.oauth.TokenDao;
 import com.fiveamsolutions.plc.data.oauth.Consumer;
+import com.fiveamsolutions.plc.service.provider.oauth.PLCOAuthProvider;
 import com.sun.jersey.oauth.server.spi.OAuthConsumer;
 import com.sun.jersey.oauth.server.spi.OAuthToken;
 

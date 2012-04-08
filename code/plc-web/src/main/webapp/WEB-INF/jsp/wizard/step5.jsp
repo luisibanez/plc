@@ -3,7 +3,7 @@
     <div class="well">
         <iframe id="ctrvideo"
             src="http://player.vimeo.com/video/37704392?title=0&amp;byline=0&amp;portrait=0&amp;api=1&amp;player_id=ctrvideo"
-            width="500" height="375" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+            width="500" height="375" frameborder="0"></iframe>
     </div>
 
     <div class="alert-message" id="video_instructions">You must finish watching the video to advance in the

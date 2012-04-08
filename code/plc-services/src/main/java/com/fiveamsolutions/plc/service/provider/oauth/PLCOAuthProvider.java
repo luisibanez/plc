@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.service.oauth.provider;
+package com.fiveamsolutions.plc.service.provider.oauth;
 
 import java.util.ArrayList;
 import java.util.Collections;
