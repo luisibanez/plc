@@ -70,6 +70,7 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
     private String dataFileFileName;
     private PatientData patientData = new PatientData();
     private String tags;
+    private boolean surveyTaken = false;
 
     /**
      * Class constructor.
@@ -92,6 +93,7 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
         PatientAccount account = patientDao.getByUsername(getUserPrincipal().getName());
         List<PatientData> data = patientDataService.getPatientData(account.getGuid());
         setRetrievedPatientData(data);
+        surveyTaken = account.isSurveyTaken();
         return SUCCESS;
     }
 
@@ -115,6 +117,20 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
             LOG.error("Error reading file data.", e);
         }
         patientDataService.addPatientData(account.getGuid(), pa);
+        return SUCCESS;
+    }
+
+    /**
+     * Marks the survey as taken.
+     *
+     * @return struts2 forwarding result
+     */
+    @SkipValidation
+    public String markSurveyTaken() {
+        PatientAccount account = patientDao.getByUsername(getUserPrincipal().getName());
+        account.setSurveyTaken(true);
+        patientDao.save(account);
+        setSurveyTaken(true);
         return SUCCESS;
     }
 
@@ -208,5 +224,19 @@ public class UploadDataAction extends ActionSupport implements PrincipalAware {
      */
     protected UserPrincipal getUserPrincipal() {
         return (UserPrincipal) getPrincipalProxy().getUserPrincipal();
+    }
+
+    /**
+     * @return the surveyTaken
+     */
+    public boolean isSurveyTaken() {
+        return surveyTaken;
+    }
+
+    /**
+     * @param surveyTaken the surveyTaken to set
+     */
+    public void setSurveyTaken(boolean surveyTaken) {
+        this.surveyTaken = surveyTaken;
     }
 }

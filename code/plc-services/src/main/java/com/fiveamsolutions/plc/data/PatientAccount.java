@@ -45,6 +45,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import com.fiveamsolutions.plc.data.transfer.Patient;
 
@@ -64,6 +65,7 @@ public class PatientAccount implements PLCEntity {
     @Valid
     private PatientDemographics patientDemographics = new PatientDemographics();
     private List<PatientData> patientData = new ArrayList<PatientData>();
+    private boolean surveyTaken = false;
 
     /**
      * Default Constructor.
@@ -182,6 +184,22 @@ public class PatientAccount implements PLCEntity {
      */
     public void setPatientData(List<PatientData> patientData) {
         this.patientData = patientData;
+    }
+
+    /**
+     * @return the surveyTaken
+     */
+    @NotNull
+    @Column(name = "survey_taken", nullable = false)
+    public boolean isSurveyTaken() {
+        return surveyTaken;
+    }
+
+    /**
+     * @param surveyTaken the surveyTaken to set
+     */
+    public void setSurveyTaken(boolean surveyTaken) {
+        this.surveyTaken = surveyTaken;
     }
 
 }

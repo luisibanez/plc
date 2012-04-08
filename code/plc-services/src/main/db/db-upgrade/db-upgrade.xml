@@ -17,4 +17,8 @@
         <comment>Adding patient data file size to the data model to allow for easier data summary queries.</comment>
         <sqlFile path="src/main/db/db-upgrade/postgresql/PLC-70.sql" />
     </changeSet>
+    <changeSet id="PLC-62" author="aevansel">
+        <comment>Adding field to patient account to track whether or not the survey has been taken.</comment>
+        <sqlFile path="src/main/db/db-upgrade/postgresql/PLC-62.sql" />
+    </changeSet>
 </databaseChangeLog>

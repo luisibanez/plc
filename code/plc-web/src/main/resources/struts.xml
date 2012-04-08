@@ -52,6 +52,12 @@
             </result>
             <result name="input">/WEB-INF/jsp/dataUpload.jsp</result>
         </action>
+        <action name="uploadData/takeSurvey" class="com.fiveamsolutions.plc.web.struts2.action.UploadDataAction" method="markSurveyTaken">
+            <result name="success" type="redirectAction">
+                <param name="actionName">uploadData/view</param>
+            </result>
+            <result name="input">/WEB-INF/jsp/dataUpload.jsp</result>
+        </action>
     </package>
 
     <package name="login" namespace="/www/login" extends="plc-default">

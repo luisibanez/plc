@@ -41,3 +41,12 @@ function markProgress(stepSelector) {
 		}
 	});
 }
+
+/**
+ * Sets the handler for the survey link.
+ */
+function surveyLinkHandler() {
+    $('#surveyLink').click(function() {
+       $('#surveyForm').submit(); 
+    });
+}

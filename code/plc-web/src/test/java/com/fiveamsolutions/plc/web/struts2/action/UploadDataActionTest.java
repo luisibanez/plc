@@ -31,7 +31,9 @@
 package com.fiveamsolutions.plc.web.struts2.action;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -81,6 +83,7 @@ public class UploadDataActionTest {
     public void execute() {
         assertEquals(Action.SUCCESS, action.execute());
         assertNotNull(action.getRetrievedPatientData());
+        assertFalse(action.isSurveyTaken());
     }
 
     /**
@@ -98,6 +101,14 @@ public class UploadDataActionTest {
         assertEquals(Action.SUCCESS, action.upload());
     }
 
+    /**
+     * Test mark survey taken.
+     */
+    @Test
+    public void markSurveyTaken() {
+        assertEquals(Action.SUCCESS, action.markSurveyTaken());
+        assertTrue(action.isSurveyTaken());
+    }
 
     /**
      * Sets the principal proxy for the given action. The principal will be set to the currentTestUser.

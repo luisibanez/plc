@@ -1,17 +1,39 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <div id="uploadData">
     <div id="take_survey_task">
-        <h3>1. Take Our Survey</h3>
+        <h3>
+            1. Take Our Survey
+            <c:choose>
+                <c:when test="${surveyTaken}">
+                    <span class="label success">Done</span>
+                </c:when>
+                <c:otherwise>
+                    <span class="label warning">To Do</span>
+                </c:otherwise>
+            </c:choose>
+        </h3>
         <p>Thanks for helping us make our informed consent process better by alpha testing. But you're not off the hook yet. 
         Please take the survey below - it'll only take a few minutes - so that we can learn where we need to improve. 
         This data will form part of our submission to the required privacy and ethics authorities, so it's vital that you fill it out.</p>
         
         <div class="actions">
-            <a href="https://www.surveymonkey.com/s/DJZ3WSH" target="_blank" class="btn">Take the survey</a>
+            <s:form id="surveyForm" namespace="/www/protected" action="uploadData/takeSurvey" method="post">
+                <a id="surveyLink" href="https://www.surveymonkey.com/s/DJZ3WSH" target="_blank" class="btn">Take the survey</a>
+            </s:form>
         </div>
     </div>
 
-    <h3>2. Upload Your Data</h3>
+    <h3>
+        2. Upload Your Data
+        <c:choose>
+            <c:when test="${not empty retrievedPatientData}">
+                <span class="label success">Done</span>
+            </c:when>
+            <c:otherwise>
+                <span class="label warning">To Do</span>
+            </c:otherwise>
+        </c:choose>
+    </h3>
     <p>Select a file from your computer to upload. You may upload genotype data from personal genomics providers
         (e.g. 23AndME, Navigenics, deCODEme, etc.) or medical data, such as Blue Button, My Family Health Portrait or
         other electronic health records.</p>
@@ -101,6 +123,7 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
+        surveyLinkHandler();
         markProgress('#uploadDataStep');
     	var confirmDialog = 
         $('#confirmationMessage').dialog({
