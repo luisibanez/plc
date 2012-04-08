@@ -17,7 +17,7 @@
                     <s:textfield cssClass="xlarge required" id="username" name="user.username" size="20" cssErrorClass="error-field"/>
                     <s:fielderror>
                         <s:param>user.username</s:param>
-                        <s:param>plcUser</s:param>
+                        <s:param>user</s:param>
                     </s:fielderror>
                 </div>
             </div>
