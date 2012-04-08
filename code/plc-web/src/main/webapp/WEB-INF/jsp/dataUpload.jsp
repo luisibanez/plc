@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <h3>2. Upload You Data</h3>
+    <h3>2. Upload Your Data</h3>
     <p>Select a file from your computer to upload. You may upload genotype data from personal genomics providers
         (e.g. 23AndME, Navigenics, deCODEme, etc.) or medical data, such as Blue Button, My Family Health Portrait or
         other electronic health records.</p>
