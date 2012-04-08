@@ -28,32 +28,59 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.web.struts2.action;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-import com.fiveamsolutions.plc.web.filter.PLCUserFilter;
-import com.google.inject.servlet.ServletModule;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.junit.Test;
+
+import com.fiveamsolutions.plc.web.struts2.util.AbstractTestHttpServletRequest;
+import com.opensymphony.xwork2.Action;
+
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PLCServletModule extends ServletModule {
-    private static final String NON_REST_REQUESTS = "/www/*";
-    private static final String ALL_ACTIONS = "*.action";
+public class LogoutActionTest {
 
     /**
-     * {@inheritDoc}
+     * Test successful logout.
      */
-    @Override
-    protected void configureServlets() {
-        super.configureServlets();
-        filter(ALL_ACTIONS).through(PLCUserFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);
+    @Test
+    public void testSuccessfulLogout() {
+        LogoutAction testAction = new LogoutAction();
+        HttpSession testSession = mock(HttpSession.class);
+        HttpServletRequest testRequest = getTestServletRequest(testSession);
+        verifyLogout(testAction, testRequest);
+    }
+
+    private HttpServletRequest getTestServletRequest(final HttpSession testSession) {
+        return new AbstractTestHttpServletRequest() {
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            public HttpSession getSession() {
+                return testSession;
+            }
+
+        };
+    }
+
+    private void verifyLogout(LogoutAction testAction, HttpServletRequest testRequest) {
+        try {
+            testAction.setServletRequest(testRequest);
+            assertEquals(Action.SUCCESS, testAction.logout());
+            verify(testRequest.getSession()).invalidate();
+        } catch (Exception e) {
+            fail("Unexpected exception: " + e.getMessage());
+        }
     }
 }

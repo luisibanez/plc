@@ -59,6 +59,12 @@
         <action name="login" class="com.fiveamsolutions.plc.web.struts2.action.LoginAction" method="login">
             <result name="login">/WEB-INF/jsp/login/login.jsp</result>
         </action>
+        <action name="logout" class="com.fiveamsolutions.plc.web.struts2.action.LogoutAction" method="logout">
+            <result name="success" type="redirectAction">
+                <param name="namespace">/www/protected</param>
+                <param name="actionName">uploadData/view</param>
+            </result>
+        </action>
     </package>
 
     <package name="wizard" namespace="/www/wizard" extends="plc-default">

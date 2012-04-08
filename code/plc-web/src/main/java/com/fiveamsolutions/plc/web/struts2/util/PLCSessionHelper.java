@@ -32,6 +32,8 @@ package com.fiveamsolutions.plc.web.struts2.util;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.fiveamsolutions.plc.data.PatientDemographics;
 
 /**
@@ -41,6 +43,7 @@ import com.fiveamsolutions.plc.data.PatientDemographics;
 public class PLCSessionHelper {
     private static final String PATIENT_DEMOGRAPHICS = "patientDemographics";
     private static final String GUID = "guid";
+    private static final String LOGGED_IN = "loggedIn";
 
     /**
      * @param demographics the demographics
@@ -72,5 +75,21 @@ public class PLCSessionHelper {
      */
     public static String getPatientGUID(Map<String, Object> session) {
         return (String) session.get(GUID);
+    }
+
+    /**
+     * @param loggedIn whether the user is logged in
+     * @param session the session
+     */
+    public static void setLoggedIn(Boolean loggedIn, HttpSession session) {
+        session.setAttribute(LOGGED_IN, loggedIn);
+    }
+
+    /**
+     * @param session the session
+     * @return whether the user is logged in
+     */
+    public static Boolean getLoggedIn(HttpSession session) {
+        return (Boolean) session.getAttribute(LOGGED_IN);
     }
 }

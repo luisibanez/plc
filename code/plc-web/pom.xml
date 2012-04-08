@@ -151,7 +151,7 @@
             <artifactId>oauth-client</artifactId>
             <version>${jersey.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -168,6 +168,7 @@
             <version>2.4.2</version>
         </dependency>
 
+
         <!-- Provided dependencies -->
         <dependency>
             <groupId>javax.mail</groupId>
@@ -181,7 +182,7 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
-
+            
         <!-- Test Jars -->
         <dependency>
             <groupId>com.fiveamsolutions.plc</groupId>

@@ -16,7 +16,10 @@
     <div id="bootstrap" />
     <div id="container" class="container">
         <div id="content" class="wrapper">
-            <div id="logout_link"></div>
+            <div id="logout_link">
+                <s:url value="/www/protected/uploadData/view.action" var="loginUrl"/>
+                <a href="${loginUrl}"><span class="label">login</span></a>
+            </div>
             <div id="consent_header" class="page-header">
                 <h1>
                     Consent to Research <small>Getting Consent</small>

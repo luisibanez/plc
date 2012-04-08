@@ -28,32 +28,36 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.web.filter;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import static org.mockito.Mockito.mock;
 
-import com.fiveamsolutions.plc.web.filter.PLCUserFilter;
-import com.google.inject.servlet.ServletModule;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import javax.servlet.FilterConfig;
+
+import org.junit.Test;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PLCServletModule extends ServletModule {
-    private static final String NON_REST_REQUESTS = "/www/*";
-    private static final String ALL_ACTIONS = "*.action";
+public class PLCUserFilterTest {
 
     /**
-     * {@inheritDoc}
+     * Tests detroy.
      */
-    @Override
-    protected void configureServlets() {
-        super.configureServlets();
-        filter(ALL_ACTIONS).through(PLCUserFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);
+    @Test
+    public void destroy() {
+        PLCUserFilter filter = new PLCUserFilter();
+        filter.destroy();
+    }
+
+    /**
+     * Tests init.
+     */
+    @Test
+    public void init() {
+        PLCUserFilter filter = new PLCUserFilter();
+        FilterConfig filterConfig = mock(FilterConfig.class);
+        filter.init(filterConfig);
     }
 }

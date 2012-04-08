@@ -34,6 +34,7 @@ import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
 import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
 
 import com.fiveamsolutions.plc.jaas.PLCLoginModule;
+import com.fiveamsolutions.plc.web.filter.PLCUserFilter;
 import com.google.inject.AbstractModule;
 import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
 
@@ -51,6 +52,7 @@ public class ListenerModule extends AbstractModule {
         bind(StrutsPrepareFilter.class).asEagerSingleton();
         bind(SiteMeshFilter.class).asEagerSingleton();
         bind(StrutsExecuteFilter.class).asEagerSingleton();
+        bind(PLCUserFilter.class).asEagerSingleton();
         requestStaticInjection(PLCLoginModule.class);
     }
 }

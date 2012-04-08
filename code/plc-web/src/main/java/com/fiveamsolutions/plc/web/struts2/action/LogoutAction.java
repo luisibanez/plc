@@ -28,32 +28,49 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.fiveamsolutions.plc.web.inject;
+package com.fiveamsolutions.plc.web.struts2.action;
 
-import org.apache.struts2.dispatcher.ng.filter.StrutsExecuteFilter;
-import org.apache.struts2.dispatcher.ng.filter.StrutsPrepareFilter;
+import javax.servlet.http.HttpServletRequest;
 
-import com.fiveamsolutions.plc.web.filter.PLCUserFilter;
-import com.google.inject.servlet.ServletModule;
-import com.opensymphony.sitemesh.webapp.SiteMeshFilter;
+import org.apache.struts2.interceptor.ServletRequestAware;
+
+import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Abraham J. Evans-EL <aevansel@5amsolutions.com>
  *
  */
-public class PLCServletModule extends ServletModule {
-    private static final String NON_REST_REQUESTS = "/www/*";
-    private static final String ALL_ACTIONS = "*.action";
+public class LogoutAction extends ActionSupport implements ServletRequestAware {
+    private static final long serialVersionUID = 1L;
+
+    private HttpServletRequest servletRequest;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void configureServlets() {
-        super.configureServlets();
-        filter(ALL_ACTIONS).through(PLCUserFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsPrepareFilter.class);
-        filter(NON_REST_REQUESTS).through(SiteMeshFilter.class);
-        filter(NON_REST_REQUESTS).through(StrutsExecuteFilter.class);
+    public void setServletRequest(HttpServletRequest request) {
+        servletRequest = request;
+    }
+
+    /**
+     * Logout action.
+     * @return struts2 forwarding result.
+     * @throws Exception if servlet request logout fails.
+     */
+    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
+    public String logout() throws Exception {
+        resetPrincipal();
+        invalidateSession();
+        return SUCCESS;
+    }
+
+    private void invalidateSession() {
+        servletRequest.getSession().invalidate();
+    }
+
+    @SuppressWarnings("PMD.SignatureDeclareThrowsException")
+    private void resetPrincipal() throws Exception {
+        servletRequest.logout();
     }
 }

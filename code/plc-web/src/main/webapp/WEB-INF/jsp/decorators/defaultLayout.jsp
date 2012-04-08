@@ -16,7 +16,12 @@
     <div id="bootstrap" />
     <div id="container" class="container">
         <div id="content" class="wrapper">
-            <div id="logout_link"></div>
+            <div id="logout_link">
+                <c:if test="${sessionScope.loggedIn}">
+                    <s:url value="/www/login/logout.action" var="logoutUrl"/>
+                    <a href="${logoutUrl}"><span class="label">logout</span></a>
+                </c:if>
+            </div>
             <div id="consent_header" class="page-header">
                 <h1>
                     Consent to Research <small>Upload Data</small>
