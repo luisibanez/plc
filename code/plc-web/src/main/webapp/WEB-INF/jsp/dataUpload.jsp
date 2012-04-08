@@ -77,8 +77,10 @@
                 <label for="">Tags (optional)</label>
                 <div class="input">
                     <s:textfield id="tags" name="tags" />
+                    <p>Enter any keywords you can think of, separated by commas.</p>
                     <s:fielderror fieldName="tags" cssClass="error-message" />
                 </div>
+
             </div>
             <div class="clearfix">
                 <label for="">Write anything else you'd like to say about this file</label>
