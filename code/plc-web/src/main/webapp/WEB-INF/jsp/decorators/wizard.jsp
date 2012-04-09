@@ -53,8 +53,7 @@
                             <li id="uploadDataStep">Upload Data</li>
                         </ul>
                     </div>
-                </div>
-                <div id="agreement_help" style="display: none;">
+                    <div id="agreement_help" style="display: none;">
                     <h6>Table of Contents</h6>
                     <p>
                         <a href="#description_of_volunteer_population">Description of Volunteer Population</a>
@@ -124,6 +123,8 @@
                         <a href="#signature">SIGNATURE</a>
                     </p>
                 </div>
+                </div>
+                
             </div>
         </div>
     </div>
