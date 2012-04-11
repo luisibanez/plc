@@ -8,6 +8,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <plc.web.host>http://sfo-plc-backend-ci-01.5amsolutions.com</plc.web.host>
                 <plc.db.host>sfo-plc-backend-ci-01.5amsolutions.com</plc.db.host>
                 <plc.db.database>legalconsent_ci</plc.db.database>
                 <plc.db.dialect>org.hibernate.dialect.PostgreSQLDialect</plc.db.dialect>
@@ -19,6 +20,9 @@
                 <plc.db.adminJdbcUrl>${plc.db.jdbcPrefix}/template1</plc.db.adminJdbcUrl>
                 <plc.db.adminUsername>root</plc.db.adminUsername>
                 <plc.db.adminPassword>p@ssword</plc.db.adminPassword>
+                
+                <!-- Location that files ready for download should be stored. -->
+                <plc.file.storage.location>/tmp</plc.file.storage.location>
             </properties>
         </profile>
     </profiles>

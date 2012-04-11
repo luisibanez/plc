@@ -28,7 +28,6 @@
         <plc.server.home>${user.home}/dev/app_servers/apache-tomcat-7.0.23</plc.server.home>
         <plc.webapp.name>legalconsent</plc.webapp.name>
         
-        <plc.rest.download.url>http://localhost:8080/${plc.webapp.name}/rest/researcher/shared/download</plc.rest.download.url>
         <plc.db.jpaPersistenceUnitName>plc-db</plc.db.jpaPersistenceUnitName>
         <plc.db.jpaPersistenceProvider>org.hibernate.ejb.HibernatePersistence</plc.db.jpaPersistenceProvider>
         <plc.db.host>localhost</plc.db.host>
@@ -44,6 +43,9 @@
         <plc.db.adminPassword>password</plc.db.adminPassword>
         <plc.db.showSql>false</plc.db.showSql>
         
+        <plc.web.host>http://localhost:8080</plc.web.host>
+        <!-- URL for file download. -->
+        <plc.rest.download.url>${plc.web.host}/${plc.webapp.name}/rest/researcher/shared/download</plc.rest.download.url>
         <!-- Location that files ready for download should be stored. -->
         <plc.file.storage.location>/tmp</plc.file.storage.location>
         <!--  How long, in minutes, to keep files present on file system. -->

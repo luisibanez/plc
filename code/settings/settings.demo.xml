@@ -8,6 +8,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <plc.web.host>sfo-plc-backend-ci-01.5amsolutions.com</plc.web.host>
                 <plc.db.host>sfo-plc-backend-ci-01.5amsolutions.com</plc.db.host>
                 <plc.db.database>legalconsent</plc.db.database>
                 <plc.db.dialect>org.hibernate.dialect.PostgreSQLDialect</plc.db.dialect>
@@ -19,6 +20,13 @@
                 <plc.db.adminJdbcUrl>${plc.db.jdbcPrefix}/template1</plc.db.adminJdbcUrl>
                 <plc.db.adminUsername>root</plc.db.adminUsername>
                 <plc.db.adminPassword>p@ssword</plc.db.adminPassword>
+                
+                <!-- Location that files ready for download should be stored. -->
+                <plc.file.storage.location>${user.home}/tmp</plc.file.storage.location>
+                <!-- How long, in minutes, to keep files present on file system. -->
+                <plc.file.storage.duration>20</plc.file.storage.duration>
+                <!-- How long, in minutes, to wait between checking for stale patient data downloads for removal. -->
+                <plc.file.cleanup.interval>5</plc.file.cleanup.interval>
             </properties>
         </profile>
     </profiles>
