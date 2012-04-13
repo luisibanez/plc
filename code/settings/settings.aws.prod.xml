@@ -8,6 +8,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <plc.web.showStackTraceOnErrorPage>false</plc.web.showStackTraceOnErrorPage>
                 <plc.web.host>plc-cgr.weconsent.us</plc.web.host>
                 <plc.db.host>localhost</plc.db.host>
                 <plc.db.database>legalconsent</plc.db.database>
