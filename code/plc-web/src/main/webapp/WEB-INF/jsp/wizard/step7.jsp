@@ -6,17 +6,16 @@
                 <label id="affirmCheckboxes">Tell us that you understand this informed consent process.</label>
                 <div class="input">
                     <ul class="inputs-list">
-                        <li><label> <s:checkbox cssClass="required" name="affirmUncertainty"/> <span>I understand <a
+                        <li><label> <s:checkbox cssClass="required" name="affirmUncertainty"/> <span>I have read about <a
                                     title="Click for more info" data-toggle="modal" data-target="#uncertainty-and-risk-modal"
-                                    data-backdrop="true" data-keyboard="true">the uncertainty and risk of public
-                                        genetic research</a>.
+                                    data-backdrop="true" data-keyboard="true">the uncertainty and risk of this research.</a>.
                                     <s:fielderror fieldName="affirmUncertainty" cssClass="error-message"/>
                             </span>
                         </label></li>
                         <li><label> <s:checkbox cssClass="required" name="affirmConsent"/> <span>I provide <a
                                     title="Click for more info" data-toggle="modal" data-target="#providing-consent-modal"
                                     data-backdrop="true" data-keyboard="true">consent</a> for my data to be used in
-                                    public genetic research
+                                    research.
                                     <s:fielderror fieldName="affirmConsent" cssClass="error-message"/>
                             </span>
                         </label></li>
