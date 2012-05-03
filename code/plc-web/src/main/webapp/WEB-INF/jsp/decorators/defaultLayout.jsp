@@ -36,7 +36,6 @@
                         <h6>Get Informed</h6>
                         <ul>
                             <li id="welcomeStep">Welcome</li>
-                            <li id="willingnessStep">Willingness to Participate</li>
                             <li id="termsOfUseStep">Researcher Terms of Use</li>
                             <li id="grantRightsStep">Grant Rights</li>
                             <li id="watchVideoStep">Watch Video</li>

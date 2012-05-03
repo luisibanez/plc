@@ -79,10 +79,6 @@
             <result name="success">/WEB-INF/jsp/wizard/step1.jsp</result>
         </action>
         <action name="step2" class="com.fiveamsolutions.plc.web.struts2.wizard.Step1Action" method="nextStep">
-            <result name="next">/WEB-INF/jsp/wizard/step2.jsp</result>
-        </action>
-        <action name="step3" class="com.fiveamsolutions.plc.web.struts2.wizard.Step2Action" method="nextStep">
-            <result name="input">/WEB-INF/jsp/wizard/step2.jsp</result>
             <result name="next">/WEB-INF/jsp/wizard/step3.jsp</result>
         </action>
         <action name="step4" class="com.fiveamsolutions.plc.web.struts2.wizard.ConsentWizardAction" method="nextStep">
