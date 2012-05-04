@@ -23,7 +23,7 @@
                 <plc.db.adminPassword>p@ssword</plc.db.adminPassword>
 
                 <!-- Location that files ready for download should be stored. -->
-                <plc.file.storage.location>${user.home}/tmp</plc.file.storage.location>
+                <plc.file.storage.location>/usr/plc/downloads</plc.file.storage.location>
                 <!-- How long, in minutes, to keep files present on file system. -->
                 <plc.file.storage.duration>20</plc.file.storage.duration>
                 <!-- How long, in minutes, to wait between checking for stale patient data downloads for removal. -->
