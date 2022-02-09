@@ -19,7 +19,7 @@
     <properties>
         <plc.webapp.dir></plc.webapp.dir>
         <plc.web.showStackTraceOnErrorPage>true</plc.web.showStackTraceOnErrorPage>
-        <struts.version>2.2.3.1</struts.version>
+        <struts.version>2.5.26</struts.version>
     </properties>
 
     <build>
